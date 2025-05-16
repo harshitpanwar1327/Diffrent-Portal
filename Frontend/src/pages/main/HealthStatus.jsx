@@ -1,0 +1,277 @@
+import React, { useState, useEffect } from 'react'
+import './healthStatus.css'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import 'react-tabs/style/react-tabs.css'
+import API from '../../util/Api'
+import Swal from 'sweetalert2'
+import Pagination from '@mui/material/Pagination'
+import Stack from '@mui/material/Stack'
+// import HashLoader from "react-spinners/HashLoader"
+
+const HealthStatus = () => {
+  let [groupData, setGroupData] = useState([]);
+  let [groupID, setGroupID] = useState('');
+  let [healthy, setHealthy] = useState([]);
+  let [unknown, setUnknown] = useState([]);
+  let [retired, setRetired] = useState([]);
+  let [currentPage, setCurrentPage] = useState(1);
+  let [currentTab, setCurrentTab] = useState(0);
+  let itemsPerPage = 10;
+  // const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchGroupName = async () => {
+      try {
+        let fetchGroup = await API.get('/policy/fetch-group/');
+        setGroupData(fetchGroup.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    const fetchAllDevices = async () => {
+      try {
+        let response = await API.get("/devices/fetch-devices/");
+        let healthData = response.data.data;
+        
+        const now = new Date();
+      
+        setHealthy(
+          healthData.filter((data) => {
+            if (!data.lastActive) return false;
+            const lastActive = new Date(data.lastActive);
+            const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+            return hoursDiff <= 72;
+          })
+        );
+    
+        setUnknown(
+          healthData.filter((data) => {
+            if (!data.lastActive) return false;
+            const lastActive = new Date(data.lastActive);
+            const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+            return hoursDiff > 72 && hoursDiff <= 720;
+          })
+        );
+    
+        setRetired(
+          healthData.filter((data) => {
+            if (!data.lastActive) return false;
+            const lastActive = new Date(data.lastActive);
+            const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+            return hoursDiff > 720;
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchGroupName();
+    fetchAllDevices();
+  }, []);
+
+  const handleGroupChange = async (e) => {
+    setGroupID(e.target.value);
+    
+    try {
+      let response = await API.get(`/devices/fetch-by-group/${e.target.value}`);
+      let healthData = response.data.data;
+      
+      setCurrentPage(1);
+
+      const now = new Date();
+      
+      setHealthy(
+        healthData.filter((data) => {
+          if (!data.lastActive) return false;
+          const lastActive = new Date(data.lastActive);
+          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+          return hoursDiff <= 72;
+        })
+      );
+  
+      setUnknown(
+        healthData.filter((data) => {
+          if (!data.lastActive) return false;
+          const lastActive = new Date(data.lastActive);
+          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+          return hoursDiff > 72 && hoursDiff <= 720;
+        })
+      );
+  
+      setRetired(
+        healthData.filter((data) => {
+          if (!data.lastActive) return false;
+          const lastActive = new Date(data.lastActive);
+          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+          return hoursDiff > 720;
+        })
+      );
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  const handleDelete = async (macAddress) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // setLoading(true);
+          let response = await API.delete(`/policy/delete-device/${macAddress}`);
+          setRetired(retired.filter(prev => prev.macAddress!==macAddress));
+        } catch (error) {
+          console.log(error);
+        } finally {
+          // setLoading(false);
+        }
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your device has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+  }
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  }
+
+  const handleTabChange = (index) => {
+    setCurrentTab(index);
+    setCurrentPage(1);
+  }
+
+  const getPaginatedData = (data) => {
+    return data.slice(
+      (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+    );
+  }
+
+  let tabData = [healthy, unknown, retired];
+  let currentPageData = tabData[currentTab];
+  let pageCount = Math.ceil(currentPageData.length / itemsPerPage);
+  
+  return (
+    <div className='mainPages'>
+      {/* {loading && <div className="loader">
+        <HashLoader color="#6F5FE7"/>
+      </div>} */}
+      <div className="mainPages-header">
+        <select name="group" id="group" className='selectDropdown' value={groupID} onChange={handleGroupChange} required>
+          <option value="">Select Group</option>
+          {groupData.map((data, index) => (
+            <option key={index} value={data.groupID}>{data.groupName}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="healthStatusTable">
+        <Tabs selectedIndex={currentTab} onSelect={handleTabChange}>
+          <TabList>
+            <Tab>Healthy</Tab>
+            <Tab>Unknown</Tab>
+            <Tab>Retired</Tab>
+          </TabList>
+          <TabPanel>
+            <div className="groupTableHealthContainer">
+              <table className='groupTable'>
+                <thead>
+                  <tr>
+                    <th className='groupTable-heading'>MAC Address</th>
+                    <th className='groupTable-heading'>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getPaginatedData(healthy).length > 0 ? (
+                    getPaginatedData(healthy).map((data, index) => (
+                      <tr key={index}>
+                        <td className='groupTable-data'>{data.macAddress}</td>
+                        <td className='groupTable-data'><i className="fa-solid fa-battery-full"></i></td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={2} className='empty-data-table'>No healthy device found.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </TabPanel>
+          <TabPanel>
+          <div className="groupTableHealthContainer">
+              <table className='groupTable'>
+                <thead>
+                  <tr>
+                    <th className='groupTable-heading'>MAC Address</th>
+                    <th className='groupTable-heading'>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getPaginatedData(unknown).length > 0 ? (
+                    getPaginatedData(unknown).map((data, index) => (
+                      <tr key={index}>
+                        <td className='groupTable-data'>{data.macAddress}</td>
+                        <td className='groupTable-data'><i className="fa-solid fa-battery-half"></i></td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={2} className='empty-data-table'>No unknown devices found.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </TabPanel>
+          <TabPanel>
+          <div className="groupTableHealthContainer">
+              <table className='groupTable'>
+                <thead>
+                  <tr>
+                    <th className='groupTable-heading'>MAC Address</th>
+                    <th className='groupTable-heading'>Status</th>
+                    <th  className='groupTable-heading'>De-allocate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getPaginatedData(retired).length > 0 ? (
+                    getPaginatedData(retired).map((data, index) => (
+                      <tr key={index}>
+                        <td className='groupTable-data'>{data.macAddress}</td>
+                        <td className='groupTable-data'><i className="fa-solid fa-battery-empty"></i></td>
+                        <td className='groupTable-data'><i className="fa-solid fa-trash" onClick={()=> handleDelete(data.macAddress)}></i></td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3} className='empty-data-table'>No retired devices found</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </TabPanel>
+        </Tabs>
+      </div>
+
+      <div className="pagination">
+        <Stack spacing={2}>
+          <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} color="primary" />
+        </Stack>
+      </div>
+    </div>
+  )
+}
+
+export default HealthStatus

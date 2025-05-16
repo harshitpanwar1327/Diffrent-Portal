@@ -1,0 +1,68 @@
+.authenticationPage{
+  height: 100vh;
+  width: 100vw;
+  background-image: url('/src/assets/login2.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.auth-formSection {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.authenticationForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 20rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px grey;
+  padding: 10px 30px;
+  background-color: #000000aa;
+  color: white;
+}
+
+.authenticationHeading {
+  font-size: 2rem;
+  margin: 1px;
+}
+
+.authenticationInput {
+  width: 20vw;
+  height: 2rem;
+  border: 1px solid white;
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 1rem;
+}
+
+.loader{
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.authButton {
+  width: 12vw;
+  height: 2.5rem;
+  border: none;
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #488af6;
+  color: white;
+}
+
+.authButton:hover {
+  background-color: rgb(28, 12, 247);
+}

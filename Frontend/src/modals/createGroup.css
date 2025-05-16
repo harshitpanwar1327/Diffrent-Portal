@@ -1,0 +1,55 @@
+.overlay{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.createGroupPopup{
+    width: 35vw;
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+}
+
+.fa-xmark{
+    font-size: 1.25rem;
+    padding: 2px;
+    border-radius: 5px;
+    width: 1rem;
+    margin: 0%;
+}
+
+.fa-xmark:hover{
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+}
+
+.groupInput{
+    width: 95%;
+    height: 2rem;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.createGroupButton{
+    border: none;
+    border-radius: 2px;
+    font-weight: 700;
+    color: white;
+    background-color: #1976d2;
+    padding: 10px 20px;
+    margin-top: 1rem;
+    cursor: pointer;
+    width: 8rem;
+}

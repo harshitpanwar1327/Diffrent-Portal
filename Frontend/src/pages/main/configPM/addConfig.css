@@ -1,0 +1,23 @@
+.stamp-details {
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+
+.qr-visibility {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+.whitelisting-application {
+    grid-column: 2/3;
+    grid-row: 1/3;
+    overflow-y: auto;
+}
+
+.stamp-details,
+.qr-visibility,
+.whitelisting-application {
+    padding: 0.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #0000001a;
+}

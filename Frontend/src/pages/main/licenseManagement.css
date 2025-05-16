@@ -1,0 +1,32 @@
+.licence-header{
+    padding: 10px 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.addLicenceInput{
+    width: 30%;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 4px 8px;
+}
+
+.add-licence-button{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4f46e5;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.groupTable-data.active{
+    color: green;
+    font-weight: 700;
+}
+
+.groupTable-data.expired{
+    color: red;
+    font-weight: 700;
+}
