@@ -132,7 +132,7 @@ const Dashboard = () => {
           },
         }
       }],
-      labels: licenseData.map(data => data.licenseKey.slice(0,12) || 'null')
+      labels: licenseData.map(data => data.licenseKey?.slice(0,12) || 'null')
     },
   }
 
