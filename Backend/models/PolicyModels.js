@@ -2,7 +2,6 @@ export class GroupDetails {
     constructor(groupData) {
         this.groupID = groupData.groupID;
         this.groupName = groupData.groupName;
-        this.product = groupData.product;
     }
 }
 
@@ -14,8 +13,5 @@ export class PolicyDetails {
         this.printing = policyData.printing;
         this.browserUpload = policyData.browserUpload;
         this.bluetooth = policyData.bluetooth;
-        this.monitoring = policyData.monitoring;
-        this.source = policyData.source;
-        this.applications = policyData.applications;
     }
 }

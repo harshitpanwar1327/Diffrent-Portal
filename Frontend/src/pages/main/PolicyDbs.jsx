@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './policyDbs.css'
 import CreateGroup from '../../modals/CreateGroup'
 import EditGroup from '../../modals/EditGroup'
-import {NavLink, useParams} from 'react-router-dom'
+import ManageDevices from '../../modals/ManageDevices'
+import {NavLink} from 'react-router-dom'
 import API from '../../util/Api'
 import Swal from 'sweetalert2'
 // import HashLoader from "react-spinners/HashLoader"
@@ -10,10 +11,10 @@ import Swal from 'sweetalert2'
 const PolicyDbs = () => {
   let [openGroupModal, setOpenGroupModal] = useState(false);
   let [openEditGroupModal, setOpenEditGroupModal] = useState(false);
+  const [openDevicesModal, setOpenDevicesModal] = useState(false);
   let [search, setSearch] = useState('');
   let [groupData, setGroupData] = useState([]);
   let [selectedGroupID, setSelectedGroupID] = useState('');
-  const { product } = useParams();
   // const [loading, setLoading] = useState(false);
 
   let filteredData = groupData.filter(data => data.groupName.toLowerCase().includes(search.toLowerCase()) || data.groupID.toLowerCase().includes(search.toLowerCase()));
@@ -21,7 +22,7 @@ const PolicyDbs = () => {
   useEffect(() => {
     let fetchGroupDetails = async () => {
       try {
-        let fetchData = await API.get(`/policy/fetch-by-product/${product}`);
+        let fetchData = await API.get(`/policy/fetch-group/`);
         setGroupData(fetchData.data);
       } catch (error) {
         console.log(error);
@@ -29,7 +30,12 @@ const PolicyDbs = () => {
     }
 
     fetchGroupDetails();
-  }, [product]);
+  }, []);
+
+  const handleManageDevice = (groupID) => {
+    setOpenDevicesModal(true);
+    setSelectedGroupID(groupID);
+  }
 
   const handleEditGroup = (groupID) => {
     setOpenEditGroupModal(true);
@@ -93,7 +99,9 @@ const PolicyDbs = () => {
                 <tr key={index}>
                   <td className='groupTable-data'>{data.groupID}</td>
                   <td className='groupTable-data'>{data.groupName}</td>
-                  <td className='groupTable-data'><NavLink to={`/add-devices/${data.groupID}`}><button className='tableButton deviceBtn'>Manage Devices</button></NavLink></td>
+                  <td className='groupTable-data'>
+                    <button className="tableButton deviceBtn" onClick={() => handleManageDevice(data.groupID)}>Manage Devices</button>
+                  </td>
                   <td className='groupTable-data'>
                     <NavLink to={`/add-policy/${data.groupID}`}><button className='tableButton policyBtn'>Manage Policy</button></NavLink>
                   </td>
@@ -110,6 +118,7 @@ const PolicyDbs = () => {
         </table>
       </div>
       {openEditGroupModal && <EditGroup setOpenModal={setOpenEditGroupModal} groupID={selectedGroupID} setGroupData={setGroupData}/>}
+      {openDevicesModal && <ManageDevices setOpenModal={setOpenDevicesModal} groupID={selectedGroupID}/>}
     </div>
   )
 }

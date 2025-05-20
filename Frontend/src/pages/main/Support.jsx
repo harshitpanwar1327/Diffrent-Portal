@@ -172,7 +172,7 @@ const Support = () => {
 
       <div className="support-row">
         <label className="support-label">Upload File: </label>
-        <input type="file" accept="image/*" className="screenshotInput" onChange={(e)=>setScreenshot(e.target.files[0])} ref={fileInputRef}/>
+        <input type="file" accept="image/*" className="screenshotInput" onChange={(e)=>setScreenshot(e.target.files[0])} ref={fileInputRef} required/>
       </div>
 
       <div className="support-row">

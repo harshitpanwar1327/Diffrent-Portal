@@ -9,3 +9,8 @@
     border-radius: 12px;
     border: 2px solid gray;
 }
+
+.manage-devices-table {
+    height: 100%;
+    overflow-y: auto;
+}

@@ -3,12 +3,10 @@ import './createGroup.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
 import {v4 as uuidv4} from 'uuid'
-import {useParams} from 'react-router-dom'
 // import HashLoader from "react-spinners/HashLoader"
 
 const CreateGroup = ({setOpenModal , setGroupData}) => {
   let [groupName , setGroupName] = useState('');
-  let {product} = useParams();
   // const [loading, setLoading] = useState(false);
 
   const handleCreate = async (e)=>{
@@ -16,8 +14,7 @@ const CreateGroup = ({setOpenModal , setGroupData}) => {
 
     let groupData = {
       groupID: uuidv4().slice(0,4),
-      groupName: groupName,
-      product: product
+      groupName: groupName
     }
 
     try {

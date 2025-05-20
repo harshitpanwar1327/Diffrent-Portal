@@ -8,14 +8,12 @@ const AddConfig = () => {
   let [openModal, setOpenModal] = useState(false);
   let {groupID} = useParams();
   let [configData, setConfigData] = useState([]);
-  // let [applicationData, setApplicationData] = useState([]);
 
   useEffect(()=>{
     const fetchConfigData = async () => {
       try {
         let response = await API.get(`/config/get-config/${groupID}/`);
         setConfigData(response.data.data);
-        // setApplicationData(configData.whitelist_processes ? configData.whitelist_processes.split(',') : []);
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +40,7 @@ const AddConfig = () => {
         {openModal && <MakeConfig setOpenModal={setOpenModal} setConfigData={setConfigData}/>}
       </div>
 
-      <div className="policy-body">
+      <div className="config-body">
         <div className="stamp-details">
           <table className="groupTable">
             <thead>
@@ -118,8 +116,7 @@ const AddConfig = () => {
               {configData.length > 0 && configData[0].whitelist_processes ? (
                 configData[0].whitelist_processes.split(',').map((data, index) => (
                   <tr key={index}>
-                    {/* <td className='groupTable-data'>{index + 1}</td> */}
-                    <td className="groupTable-data">{data}</td>
+                    <td className="groupTable-data application-name">{data}</td>
                   </tr>
                 ))
               ) : (

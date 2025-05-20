@@ -1,14 +1,14 @@
 import { GroupDetails, PolicyDetails } from "../models/PolicyModels.js";
-import { insertGroupData, getGroupData, getGroupByProduct, getGroupByID, updateGroupData, deleteGroupData, updatePolicyData, fetchPolicyData } from "../services/PolicyServices.js";
+import { insertGroupData, getGroupData, getGroupByID, updateGroupData, deleteGroupData, updatePolicyData, fetchPolicyData } from "../services/PolicyServices.js";
 
 export const groupDetail = async (req, res) => {
-    const { groupID, groupName, product } = req.body;
+    const { groupID, groupName } = req.body;
 
-    if (!groupID || !groupName || !product) {
+    if (!groupID || !groupName) {
         return res.status(400).json({ success: false, message: "All required fields must be filled." });
     }
 
-    const groupData = new GroupDetails({ groupID, groupName, product });
+    const groupData = new GroupDetails({ groupID, groupName });
 
     try {
         const response = await insertGroupData(groupData);
@@ -37,22 +37,6 @@ export const fetchGroupDetails = async (req, res) => {
     }
 }
 
-export const fetchGroupDetailsByProduct = async (req, res) => {
-    let {product} = req.params;
-    
-    try {
-        const result = await getGroupByProduct(product);
-        if (result.success) {
-            res.status(200).json(result.data);
-        } else {
-            res.status(400).json({ message: result.message });
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong!"})
-    }
-};
-
 export const fetchGroupDetailsByID = async (req, res) => {
     let {groupID} = req.params;
     
@@ -70,13 +54,13 @@ export const fetchGroupDetailsByID = async (req, res) => {
 }
 
 export const updateGroupDetails = async (req, res) => {
-    let {groupID, groupName, product} = req.body;
+    let {groupID, groupName} = req.body;
 
-    if (!groupID || !groupName || !product) {
+    if (!groupID || !groupName) {
         return res.status(400).json({success: false, message: "All fields not filled!"});
     }
 
-    const groupData = new GroupDetails({ groupID, groupName, product });
+    const groupData = new GroupDetails({ groupID, groupName });
 
     try {
         const response = await updateGroupData(groupData);
@@ -112,13 +96,9 @@ export const deleteGroup = async (req, res) => {
 }
 
 export const updatePolicy = async (req,res) => {
-    const {groupID, usb, mtp, printing, browserUpload, bluetooth, monitoring, source, applications} = req.body;
+    const {groupID, usb, mtp, printing, browserUpload, bluetooth} = req.body;
 
-    if (monitoring && !source) {
-        return res.status(400).json({ success: false, message: "Video Monitoring is ON but source not filled." });
-    }
-    
-    const policyData = new PolicyDetails({groupID, usb, mtp, printing, browserUpload, bluetooth, monitoring, source, applications});
+    const policyData = new PolicyDetails({groupID, usb, mtp, printing, browserUpload, bluetooth});
 
     try {
         const response = await updatePolicyData(policyData);

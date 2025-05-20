@@ -3,7 +3,7 @@ import './configPM.css'
 import CreateGroup from '../../modals/CreateGroup'
 import EditGroup from '../../modals/EditGroup'
 import ManageDevices from '../../modals/ManageDevices'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import API from '../../util/Api'
 import Pagination from '@mui/material/Pagination'
@@ -16,7 +16,6 @@ const ConfigPM = () => {
   const [search, setSearch] = useState('');
   const [groupData, setGroupData] = useState([]);
   const [selectedGroupID, setSelectedGroupID] = useState('');
-  const { product } = useParams();
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
 
@@ -29,7 +28,7 @@ const ConfigPM = () => {
   useEffect(() => {
     const getGroupData = async () => {
       try {
-        const response = await API.get(`/policy/fetch-by-product/${product}`);
+        const response = await API.get(`/policy/fetch-group/`);
         setGroupData(response.data);
       } catch (error) {
         console.log(error);
@@ -37,7 +36,7 @@ const ConfigPM = () => {
     };
 
     getGroupData();
-  }, [product]);
+  }, []);
 
   const handleManageDevice = (groupID) => {
     setOpenDevicesModal(true);
@@ -109,7 +108,7 @@ const ConfigPM = () => {
                   <td className="groupTable-data">{data.groupID}</td>
                   <td className="groupTable-data">{data.groupName}</td>
                   <td className="groupTable-data">
-                      <button className="tableButton deviceBtn" onClick={() => handleManageDevice(data.groupID)}>Manage Devices</button>
+                    <button className="tableButton deviceBtn" onClick={() => handleManageDevice(data.groupID)}>Manage Devices</button>
                   </td>
                   <td className="groupTable-data">
                     <NavLink to={`/add-config/${data.groupID}`}>

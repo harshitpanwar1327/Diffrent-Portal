@@ -43,32 +43,34 @@ const ManageDevices = ({setOpenModal, groupID}) => {
           <h4 className='groupID-heading'>MANAGE DEVICE- GroupID: {groupID}</h4>
           <input type="text" name='search' id='search' placeholder='&#128269; Search here' className='searchInput' value={search} onChange={(e)=>setSearch(e.target.value)}/>
         </div>
-        <table className='groupTable'>
-          <thead>
-            <tr>
-              <th className='groupTable-heading'>Device Name</th>
-              <th className='groupTable-heading'>MAC Address</th>
-              <th className='groupTable-heading'>IP Address</th>
-              <th className='groupTable-heading'>Allocate</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.length > 0 ? (
-              filteredData.map((data, index)=>(
-                <tr key={index}>
-                  <td className='groupTable-data'>{data.deviceName}</td>
-                  <td className='groupTable-data'>{data.macAddress}</td>
-                  <td className='groupTable-data'>{data.ipAddress}</td>
-                  <td className='groupTable-data'><input type="checkbox" name="groupDevice" id="groupDevice" checked={data.groupID ? true: false} onChange={() => handleGroupAllocation(data)}/></td>
-                </tr>
-              ))
-            ) : (
+        <div className="manage-devices-table">
+          <table className='groupTable'>
+            <thead>
               <tr>
-                <td colSpan={4} className='empty-data-table'>No devices available.</td>
+                <th className='groupTable-heading'>Device Name</th>
+                <th className='groupTable-heading'>MAC Address</th>
+                <th className='groupTable-heading'>IP Address</th>
+                <th className='groupTable-heading'>Allocate</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredData.length > 0 ? (
+                filteredData.map((data, index)=>(
+                  <tr key={index}>
+                    <td className='groupTable-data'>{data.deviceName}</td>
+                    <td className='groupTable-data'>{data.macAddress}</td>
+                    <td className='groupTable-data'>{data.ipAddress}</td>
+                    <td className='groupTable-data'><input type="checkbox" name="groupDevice" id="groupDevice" checked={data.groupID ? true: false} onChange={() => handleGroupAllocation(data)}/></td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className='empty-data-table'>No devices available.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )

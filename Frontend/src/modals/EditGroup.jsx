@@ -2,12 +2,10 @@ import {React , useEffect, useState}from 'react'
 import './editGroup.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
-import {useParams} from 'react-router-dom'
 // import HashLoader from "react-spinners/HashLoader"
 
 const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
     let [groupName , setGroupName] = useState('');
-    let {product} = useParams();
     // const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
@@ -21,15 +19,14 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
         }
       
         fetchGroupDetails();
-    }, [product]);
+    }, []);
 
     const handleEditGroup = async (e)=>{
         e.preventDefault();
 
         let groupData = {
             groupID: groupID,
-            groupName: groupName,
-            product: product
+            groupName: groupName
         }
 
         try {

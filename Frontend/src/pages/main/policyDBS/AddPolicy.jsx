@@ -6,11 +6,11 @@ import API from '../../../util/Api'
 // import HashLoader from "react-spinners/HashLoader"
 
 const policyFields = [
-  { key: 'usb', label: 'USB Data Transfer' },
-  { key: 'mtp', label: 'Media Transfer Protocol' },
-  { key: 'printing', label: 'Printing' },
-  { key: 'browserUpload', label: 'Browser Upload' },
-  { key: 'bluetooth', label: 'Bluetooth' },
+  { key: 'usb', label: 'USB Storage Access' },
+  { key: 'mtp', label: 'Media Transfer Protocol (MTP)' },
+  { key: 'printing', label: 'Printer Access' },
+  { key: 'browserUpload', label: 'File Upload via Browser' },
+  { key: 'bluetooth', label: 'Bluetooth Connectivity' },
 ];
 
 const AddPolicy = () => {
@@ -34,9 +34,9 @@ const AddPolicy = () => {
 
   let interpretPolicy = (value) => {
     if(value === true || value === 1) {
-      return "Blocked";
+      return "Active";
     } else if (value === false || value === 0) {
-      return "Allowed";
+      return "Inactive";
     } else {
       return "N/A"
     }
@@ -44,27 +44,29 @@ const AddPolicy = () => {
 
   return (
     <div className='mainPages'>
-        <div className='policy-header'>
-            <button onClick={() => setOpenModal(true)} className='createGroup-button'>Edit Policy</button>
-            {openModal && <MakePolicy setOpenModal={setOpenModal} setPolicy={setPolicy}/>}
-        </div>
+      <div className='policy-header'>
+        <button onClick={() => setOpenModal(true)} className='createGroup-button'>Edit Policy</button>
+        <h4 className='groupID-heading'>MANAGE CONFIG- GroupID: {groupID}</h4>
+        {openModal && <MakePolicy setOpenModal={setOpenModal} setPolicy={setPolicy}/>}
+      </div>
 
-        <div className="policy-body">
-            <div className="data-block-div">
-              <h3 className='policy-body-heading'>What is Blocked?</h3>
-              {policyFields.map(({key, label}, index) => (
-                <p key={index} className='policy-body-para'><b>{label}: </b>{interpretPolicy(policy[0]?.[key])}</p>
-              ))}
-            </div>
-            <div className="video-monitoring-div">
-              <h3 className='policy-body-heading'>Video Monitoring</h3>
-              <p className='policy-body-para'><b>Source Directory: </b>{policy[0]?.source || "N/A"}</p>
-            </div>
-            <div className="application-name-div">
-              <h3 className='policy-body-heading'>Application Validation</h3>
-              <p>{policy[0]?.applications || "No application configured."}</p>
-            </div>
-        </div>
+      <div className="policy-body">
+        <table className="groupTable">
+          <thead>
+            <tr>
+              <td colSpan={2} className="groupTable-heading">Restricted System Features</td>
+            </tr>
+          </thead>
+          <tbody>
+            {policyFields.map(({key, label}, index) => (
+              <tr key={index}>
+                <td className="groupTable-data">{label} :</td>
+                <td className={`groupTable-data ${policy[0]?.[key] ? 'active' : 'expired'}`}>{interpretPolicy(policy[0]?.[key])}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

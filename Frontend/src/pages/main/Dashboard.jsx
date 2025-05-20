@@ -119,7 +119,55 @@ const Dashboard = () => {
     series: licenseData.map((data) => data.count),
     options: {
       chart: {
+        width: 380,
         type: 'donut',
+        dropShadow: {
+          enabled: true,
+          color: '#111',
+          top: -1,
+          left: 3,
+          blur: 3,
+          opacity: 0.5
+        }
+      },
+      stroke: {
+        width: 0,
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                showAlways: true,
+                show: true
+              }
+            }
+          }
+        }
+      },
+      labels: licenseData.map(data => data.licenseKey?.slice(0,12) || 'null'),
+      dataLabels: {
+        dropShadow: {
+          blur: 3,
+          opacity: 1
+        }
+      },
+      fill: {
+      type: 'pattern',
+        opacity: 1,
+        pattern: {
+          enabled: true,
+          style: ['verticalLines', 'squares', 'horizontalLines', 'circles','slantedLines'],
+        },
+      },
+      states: {
+        hover: {
+          filter: 'none'
+        }
+      },
+      theme: {
+        palette: 'palette2'
       },
       responsive: [{
         breakpoint: 480,
@@ -129,10 +177,9 @@ const Dashboard = () => {
           },
           legend: {
             position: 'bottom'
-          },
+          }
         }
-      }],
-      labels: licenseData.map(data => data.licenseKey?.slice(0,12) || 'null')
+      }]
     },
   }
 
@@ -164,12 +211,24 @@ const Dashboard = () => {
 
         <div className="bar-graph">
           <p className='dashboard-subheading'>DEVICE DISTRIBUTION BY GROUP</p>
-          <Chart options={bar.options} series={bar.series} type="bar" height={350} />
+          {groupData.length > 0 ? (
+            <Chart options={bar.options} series={bar.series} type="bar" height={350} />
+          ) : (
+            <div className='no-data-message'>
+              <p>No data available</p>
+            </div>
+          )}
         </div>
 
         <div className="pie-chart">
           <p className='dashboard-subheading'>DEVICE DISTRIBUTION BY LICENSE</p>
-          <Chart key={licenseData.length} options={pie.options} series={pie.series} type="donut" height={1000}/>
+          {licenseData.length > 0 ? (
+            <Chart key={licenseData.length} options={pie.options} series={pie.series} type="donut" height={350}/>
+          ) : (
+            <div className='no-data-message'>
+              <p>No data available</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

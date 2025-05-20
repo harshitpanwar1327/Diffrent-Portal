@@ -15,6 +15,14 @@ export const insertDeviceData = async (deviceData) => {
 
             const config = configRow[0];
 
+            const [policyRow] = await pool.query(`SELECT * FROM policy WHERE groupID = ?`, [groupID]);
+
+            if (policyRow.length === 0) {
+                return { success: false, message: 'Policy not found' };
+            }
+
+            const policy = policyRow[0];
+
             const licenseData = decodeLicenseCodeWithToken(existingDevice[0].licenseKey);
             const expiryDate = licenseData.expiryDate;
             let currentDate = new Date().toISOString().split('T')[0];
@@ -38,11 +46,11 @@ export const insertDeviceData = async (deviceData) => {
                 [WhiteLists]
                 processes=${config.whiteLists || ''}
                 [DataBlock]
-                USB=true
-                MTP=true
-                Bluetooth=true
-                Print=true
-                BrowserUpload=true
+                USB=${policy.usb ? 'true' : 'false'}
+                MTP=${policy.mtp ? 'true' : 'false'}
+                Bluetooth=${policy.bluetooth ? 'true' : 'false'}
+                Print=${policy.printing ? 'true' : 'false'}
+                BrowserUpload=${policy.browserUpload ? 'true' : 'false'}
             `.trim();
 
             return { success: true, data: iniContent };

@@ -15,8 +15,8 @@ const NavigationBar = () => {
       <h2 className='portal-heading'>DIFꟻERENT</h2>
       <ul className= 'navigationList'>
         <NavLink to={'/dashboard'} className='navigationItem'><li><i className="fa-solid fa-house"></i> Data Security Posture</li></NavLink>
-        {/* <NavLink to={'/policy-dbs/DBS'}  className='navigationItem'><li><i className="fa-solid fa-shield-halved"></i> Device Security</li></NavLink> */}
-        <NavLink to={'/config-pm/ProtectionMark'}  className='navigationItem'><li><i className="fa-solid fa-shield"></i> Screen Security</li></NavLink>
+        <NavLink to={'/policy-dbs'}  className='navigationItem'><li><i className="fa-solid fa-shield-halved"></i> Device Security</li></NavLink>
+        <NavLink to={'/config-pm'}  className='navigationItem'><li><i className="fa-solid fa-shield"></i> Screen Security</li></NavLink>
         <NavLink to={'/devices'}  className='navigationItem'><li><i className="fa-solid fa-laptop"></i> Devices</li></NavLink>
         <NavLink to={'/health-status'} className='navigationItem'><li><i className="fa-solid fa-notes-medical"></i> Health Report</li></NavLink>
         <NavLink to={'/license-management'} className='navigationItem'><li><i className="fa-solid fa-receipt"></i> License Management</li></NavLink>

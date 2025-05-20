@@ -36,8 +36,8 @@ export const deviceCountData = async () => {
         let [totalDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices;`);
         let [healthyDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive >= NOW() - INTERVAL 3 DAY`);
         let [retiredDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive > NOW ()- INTERVAL 30 DAY`);
-        let [groupData] = await pool.query(`SELECT groupID, COUNT(*) AS count FROM devices GROUP BY groupID`);
-        let [licenseData] = await pool.query(`SELECT licenseKey, COUNT(*) AS count FROM devices GROUP BY licenseKey`);
+        let [groupData] = await pool.query(`SELECT groupID, COUNT(*) AS count FROM devices WHERE groupID IS NOT NULL GROUP BY groupID`);
+        let [licenseData] = await pool.query(`SELECT licenseKey, COUNT(*) AS count FROM devices WHERE licenseKey IS NOT NULL GROUP BY licenseKey`);
 
         return {success: true, data : {
             totalDevices,

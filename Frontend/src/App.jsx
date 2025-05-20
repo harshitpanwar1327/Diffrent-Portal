@@ -33,8 +33,8 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path='/health-status' element={<HealthStatus />} />
           <Route path='/license-management' element={<LicenseManagement />} />
-          <Route path='/config-pm/:product' element={<ConfigPM />} />
-          <Route path='/policy-dbs/:product' element={<PolicyDbs />} />
+          <Route path='/config-pm' element={<ConfigPM />} />
+          <Route path='/policy-dbs' element={<PolicyDbs />} />
           <Route path='/support' element={<Support />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/devices' element={<DeviceManagement />} />

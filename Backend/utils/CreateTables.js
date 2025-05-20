@@ -11,8 +11,7 @@ const users = `CREATE TABLE IF NOT EXISTS users (
 //groupDetails Table
 const groupDetails = `CREATE TABLE IF NOT EXISTS groupDetails (
     groupID VARCHAR(4) PRIMARY KEY,
-    groupName VARCHAR(50) NOT NULL,
-    product VARCHAR(30) NOT NULL
+    groupName VARCHAR(50) NOT NULL
 );`;
 
 //Devices Table
@@ -23,10 +22,8 @@ const devices = `CREATE TABLE IF NOT EXISTS Devices (
     macAddress VARCHAR(30) UNIQUE NOT NULL,
     ipAddress VARCHAR(45),
     groupID VARCHAR(4),
-    licenseKey VARCHAR(255) DEFAULT false,
-    lastActive DATETIME,
-    FOREIGN KEY (groupID) REFERENCES groupDetails(groupID)
-        ON DELETE CASCADE
+    licenseKey VARCHAR(255),
+    lastActive DATETIME
 );`;
 
 //Policy Table
@@ -37,9 +34,6 @@ const policyDetails = `CREATE TABLE IF NOT EXISTS Policy (
     printing BOOLEAN NOT NULL,
     browserUpload BOOLEAN NOT NULL,
     bluetooth BOOLEAN NOT NULL,
-    monitoring BOOLEAN NOT NULL,
-    source VARCHAR(255),
-    applications TEXT,
     FOREIGN KEY (groupID) REFERENCES groupDetails(groupID)
         ON DELETE CASCADE
 );`;
