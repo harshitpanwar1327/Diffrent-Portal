@@ -32,7 +32,7 @@ app.use(limiter);
 
 app.use("/api/users", UsersRoutes);
 
-app.use("/api/application", ApplicationRoutes);
+app.use("/api/config", ApplicationRoutes);
 
 app.use("/api/license", LicensesRoutes);
 

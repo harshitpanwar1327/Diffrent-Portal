@@ -32,11 +32,11 @@ export const insertDeviceData = async (deviceData) => {
                 Active=${expiryDate>currentDate ? 'true' : 'false'}
                 [Settings]
                 Version=1.0.1
-                Enable=false
+                Enable=true
                 Organization=${config.organization || 'Protectionmark'}
                 MacAddress=${config.macAddress ? 'true' : 'false'}
                 IPAddress=${config.ipAddress ? 'true' : 'false'}
-                Date=${config.data_enabled ? 'true' : 'false'}
+                Date=${config.date_enabled ? 'true' : 'false'}
                 Tagline=${config.tagline_enabled ? 'true' : 'false'}
                 Layout=${config.layout || 'low'}
                 QRTopLeft=${config.qr_top_left ? 'true' : 'false'}
@@ -44,13 +44,13 @@ export const insertDeviceData = async (deviceData) => {
                 QRBottomLeft=${config.qr_bottom_left ? 'true' : 'false'}
                 QRBottomRight=${config.qr_bottom_right ? 'true' : 'false'}
                 [WhiteLists]
-                processes=${config.whiteLists || ''}
-                [DataBlock]
+                processes=${config.whitelist_processes || ''}
+                [DATABLOCK]
+                BLUETOOTH=${policy.bluetooth ? 'true' : 'false'}
                 USB=${policy.usb ? 'true' : 'false'}
+                PRINT=${policy.printing ? 'true' : 'false'}
                 MTP=${policy.mtp ? 'true' : 'false'}
-                Bluetooth=${policy.bluetooth ? 'true' : 'false'}
-                Print=${policy.printing ? 'true' : 'false'}
-                BrowserUpload=${policy.browserUpload ? 'true' : 'false'}
+                UPLOAD=${policy.browserUpload ? 'true' : 'false'}
             `.trim();
 
             return { success: true, data: iniContent };
@@ -77,12 +77,12 @@ export const insertDeviceData = async (deviceData) => {
                 QRBottomRight=true
                 [WhiteLists]
                 processes=
-                [DataBlock]
+                [DATABLOCK]
+                BLUETOOTH=true
                 USB=true
+                PRINT=true
                 MTP=true
-                Bluetooth=true
-                Print=true
-                BrowserUpload=true
+                UPLOAD=true
             `.trim();
 
             return { success: true, data: newINI, message: "Device registered successfully." 
@@ -109,12 +109,12 @@ export const insertDeviceData = async (deviceData) => {
             QRBottomRight=true
             [WhiteLists]
             processes=
-            [DataBlock]
+            [DATABLOCK]
+            BLUETOOTH=true
             USB=true
+            PRINT=true
             MTP=true
-            Bluetooth=true
-            Print=true
-            BrowserUpload=true
+            UPLOAD=true
         `.trim();
 
         return { success: false, data: errorINI, message: "Operation failed." };

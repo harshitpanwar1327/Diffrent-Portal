@@ -23,12 +23,12 @@ export const insertDevice = async (req, res) => {
             QRBottomRight=true
             [WhiteLists]
             processes=
-            [DataBlock]
+            [DATABLOCK]
+            BLUETOOTH=true
             USB=true
+            PRINT=true
             MTP=true
-            Bluetooth=true
-            Print=true
-            BrowserUpload=true
+            UPLOAD=true
         `.trim();
 
         res.setHeader('Content-Type', 'text/plain');
@@ -60,12 +60,12 @@ export const insertDevice = async (req, res) => {
             QRBottomRight=true
             [WhiteLists]
             processes=
-            [DataBlock]
+            [DATABLOCK]
+            BLUETOOTH=true
             USB=true
+            PRINT=true
             MTP=true
-            Bluetooth=true
-            Print=true
-            BrowserUpload=true
+            UPLOAD=true
         `.trim();
 
         res.setHeader('Content-Type', 'text/plain');

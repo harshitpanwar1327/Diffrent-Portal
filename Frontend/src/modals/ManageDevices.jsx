@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import './manageDevices.css'
 import API from '../util/Api'
+import Pagination from '@mui/material/Pagination'
+import Stack from '@mui/material/Stack'
 
 const ManageDevices = ({setOpenModal, groupID}) => {
   let [search, setSearch] = useState('');
-  const [devicesData, setDevicesData] = useState([]);
+  let [devicesData, setDevicesData] = useState([]);
+  let [currentPage, setCurrentPage] = useState(1);
+  let itemsPerPage = 10;
 
   let filteredData = devicesData.filter(data => data?.deviceName?.toLowerCase().includes(search.toLowerCase()) || data?.macAddress?.toLowerCase().includes(search.toLowerCase()) || data?.ipAddress?.toLowerCase().includes(search.toLowerCase()));
+
+  let paginatedData = filteredData.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
 
   const fetchDevices = async () => {
     try {
@@ -35,6 +43,10 @@ const ManageDevices = ({setOpenModal, groupID}) => {
     }
   }
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  }
+
   return (
     <div className='overlay' onClick={() => setOpenModal(false)}>
       <div className="manageDevices-popup" onClick={(e) => e.stopPropagation()}>
@@ -54,8 +66,8 @@ const ManageDevices = ({setOpenModal, groupID}) => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.length > 0 ? (
-                filteredData.map((data, index)=>(
+              {paginatedData.length > 0 ? (
+                paginatedData.map((data, index)=>(
                   <tr key={index}>
                     <td className='groupTable-data'>{data.deviceName}</td>
                     <td className='groupTable-data'>{data.macAddress}</td>
@@ -71,6 +83,9 @@ const ManageDevices = ({setOpenModal, groupID}) => {
             </tbody>
           </table>
         </div>
+        <Stack spacing={2}>
+          <Pagination count={Math.ceil(filteredData.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
+        </Stack>
       </div>
     </div>
   )

@@ -3,6 +3,6 @@ import { insertDevice } from '../controllers/ApplicationControllers.js';
 
 const router = express.Router();
 
-router.post('/insert-device', insertDevice);
+router.post('/get_ini', insertDevice);
 
 export default router;
