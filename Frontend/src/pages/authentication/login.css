@@ -1,68 +1,87 @@
-.authenticationPage{
+.auth-page{
   height: 100vh;
   width: 100vw;
-  background-image: url('/src/assets/login2.jpg');
-  background-size: cover;
-  background-position: center;
-}
-
-.auth-formSection {
-  width: 50%;
-  height: 100%;
+  background: linear-gradient(to right, #eff0f9, #eaf8f2, #ffffff);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-.authenticationForm{
+.auth-form-section {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 5%;
+}
+
+.product-branding {
+  display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  height: 20rem;
-  border-radius: 10px;
-  box-shadow: 2px 2px 10px grey;
-  padding: 10px 30px;
-  background-color: #000000;
-  color: white;
+  color: #2d7bf6;
 }
 
-.authenticationHeading {
-  font-size: 2rem;
-  margin: 1px;
+.auth-form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.authenticationInput {
-  width: 20vw;
+.auth-heading {
+  margin: 0%;
+}
+
+.auth-subheading {
+  opacity: 0.8;
+  margin: 0% 0% 1.5rem 0%;
+}
+
+.auth-input {
   height: 2rem;
-  border: 1px solid white;
+  border: 1px solid #0000001a;
   border-radius: 8px;
   padding: 3px 8px;
   font-size: 1rem;
 }
 
-.loader{
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.authButton {
-  width: 12vw;
+.auth-button {
+  width: 100%;
   height: 2.5rem;
   border: none;
   border-radius: 8px;
   padding: 3px 8px;
   font-size: 1em;
   cursor: pointer;
-  background-color: #488af6;
+  background-color: rgba(0, 0, 0, 0.85);
   color: white;
 }
 
 .authButton:hover {
-  background-color: rgb(28, 12, 247);
+  background-color: rgb(0, 0, 0);
+}
+
+.auth-image {
+  background-color: #151314;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50vw;
+  margin: 8px;
+  border-radius: 12px 12px 12px 60px;
+  color: white;
+  text-align: center;
+}
+
+.auth-image-subheading {
+  width: 70%;
+  opacity: 0.8;
+  margin: 0%;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .auth-page {
+    flex-direction: column;
+    align-items: center;
+  }
 }

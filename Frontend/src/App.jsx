@@ -1,6 +1,5 @@
-import { useLocation } from 'react-router-dom';
-import './App.css';
-import NavigationBar from './components/NavigationBar';
+import './App.css'
+import NavigationBar from './components/NavigationBar'
 import Login from './pages/authentication/Login.jsx'
 import HealthStatus from './pages/main/HealthStatus.jsx'
 import LicenseManagement from './pages/main/LicenseManagement.jsx'
@@ -11,7 +10,7 @@ import Dashboard from './pages/main/Dashboard.jsx'
 import AddPolicy from './pages/main/policyDBS/AddPolicy.jsx'
 import AddConfig from './pages/main/configPM/AddConfig.jsx'
 import DeviceManagement from './pages/main/Devices.jsx'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoutes.jsx'
 
 function App() {
