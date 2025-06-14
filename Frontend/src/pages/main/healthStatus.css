@@ -1,5 +1,5 @@
-.selectDropdown{
-    width: 20vw;
+.select-dropdown{
+    width: 25%;
     padding: 8px 5px;
     border: 1px solid rgb(129, 129, 129);
     border-radius: 8px;
@@ -7,12 +7,12 @@
     color: rgb(82, 82, 82);
 }
 
-.selectDropdown:focus {
+.select-dropdown:focus {
     outline: none;
     box-shadow: 0 0 0 1px blue;
 }
 
-.healthStatusTable{
+.health-status-table{
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -24,7 +24,7 @@
     background-color: white;
 }
 
-.groupTableHealthContainer{
+.group-table-health-container{
     overflow: auto;
 }
 
@@ -41,4 +41,10 @@
 .fa-battery-empty{
     color: red;
     font-size: 1.5rem;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .select-dropdown {
+        width: 50%;
+    }
 }

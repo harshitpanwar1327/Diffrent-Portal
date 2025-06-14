@@ -82,41 +82,45 @@ const ConfigPM = () => {
   }
 
   return (
-    <div className="mainPages">
-      <div className="mainPages-header">
-        <input type="text" name="search" id="search" placeholder="&#128269; Search here" className="searchInput" value={search} onChange={(e) => setSearch(e.target.value)}/>
-        <button onClick={() => setOpenGroupModal(true)} className="createGroup-button">+ Create Group</button>
+    <div className="main-page">
+      <div className="main-page-header">
+        <input type="text" name="search" id="search" placeholder="&#128269; Search here" className="search-input" value={search} onChange={(e) => setSearch(e.target.value)}/>
+        <button onClick={() => setOpenGroupModal(true)} className="create-group-button">+ Create Group</button>
         {openGroupModal && <CreateGroup setOpenModal={setOpenGroupModal} setGroupData={setGroupData}/>}
       </div>
 
-      <div className="groupTableContainer">
-        <table className="groupTable">
+      <div className="group-table-container">
+        <table className="group-table">
           <thead>
             <tr>
-              <th className="groupTable-heading">Group ID</th>
-              <th className="groupTable-heading">Group Name</th>
-              <th className="groupTable-heading">Devices</th>
-              <th className="groupTable-heading">Config</th>
-              <th className="groupTable-heading">Edit</th>
-              <th className="groupTable-heading">Delete</th>
+              <th className="group-table-heading">Group ID</th>
+              <th className="group-table-heading">Group Name</th>
+              <th className="group-table-heading">Devices</th>
+              <th className='group-table-heading'>Policy</th>
+              <th className="group-table-heading">Config</th>
+              <th className="group-table-heading">Edit</th>
+              <th className="group-table-heading">Delete</th>
             </tr>
           </thead>
           <tbody>
             {paginatedData.length > 0 ? (
               paginatedData.map((data, index) => (
                 <tr key={index}>
-                  <td className="groupTable-data">{data.groupID}</td>
-                  <td className="groupTable-data">{data.groupName}</td>
-                  <td className="groupTable-data">
-                    <button className="tableButton deviceBtn" onClick={() => handleManageDevice(data.groupID)}>Manage Devices</button>
+                  <td className="group-table-data">{data.groupID}</td>
+                  <td className="group-table-data">{data.groupName}</td>
+                  <td className="group-table-data">
+                    <button className="table-button device-btn" onClick={() => handleManageDevice(data.groupID)}>Manage Devices</button>
                   </td>
-                  <td className="groupTable-data">
+                  <td className='group-table-data'>
+                    <NavLink to={`/add-policy/${data.groupID}`}><button className='table-button policy-btn'>Manage Policy</button></NavLink>
+                  </td>
+                  <td className="group-table-data">
                     <NavLink to={`/add-config/${data.groupID}`}>
-                      <button className="tableButton policyBtn">Manage Config</button>
+                      <button className="table-button policy-btn">Manage Config</button>
                     </NavLink>
                   </td>
-                  <td className="groupTable-data"><i className="fa-solid fa-pen-to-square" onClick={()=>handleEditGroup(data.groupID)}></i></td>
-                  <td className="groupTable-data"><i className="fa-solid fa-trash" onClick={()=>handleDeleteGroup(data.groupID)}></i></td>
+                  <td className="group-table-data"><i className="fa-solid fa-pen-to-square" onClick={()=>handleEditGroup(data.groupID)}></i></td>
+                  <td className="group-table-data"><i className="fa-solid fa-trash" onClick={()=>handleDeleteGroup(data.groupID)}></i></td>
                 </tr>
               ))
             ) : (

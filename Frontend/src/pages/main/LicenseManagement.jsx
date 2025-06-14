@@ -85,36 +85,36 @@ const LicenseManagement = () => {
   }
 
   return (
-    <div className='mainPages'>
+    <div className='main-page'>
       {/* {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
       </div>} */}
       <div className='licence-header'>
-        <input type="text" placeholder='Enter your licence key' className='addLicenceInput' value={licenseNo} onChange={(e) => setLicenseNo(e.target.value)}/>
+        <input type="text" placeholder='Enter your licence key' className='add-licence-input' value={licenseNo} onChange={(e) => setLicenseNo(e.target.value)}/>
         <button className='add-licence-button' onClick={handleAdd}>Activate License</button>
       </div>
 
-      <div className="groupTableContainer">
-        <table className='groupTable'>
+      <div className="group-table-container">
+        <table className='group-table'>
           <thead>
             <tr>
-              <th className='groupTable-heading'>Organisation Name</th>
-              <th className='groupTable-heading'>Total Devices</th>
-              <th className='groupTable-heading'>Purchase Date</th>
-              <th className='groupTable-heading'>Expiry Date</th>
-              <th className='groupTable-heading'>Status</th>
+              <th className='group-table-heading'>Organisation Name</th>
+              <th className='group-table-heading'>Total Devices</th>
+              <th className='group-table-heading'>Purchase Date</th>
+              <th className='group-table-heading'>Expiry Date</th>
+              <th className='group-table-heading'>Status</th>
             </tr>
           </thead>
           <tbody>
             {paginatedData.length > 0 ? (
               paginatedData.map((data, index) => (
                   <tr key={index}>
-                    <td className='groupTable-data'>{data.organization}</td>
-                    <td className='groupTable-data'>{data.totalDevices}</td>
-                    <td className='groupTable-data'>{data.purchaseDate.split('T')[0]}</td>
-                    <td className='groupTable-data'>{data.expiryDate.split('T')[0]}</td>
-                    <td className={`groupTable-data ${new Date(data.expiryDate) > new Date(getCurrentDate()) ? 'active' : 'expired'}`}>
-                      <li>{new Date(data.expiryDate) > new Date(getCurrentDate()) ? 'Active' : 'Expired'}</li>
+                    <td className='group-table-data'>{data.organization}</td>
+                    <td className='group-table-data'>{data.totalDevices}</td>
+                    <td className='group-table-data'>{data.purchaseDate.split('T')[0]}</td>
+                    <td className='group-table-data'>{data.expiryDate.split('T')[0]}</td>
+                    <td className={`group-table-data ${new Date(data.expiryDate) > new Date(getCurrentDate()) ? 'active' : 'expired'}`}>
+                      {new Date(data.expiryDate) > new Date(getCurrentDate()) ? 'Active' : 'Expired'}
                     </td>
                   </tr>
                 )

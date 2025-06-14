@@ -1,4 +1,4 @@
-.supportForm {
+.support-form {
     width: 40%;
     height: 90vh;
     background-color: white;
@@ -45,12 +45,11 @@
     border: 1px solid rgb(210, 97, 4);
 }
 
-.screenshotInput {
+.screenshot-input {
     width: 65%;
 }
 
-.submitSupportButton {
-    width: 35%;
+.submit-support-button {
     background-color: #4f46e5;
     color: white;
     border: none;
@@ -58,4 +57,11 @@
     margin: 0 auto;
     border-radius: 5px;
     cursor: pointer;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .support-form {
+        width: 85%;
+        margin: auto;
+    }
 }

@@ -162,12 +162,12 @@ const HealthStatus = () => {
   let pageCount = Math.ceil(currentPageData.length / itemsPerPage);
   
   return (
-    <div className='mainPages'>
+    <div className='main-page'>
       {/* {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
       </div>} */}
-      <div className="mainPages-header">
-        <select name="group" id="group" className='selectDropdown' value={groupID} onChange={handleGroupChange} required>
+      <div className="main-page-header">
+        <select name="group" id="group" className='select-dropdown' value={groupID} onChange={handleGroupChange} required>
           <option value="">Select Group</option>
           {groupData.map((data, index) => (
             <option key={index} value={data.groupID}>{data.groupName}</option>
@@ -175,7 +175,7 @@ const HealthStatus = () => {
         </select>
       </div>
 
-      <div className="healthStatusTable">
+      <div className="health-status-table">
         <Tabs selectedIndex={currentTab} onSelect={handleTabChange}>
           <TabList>
             <Tab>Healthy</Tab>
@@ -183,20 +183,20 @@ const HealthStatus = () => {
             <Tab>Retired</Tab>
           </TabList>
           <TabPanel>
-            <div className="groupTableHealthContainer">
-              <table className='groupTable'>
+            <div className="group-table-health-container">
+              <table className='group-table'>
                 <thead>
                   <tr>
-                    <th className='groupTable-heading'>MAC Address</th>
-                    <th className='groupTable-heading'>Status</th>
+                    <th className='group-table-heading'>MAC Address</th>
+                    <th className='group-table-heading'>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {getPaginatedData(healthy).length > 0 ? (
                     getPaginatedData(healthy).map((data, index) => (
                       <tr key={index}>
-                        <td className='groupTable-data'>{data.macAddress}</td>
-                        <td className='groupTable-data'><i className="fa-solid fa-battery-full"></i></td>
+                        <td className='group-table-data'>{data.macAddress}</td>
+                        <td className='group-table-data'><i className="fa-solid fa-battery-full"></i></td>
                       </tr>
                     ))
                   ) : (
@@ -209,20 +209,20 @@ const HealthStatus = () => {
             </div>
           </TabPanel>
           <TabPanel>
-          <div className="groupTableHealthContainer">
-              <table className='groupTable'>
+          <div className="group-table-health-container">
+              <table className='group-table'>
                 <thead>
                   <tr>
-                    <th className='groupTable-heading'>MAC Address</th>
-                    <th className='groupTable-heading'>Status</th>
+                    <th className='group-table-heading'>MAC Address</th>
+                    <th className='group-table-heading'>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {getPaginatedData(unknown).length > 0 ? (
                     getPaginatedData(unknown).map((data, index) => (
                       <tr key={index}>
-                        <td className='groupTable-data'>{data.macAddress}</td>
-                        <td className='groupTable-data'><i className="fa-solid fa-battery-half"></i></td>
+                        <td className='group-table-data'>{data.macAddress}</td>
+                        <td className='group-table-data'><i className="fa-solid fa-battery-half"></i></td>
                       </tr>
                     ))
                   ) : (
@@ -235,22 +235,22 @@ const HealthStatus = () => {
             </div>
           </TabPanel>
           <TabPanel>
-          <div className="groupTableHealthContainer">
-              <table className='groupTable'>
+          <div className="group-table-health-container">
+              <table className='group-table'>
                 <thead>
                   <tr>
-                    <th className='groupTable-heading'>MAC Address</th>
-                    <th className='groupTable-heading'>Status</th>
-                    <th  className='groupTable-heading'>De-allocate</th>
+                    <th className='group-table-heading'>MAC Address</th>
+                    <th className='group-table-heading'>Status</th>
+                    <th  className='group-table-heading'>De-allocate</th>
                   </tr>
                 </thead>
                 <tbody>
                   {getPaginatedData(retired).length > 0 ? (
                     getPaginatedData(retired).map((data, index) => (
                       <tr key={index}>
-                        <td className='groupTable-data'>{data.macAddress}</td>
-                        <td className='groupTable-data'><i className="fa-solid fa-battery-empty"></i></td>
-                        <td className='groupTable-data'><i className="fa-solid fa-trash" onClick={()=> handleDelete(data.macAddress)}></i></td>
+                        <td className='group-table-data'>{data.macAddress}</td>
+                        <td className='group-table-data'><i className="fa-solid fa-battery-empty"></i></td>
+                        <td className='group-table-data'><i className="fa-solid fa-trash" onClick={()=> handleDelete(data.macAddress)}></i></td>
                       </tr>
                     ))
                   ) : (

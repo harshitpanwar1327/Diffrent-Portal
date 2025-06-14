@@ -1,0 +1,120 @@
+.create-group-button{
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 8px;
+    color: white;
+    background-color: #4a3f99;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.search-input {
+    height: 2rem;
+    width: 25%;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 4px 8px;
+}
+
+.group-table-container{
+    flex-grow: 1;
+    overflow: auto;
+    border-radius: 5px;
+    margin: 0rem 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 10px #0000001a;
+    background-color: white;
+}
+
+.group-table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.group-table-heading{
+    text-align: left;
+    border-bottom: 1px solid rgb(67, 67, 67);
+    font-weight: 500;
+    padding: 0.5rem;
+    height: 2rem;
+    background-color: #f5f3ff;
+    color: #4a3f99;
+}
+
+.group-table-data{
+    text-align: left;
+    border-bottom: 1px solid rgb(132, 132, 132);
+    padding: 0.5rem;
+}
+
+.group-table tr:last-child .group-table-data {
+    border: none;
+}
+
+.group-table tr:hover {
+    background-color: #f8f7ff;
+}
+
+.table-button{
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: 2px solid;
+    cursor: pointer;
+}
+
+.device-btn{
+    background-color: rgb(37, 150, 190);
+    color: white;
+}
+
+.device-btn:hover{
+    background-color: white;
+    color: rgb(37, 150, 190);
+    border: 2px solid rgb(37, 150, 190);
+}
+
+.policy-btn{
+    background-color: green;
+    color: white;
+}
+
+.policy-btn:hover{
+    background-color: white;
+    color: green;
+    border: 2px solid green;
+}
+
+.fa-solid{
+    cursor: pointer;
+}
+
+.fa-pen-to-square {
+    color: rgba(0, 128, 0, 0.7);
+}
+
+.fa-pen-to-square:hover{
+    color: green;
+}
+
+.fa-trash {
+    color: rgba(255, 0, 0, 0.7);
+}
+
+.fa-trash:hover{
+    color: red;
+}
+
+.pagination {
+    margin: 10px;
+}
+
+.empty-data-table {
+    padding: 12px;
+    text-align: center;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .search-input {
+        width: 50%;
+    }
+}

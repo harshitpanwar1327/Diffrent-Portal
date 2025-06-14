@@ -37,13 +37,12 @@ const NavigationBar = () => {
       <div className={`navbar ${isOpen? 'show': 'hide'}`}>
         <h2 className='portal-heading'>DIFꟻRENT</h2>
         <ul className= 'nav-list'>
-          <NavLink to={'/dashboard'} className='nav-item'><li><i className="fa-solid fa-house"></i> Data Security Posture</li></NavLink>
-          <NavLink to={'/policy-dbs'}  className='nav-item'><li><i className="fa-solid fa-shield-halved"></i> Device Security</li></NavLink>
-          <NavLink to={'/config-pm'}  className='nav-item'><li><i className="fa-solid fa-shield"></i> Screen Security</li></NavLink>
-          <NavLink to={'/devices'}  className='nav-item'><li><i className="fa-solid fa-laptop"></i> Devices</li></NavLink>
-          <NavLink to={'/health-status'} className='nav-item'><li><i className="fa-solid fa-notes-medical"></i> Health Report</li></NavLink>
-          <NavLink to={'/license-management'} className='nav-item'><li><i className="fa-solid fa-receipt"></i> License Management</li></NavLink>
-          <NavLink to={'/support'} className='nav-item'><li><i className="fa-solid fa-headset"></i> Support</li></NavLink>
+          <NavLink to={'/dashboard'} className='nav-item'><li><i className="fa-solid fa-house"></i>Data Security Posture</li></NavLink>
+          <NavLink to={'/config-pm'}  className='nav-item'><li><i className="fa-solid fa-shield-halved"></i>Device/Screen Security</li></NavLink>
+          <NavLink to={'/devices'}  className='nav-item'><li><i className="fa-solid fa-laptop"></i>Devices</li></NavLink>
+          <NavLink to={'/health-status'} className='nav-item'><li><i className="fa-solid fa-notes-medical"></i>Health Report</li></NavLink>
+          <NavLink to={'/license-management'} className='nav-item'><li><i className="fa-solid fa-receipt"></i>License Management</li></NavLink>
+          <NavLink to={'/support'} className='nav-item'><li><i className="fa-solid fa-headset"></i>Support</li></NavLink>
         </ul>
         <div className="sidebar-footer">
           <p onClick={handleLogout} className="logout-button"><i className="fa-solid fa-right-from-bracket"></i>Logout</p>

@@ -33,7 +33,7 @@ const AddConfig = () => {
   }
 
   return (
-    <div className='mainPages'>
+    <div className='main-page'>
       <div className='policy-header'>
         <button onClick={() => setOpenModal(true)} className='createGroup-button'>Edit Config</button>
         <h4 className='groupID-heading'>MANAGE CONFIG- GroupID: {groupID}</h4>

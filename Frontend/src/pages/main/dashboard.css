@@ -1,4 +1,4 @@
-.mainPages {
+.main-page {
     height: 100vh;
     width: calc(100vw - 250px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -6,7 +6,7 @@
     flex-direction: column;
 }
 
-.mainPages-header {
+.main-page-header {
     display: flex;
     justify-content: space-between;
     padding: 10px 15px;
@@ -20,7 +20,7 @@
     border-bottom: 1px solid #e5e7eb;
 }
 
-.dashboardPage {
+.dashboard-page {
     width: calc(100% - 20px);
     height: calc(90% - 20px);
     gap: 20px;
@@ -31,7 +31,7 @@
     grid-template-rows: 190px 400px;
 }
 
-.dashboardPage>div {
+.dashboard-page>div {
     border-radius: 10px;
     box-shadow: 0px 0px 10px #0000001a;
 }
@@ -87,4 +87,12 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .main-page {
+        width: 85%;
+        height: calc(100vh - 4rem);
+        margin: 2rem auto;
+    }
 }

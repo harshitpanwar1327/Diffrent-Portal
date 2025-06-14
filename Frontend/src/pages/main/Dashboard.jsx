@@ -184,9 +184,9 @@ const Dashboard = () => {
   }
 
   return (
-    <div className='mainPages'>
+    <div className='main-page'>
       <h2 className='dashboard-heading'>DASHBOARD</h2>
-      <div className="dashboardPage">
+      <div className="dashboard-page">
         <div className="system-summary">
           <p className='dashboard-subheading'>SYSTEM SUMMARY</p>
           <div className="summary-boxes">

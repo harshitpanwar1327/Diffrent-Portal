@@ -4,7 +4,7 @@
     gap: 10px;
 }
 
-.addLicenceInput{
+.add-licence-input{
     width: 30%;
     border-radius: 5px;
     border: 1px solid black;
@@ -21,12 +21,18 @@
     cursor: pointer;
 }
 
-.groupTable-data.active{
+.group-table-data.active{
     color: green;
-    font-weight: 700;
+    font-weight: 600;
 }
 
-.groupTable-data.expired{
+.group-table-data.expired{
     color: red;
-    font-weight: 700;
+    font-weight: 600;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .add-licence-input {
+        width: 100%;
+    }
 }

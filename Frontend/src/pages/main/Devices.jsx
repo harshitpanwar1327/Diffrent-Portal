@@ -160,40 +160,40 @@ const Devices = () => {
   }
 
   return (
-    <div className='mainPages'>
+    <div className='main-page'>
       {/* {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
       </div>} */}
-      <div className='mainPages-header'>
-        <input type="text" name='search' id='search' placeholder='&#128269; Search here' className='searchInput' value={search} onChange={(e)=>setSearch(e.target.value)}/>
+      <div className='main-page-header'>
+        <input type="text" name='search' id='search' placeholder='&#128269; Search here' className='search-input' value={search} onChange={(e)=>setSearch(e.target.value)}/>
       </div>
-      <div className="groupTableContainer">
-        <table className='groupTable'>
+      <div className="group-table-container">
+        <table className='group-table'>
           <thead>
             <tr>
-              <th className='groupTable-heading'>Device Name</th>
-              <th className='groupTable-heading'>MAC Address</th>
-              <th className='groupTable-heading'>IP Address</th>
-              <th className='groupTable-heading'>Allocate License</th>
-              <th className='groupTable-heading'>Delete</th>
+              <th className='group-table-heading'>Device Name</th>
+              <th className='group-table-heading'>MAC Address</th>
+              <th className='group-table-heading'>IP Address</th>
+              <th className='group-table-heading'>Allocate License</th>
+              <th className='group-table-heading'>Delete</th>
             </tr>
           </thead>
           <tbody>
             {paginatedData.length > 0 ? (
               paginatedData.map((data, index) => (
                 <tr key={index}>
-                  <td className='groupTable-data'>{data.deviceName}</td>
-                  <td className='groupTable-data'>{data.macAddress}</td>
-                  <td className='groupTable-data'>{data.ipAddress}</td>
-                  <td className='groupTable-data'>
-                    <select name="license" id="license" className='licenseSelect' value={data.licenseKey || ""} onChange={(e) => handleLicenseAllocation(e.target.value, data.macAddress)}>
+                  <td className='group-table-data'>{data.deviceName}</td>
+                  <td className='group-table-data'>{data.macAddress}</td>
+                  <td className='group-table-data'>{data.ipAddress}</td>
+                  <td className='group-table-data'>
+                    <select name="license" id="license" className='license-select' value={data.licenseKey || ""} onChange={(e) => handleLicenseAllocation(e.target.value, data.macAddress)}>
                       <option value="">Select License</option>
                       {license.map((data) => (
                         <option key={data.licenseKey} value={data.licenseKey}>{data.licenseKey}</option>
                       ))}
                     </select>
                   </td>
-                  <td className='groupTable-data'><i className="fa-solid fa-trash" onClick={() => handleDeleteDevice(data.macAddress)}></i></td>
+                  <td className='group-table-data'><i className="fa-solid fa-trash" onClick={() => handleDeleteDevice(data.macAddress)}></i></td>
                 </tr>
               ))
             ) : (

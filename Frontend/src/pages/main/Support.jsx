@@ -130,7 +130,7 @@ const Support = () => {
   }
 
   return (
-    <form className="supportForm" onSubmit={handleSubmit}>
+    <form className="support-form" onSubmit={handleSubmit}>
       {/* {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
       </div>} */}
@@ -172,7 +172,7 @@ const Support = () => {
 
       <div className="support-row">
         <label className="support-label">Upload File: </label>
-        <input type="file" accept="image/*" className="screenshotInput" onChange={(e)=>setScreenshot(e.target.files[0])} ref={fileInputRef} required/>
+        <input type="file" accept="image/*" className="screenshot-input" onChange={(e)=>setScreenshot(e.target.files[0])} ref={fileInputRef} required/>
       </div>
 
       <div className="support-row">
@@ -184,7 +184,7 @@ const Support = () => {
           <option value="low">Low</option>            
         </select>
       </div>
-      <button className="submitSupportButton">Submit Support Request</button>
+      <button className="submit-support-button">Submit Support Request</button>
     </form>
   );
 };

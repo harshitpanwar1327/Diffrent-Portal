@@ -43,7 +43,7 @@ const AddPolicy = () => {
   }
 
   return (
-    <div className='mainPages'>
+    <div className='main-page'>
       <div className='policy-header'>
         <button onClick={() => setOpenModal(true)} className='createGroup-button'>Edit Policy</button>
         <h4 className='groupID-heading'>MANAGE CONFIG- GroupID: {groupID}</h4>
