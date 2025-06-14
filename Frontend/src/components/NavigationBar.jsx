@@ -38,7 +38,7 @@ const NavigationBar = () => {
         <h2 className='portal-heading'>DIFꟻRENT</h2>
         <ul className= 'nav-list'>
           <NavLink to={'/dashboard'} className='nav-item'><li><i className="fa-solid fa-house"></i>Data Security Posture</li></NavLink>
-          <NavLink to={'/config-pm'}  className='nav-item'><li><i className="fa-solid fa-shield-halved"></i>Device/Screen Security</li></NavLink>
+          <NavLink to={'/device-screen-security'}  className='nav-item'><li><i className="fa-solid fa-shield-halved"></i>Device/Screen Security</li></NavLink>
           <NavLink to={'/devices'}  className='nav-item'><li><i className="fa-solid fa-laptop"></i>Devices</li></NavLink>
           <NavLink to={'/health-status'} className='nav-item'><li><i className="fa-solid fa-notes-medical"></i>Health Report</li></NavLink>
           <NavLink to={'/license-management'} className='nav-item'><li><i className="fa-solid fa-receipt"></i>License Management</li></NavLink>

@@ -1,9 +1,9 @@
 .policy-header {
     display: flex;
-    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
+    gap: 10px;
 }
 
 .groupID-heading {
@@ -11,6 +11,8 @@
     margin: 0%;
 }
 
-.policy-body {
-    padding: 10px;
+@media (min-width: 320px) and (max-width: 767px) {
+    .policy-header {
+        flex-direction: column;
+    }
 }

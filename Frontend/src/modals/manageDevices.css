@@ -1,7 +1,7 @@
-.manageDevices-popup {
+.manage-devices-popup {
     display: flex;
     flex-direction: column;
-    width: 65vw;
+    width: 70vw;
     height: 85vh;
     background-color: white;
     padding: 10px 15px 15px;

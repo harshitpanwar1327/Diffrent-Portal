@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import "./makeConfig.css"
+import "./editConfig.css"
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
 import {useParams} from 'react-router-dom'
 
-const MakeConfig = ({setOpenModal, setConfigData}) => {
+const EditConfig = ({setOpenModal, setConfigData}) => {
   const {groupID} = useParams();
   const [organizationName, setOrganizationName] = useState('');
   const [macAddress, setMacAddress] = useState(false);
@@ -127,107 +127,107 @@ const MakeConfig = ({setOpenModal, setConfigData}) => {
 
   return (
     <div className='overlay' onClick={()=>setOpenModal(false)}>
-      <div className='makeConfig-container' onClick={(e)=>e.stopPropagation()}>
+      <div className='make-config-container' onClick={(e)=>e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
-        <h3 className='policyModal-heading'>Configuration Settings</h3>
-        <form className="configForm" onSubmit={handleConfigForm}>
-          <label htmlFor="companyName" className='configForm-label'>Organization</label>
-          <input type="text" name="companyName" id="companyName" placeholder='Organization' className='companyInput' value={organizationName} onChange={(e) => setOrganizationName(e.target.value)}/>
+        <h3 className='policy-modal-heading'>Configuration Settings</h3>
+        <form className="config-form" onSubmit={handleConfigForm}>
+          <label htmlFor="companyName" className='config-form-label'>Organization</label>
+          <input type="text" name="companyName" id="companyName" placeholder='Organization' className='company-input' value={organizationName} onChange={(e) => setOrganizationName(e.target.value)}/>
 
           <div className="watermark-settings">
-            <h4 className='configForm-label'>Watermark Setting</h4>
-            <div className="manageStamp">
-              <div className="manageStampCheckbox">
+            <h4 className='config-form-label'>Watermark Setting</h4>
+            <div className="manage-stamp">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="macAddress" id="macAddress" checked={macAddress} onChange={(e) => setMacAddress(e.target.checked)}/>
-                <label htmlFor="macAddress" className='configForm-label'>MAC Address</label>
+                <label htmlFor="macAddress" className='config-form-label'>MAC Address</label>
               </div>              
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="ipAddress" id="ipAddress" checked={ipAddress} onChange={(e) => setIpAddress(e.target.checked)}/>
-                <label htmlFor="ipAddress" className='configForm-label'>IP Address</label>
+                <label htmlFor="ipAddress" className='config-form-label'>IP Address</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="date" id="date" checked={date} onChange={(e) => setDate(e.target.checked)}/>
-                <label htmlFor="date" className='configForm-label'>Date</label>
+                <label htmlFor="date" className='config-form-label'>Date</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="tagline" id="tagline" checked={tagline} onChange={(e) => setTagline(e.target.checked)}/>
-                <label htmlFor="tagline" className='configForm-label'>Tagline</label>
+                <label htmlFor="tagline" className='config-form-label'>Tagline</label>
               </div>
             </div>
           </div>
 
-          <label htmlFor="layout" className='configForm-label'>Layout</label>
-          <select name="layout" id="layout" className='layoutDropdown' value={layout} onChange={(e) => setLayout(e.target.value)}>
+          <label htmlFor="layout" className='config-form-label'>Layout</label>
+          <select name="layout" id="layout" className='layout-dropdown' value={layout} onChange={(e) => setLayout(e.target.value)}>
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
           </select>
 
           <div className="watermark-settings">
-            <h4 className='configForm-label'>Manage QR</h4>
-            <div className="manageStamp">
-              <div className="manageStampCheckbox">
+            <h4 className='config-form-label'>Manage QR</h4>
+            <div className="manage-stamp">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="topLeft" id="topLeft" checked={topLeft} onChange={(e) => setTopLeft(e.target.checked)}/>
-                <label htmlFor="topLeft" className='configForm-label'>Top Left</label>
+                <label htmlFor="topLeft" className='config-form-label'>Top Left</label>
               </div>              
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="topRight" id="topRight" checked={topRight} onChange={(e) => setTopRight(e.target.checked)}/>
-                <label htmlFor="topRight" className='configForm-label'>Top Right</label>
+                <label htmlFor="topRight" className='config-form-label'>Top Right</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="bottomLeft" id="bottomLeft" checked={bottomLeft} onChange={(e) => setBottomLeft(e.target.checked)}/>
-                <label htmlFor="bottomLeft" className='configForm-label'>Bottom Left</label>
+                <label htmlFor="bottomLeft" className='config-form-label'>Bottom Left</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="bottomRight" id="bottomRight" checked={bottomRight} onChange={(e) => setBottomRight(e.target.checked)}/>
-                <label htmlFor="bottomRight" className='configForm-label'>Bottom Right</label>
+                <label htmlFor="bottomRight" className='config-form-label'>Bottom Right</label>
               </div>
             </div>
           </div>
 
           <div className="watermark-settings">
-            <h4 className='configForm-label'>WhiteListed Processes QR</h4>
-            <div className="whiteListedProcess">
-              <div className="manageStampCheckbox">
+            <h4 className='config-form-label'>WhiteListed Processes QR</h4>
+            <div className="white-listed-process">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="chrome" id="chrome" checked={chrome} onChange={(e) => setChrome(e.target.checked)}/>
-                <label htmlFor="chrome" className='configForm-label'>Chrome</label>
+                <label htmlFor="chrome" className='config-form-label'>Chrome</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="Edge" id="Edge" checked={edge} onChange={(e) => setEdge(e.target.checked)}/>
-                <label htmlFor="Edge" className='configForm-label'>Edge</label>
+                <label htmlFor="Edge" className='config-form-label'>Edge</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="firefox" id="firefox" checked={firefox} onChange={(e) => setFirefox(e.target.checked)}/>
-                <label htmlFor="firefox" className='configForm-label'>Firefox</label>
+                <label htmlFor="firefox" className='config-form-label'>Firefox</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="code" id="code" checked={code} onChange={(e) => setCode(e.target.checked)}/>
-                <label htmlFor="code" className='configForm-label'>Code</label>
+                <label htmlFor="code" className='config-form-label'>Code</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="safari" id="safari" checked={safari} onChange={(e) => setSafari(e.target.checked)}/>
-                <label htmlFor="safari" className='configForm-label'>Safari</label>
+                <label htmlFor="safari" className='config-form-label'>Safari</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="opera" id="opera" checked={opera} onChange={(e) => setOpera(e.target.checked)}/>
-                <label htmlFor="opera" className='configForm-label'>Opera</label>
+                <label htmlFor="opera" className='config-form-label'>Opera</label>
               </div>
-              <div className="manageStampCheckbox">
+              <div className="manage-stamp-checkbox">
                 <input type="checkbox" name="vscode" id="vscode" checked={vscode} onChange={(e) => setVscode(e.target.checked)}/>
-                <label htmlFor="vscode" className='configForm-label'>Vscode</label>
+                <label htmlFor="vscode" className='config-form-label'>Vscode</label>
               </div>
-              <div className="manageStampCheckbox">
-                <input type="checkbox" name="notepad" id="notepad" className='checkboxInputConfig' checked={notepad} onChange={(e) => setNotepad(e.target.checked)}/>
-                <label htmlFor="notepad" className='configForm-label'>Notepad</label>
+              <div className="manage-stamp-checkbox">
+                <input type="checkbox" name="notepad" id="notepad" className='checkbox-input-config' checked={notepad} onChange={(e) => setNotepad(e.target.checked)}/>
+                <label htmlFor="notepad" className='config-form-label'>Notepad</label>
               </div>
             </div>
           </div>
 
-          <button className='saveModalBtn'>Save Changes</button>
+          <button className='save-modal-btn'>Save Changes</button>
         </form>
       </div>
     </div> 
   )
 }
 
-export default MakeConfig
+export default EditConfig

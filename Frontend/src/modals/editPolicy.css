@@ -1,4 +1,4 @@
-.addPolicyPopup{
+.add-policy-popup{
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -8,7 +8,7 @@
     border: 2px solid gray;
 }
 
-.policyForm{
+.policy-form{
     display: flex;
     flex-direction: column;
 }

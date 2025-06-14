@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import './addPolicy.css'
-import MakePolicy from '../../../modals/MakePolicy'
+import './managePolicy.css'
+import EditPolicy from '../../../modals/EditPolicy'
 import {useParams} from 'react-router-dom'
 import API from '../../../util/Api'
 // import HashLoader from "react-spinners/HashLoader"
@@ -13,7 +13,7 @@ const policyFields = [
   { key: 'bluetooth', label: 'Bluetooth Connectivity' },
 ];
 
-const AddPolicy = () => {
+const ManagePolicy = () => {
   let [openModal, setOpenModal] = useState(false);
   let {groupID} = useParams();
   let [policy, setPolicy] = useState([]);
@@ -45,23 +45,23 @@ const AddPolicy = () => {
   return (
     <div className='main-page'>
       <div className='policy-header'>
-        <button onClick={() => setOpenModal(true)} className='createGroup-button'>Edit Policy</button>
         <h4 className='groupID-heading'>MANAGE CONFIG- GroupID: {groupID}</h4>
-        {openModal && <MakePolicy setOpenModal={setOpenModal} setPolicy={setPolicy}/>}
+        <button onClick={() => setOpenModal(true)} className='create-group-button'>Edit Policy</button>
+        {openModal && <EditPolicy setOpenModal={setOpenModal} setPolicy={setPolicy}/>}
       </div>
 
-      <div className="policy-body">
-        <table className="groupTable">
+      <div className="group-table-container">
+        <table className="group-table">
           <thead>
             <tr>
-              <td colSpan={2} className="groupTable-heading">Restricted System Features</td>
+              <td colSpan={2} className="group-table-heading">Restricted System Features</td>
             </tr>
           </thead>
           <tbody>
             {policyFields.map(({key, label}, index) => (
               <tr key={index}>
-                <td className="groupTable-data">{label} :</td>
-                <td className={`groupTable-data ${policy[0]?.[key] ? 'active' : 'expired'}`}>{interpretPolicy(policy[0]?.[key])}</td>
+                <td className="group-table-data">{label} :</td>
+                <td className={`group-table-data ${policy[0]?.[key] ? 'active' : 'expired'}`}>{interpretPolicy(policy[0]?.[key])}</td>
               </tr>
             ))}
           </tbody>
@@ -71,4 +71,4 @@ const AddPolicy = () => {
   )
 }
 
-export default AddPolicy
+export default ManagePolicy

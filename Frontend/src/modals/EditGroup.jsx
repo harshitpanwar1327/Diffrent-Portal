@@ -72,12 +72,12 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
         {/* {loading && <div className="loader">
             <HashLoader color="#6F5FE7"/>
         </div>} */}
-        <div className='createGroupPopup' onClick={(e) => e.stopPropagation()}>
+        <div className='create-group-popup' onClick={(e) => e.stopPropagation()}>
             <i onClick={()=>{setOpenModal(false)}} className="fa-solid fa-xmark"></i>
             <form onSubmit={handleEditGroup}>
                 <h3>Let's create a Group</h3>
-                <input type="text" name="groupName" id="groupName" placeholder='Group name' className='groupInput' value={groupName} onChange={(e)=> setGroupName(e.target.value)} required/>
-                <button className='createGroupButton'>Edit Group</button>
+                <input type="text" name="groupName" id="groupName" placeholder='Group name' className='group-input' value={groupName} onChange={(e)=> setGroupName(e.target.value)} required/>
+                <button className='create-group-button'>Edit Group</button>
             </form>
         </div>
         </div>

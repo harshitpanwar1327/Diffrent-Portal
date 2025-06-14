@@ -49,30 +49,30 @@ const ManageDevices = ({setOpenModal, groupID}) => {
 
   return (
     <div className='overlay' onClick={() => setOpenModal(false)}>
-      <div className="manageDevices-popup" onClick={(e) => e.stopPropagation()}>
+      <div className="manage-devices-popup" onClick={(e) => e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
-        <div className='mainPages-header'>
+        <div className='main-page-header'>
           <h4 className='groupID-heading'>MANAGE DEVICE- GroupID: {groupID}</h4>
-          <input type="text" name='search' id='search' placeholder='&#128269; Search here' className='searchInput' value={search} onChange={(e)=>setSearch(e.target.value)}/>
+          <input type="text" name='search' id='search' placeholder='&#128269; Search here' className='search-input' value={search} onChange={(e)=>setSearch(e.target.value)}/>
         </div>
         <div className="manage-devices-table">
-          <table className='groupTable'>
+          <table className='group-table'>
             <thead>
               <tr>
-                <th className='groupTable-heading'>Device Name</th>
-                <th className='groupTable-heading'>MAC Address</th>
-                <th className='groupTable-heading'>IP Address</th>
-                <th className='groupTable-heading'>Allocate</th>
+                <th className='group-table-heading'>Device Name</th>
+                <th className='group-table-heading'>MAC Address</th>
+                <th className='group-table-heading'>IP Address</th>
+                <th className='group-table-heading'>Allocate</th>
               </tr>
             </thead>
             <tbody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((data, index)=>(
                   <tr key={index}>
-                    <td className='groupTable-data'>{data.deviceName}</td>
-                    <td className='groupTable-data'>{data.macAddress}</td>
-                    <td className='groupTable-data'>{data.ipAddress}</td>
-                    <td className='groupTable-data'><input type="checkbox" name="groupDevice" id="groupDevice" checked={data.groupID ? true: false} onChange={() => handleGroupAllocation(data)}/></td>
+                    <td className='group-table-data'>{data.deviceName}</td>
+                    <td className='group-table-data'>{data.macAddress}</td>
+                    <td className='group-table-data'>{data.ipAddress}</td>
+                    <td className='group-table-data'><input type="checkbox" name="groupDevice" id="groupDevice" checked={data.groupID ? true: false} onChange={() => handleGroupAllocation(data)}/></td>
                   </tr>
                 ))
               ) : (

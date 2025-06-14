@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import './configPM.css'
+import './deviceScreenSecurity.css'
 import CreateGroup from '../../modals/CreateGroup'
 import EditGroup from '../../modals/EditGroup'
 import ManageDevices from '../../modals/ManageDevices'
@@ -9,7 +9,7 @@ import API from '../../util/Api'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 
-const ConfigPM = () => {
+const DeviceScreenSecurity = () => {
   const [openGroupModal, setOpenGroupModal] = useState(false);
   const [openEditGroupModal, setOpenEditGroupModal] = useState(false);
   const [openDevicesModal, setOpenDevicesModal] = useState(false);
@@ -112,10 +112,10 @@ const ConfigPM = () => {
                     <button className="table-button device-btn" onClick={() => handleManageDevice(data.groupID)}>Manage Devices</button>
                   </td>
                   <td className='group-table-data'>
-                    <NavLink to={`/add-policy/${data.groupID}`}><button className='table-button policy-btn'>Manage Policy</button></NavLink>
+                    <NavLink to={`/manage-policy/${data.groupID}`}><button className='table-button policy-btn'>Manage Policy</button></NavLink>
                   </td>
                   <td className="group-table-data">
-                    <NavLink to={`/add-config/${data.groupID}`}>
+                    <NavLink to={`/manage-config/${data.groupID}`}>
                       <button className="table-button policy-btn">Manage Config</button>
                     </NavLink>
                   </td>
@@ -143,4 +143,4 @@ const ConfigPM = () => {
   );
 };
 
-export default ConfigPM;
+export default DeviceScreenSecurity;

@@ -1,11 +1,11 @@
 import {React, useState, useEffect} from 'react'
-import './makePolicy.css'
+import './editPolicy.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
 import {useParams} from 'react-router-dom'
 // import HashLoader from "react-spinners/HashLoader"
 
-const MakePolicy = ({setOpenModal, setPolicy}) => {
+const EditPolicy = ({setOpenModal, setPolicy}) => {
   let [usb, setUsb] = useState(false);
   let [mtp, setMtp] = useState(false);
   let [printing, setPrinting] = useState(false);
@@ -93,9 +93,9 @@ const MakePolicy = ({setOpenModal, setPolicy}) => {
       {/* {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
       </div>} */}
-      <div className='addPolicyPopup' onClick={(e)=>e.stopPropagation()}>
+      <div className='add-policy-popup' onClick={(e)=>e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
-        <form className="policyForm" onSubmit={handlePolicy}>
+        <form className="policy-form" onSubmit={handlePolicy}>
           <h3 className='policy-heading'>Restrict System Features</h3>
           <div className="policy-checkbox">
             <input type="checkbox" name="usb" id="usb" checked={usb} onChange={(e)=>setUsb(!usb)} />
@@ -117,11 +117,11 @@ const MakePolicy = ({setOpenModal, setPolicy}) => {
             <input type="checkbox" name="bluetooth" id="bluetooth" checked={bluetooth} onChange={(e)=>setBluetooth(!bluetooth)}/>
             <label htmlFor="bluetooth">Bluetooth Data Transfer</label>
           </div>
-          <button className="createGroupButton" type="submit">Save</button>
+          <button className="create-group-button" type="submit">Save</button>
         </form>
       </div>
     </div>
   )
 }
 
-export default MakePolicy
+export default EditPolicy

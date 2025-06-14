@@ -184,7 +184,7 @@ const Support = () => {
           <option value="low">Low</option>            
         </select>
       </div>
-      <button className="submit-support-button">Submit Support Request</button>
+      <button className="create-group-button">Submit Support Request</button>
     </form>
   );
 };

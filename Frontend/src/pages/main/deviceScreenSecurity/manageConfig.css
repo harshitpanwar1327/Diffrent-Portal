@@ -1,6 +1,6 @@
 .config-body {
     flex-grow: 1;
-    overflow-y: auto;
+    overflow: auto;
     padding: 0.5rem 1rem;
     display: grid;
     grid-template-rows: repeat(2, 1fr);
@@ -11,17 +11,20 @@
 .stamp-details {
     grid-column: 1/2;
     grid-row: 1/2;
+    background-color: white;
 }
 
 .qr-visibility {
     grid-column: 1/2;
     grid-row: 2/3;
+    background-color: white;
 }
 
 .whitelisting-application {
     grid-column: 2/3;
     grid-row: 1/3;
     overflow-y: auto;
+    background-color: white;
 }
 
 .stamp-details,
@@ -34,4 +37,25 @@
 
 .application-name::first-letter {
     text-transform: uppercase;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .config-body {
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-columns: 1fr;
+    }
+
+    .stamp-details {
+        grid-row: 1/2;
+    }
+
+    .qr-visibility {
+        grid-row: 2/3;
+    }
+
+    .whitelisting-application {
+        grid-row: 3/4;
+        grid-column: 1/2;
+        height: 250px;
+    }
 }

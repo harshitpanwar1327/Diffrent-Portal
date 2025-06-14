@@ -8,10 +8,10 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.3);
+    z-index: 101;
 }
 
-.createGroupPopup{
-    width: 35vw;
+.create-group-popup{
     background-color: white;
     color: black;
     display: flex;
@@ -32,7 +32,7 @@
     color: white;
 }
 
-.groupInput{
+.group-input{
     width: 95%;
     height: 2rem;
     border: 1px solid black;
@@ -42,14 +42,8 @@
     margin-bottom: 8px;
 }
 
-.createGroupButton{
-    border: none;
-    border-radius: 2px;
-    font-weight: 700;
-    color: white;
-    background-color: #1976d2;
-    padding: 10px 20px;
-    margin-top: 1rem;
-    cursor: pointer;
-    width: 8rem;
+@media (min-width: 320px) and (max-width: 767px) {
+    .create-group-popup {
+        width: 70vw;
+    }
 }

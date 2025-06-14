@@ -91,7 +91,7 @@ const LicenseManagement = () => {
       </div>} */}
       <div className='licence-header'>
         <input type="text" placeholder='Enter your licence key' className='add-licence-input' value={licenseNo} onChange={(e) => setLicenseNo(e.target.value)}/>
-        <button className='add-licence-button' onClick={handleAdd}>Activate License</button>
+        <button className='create-group-button' onClick={handleAdd}>Activate License</button>
       </div>
 
       <div className="group-table-container">
