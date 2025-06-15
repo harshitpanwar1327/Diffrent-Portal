@@ -10,8 +10,8 @@ export const fetchDevices = async (req, res) => {
             res.status(400).json(result);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went Wrong! Devices not added."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
@@ -30,8 +30,8 @@ export const fetchDevicesGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -50,8 +50,8 @@ export const manageDevicesGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -64,8 +64,8 @@ export const fetchDeviceCount = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -86,8 +86,8 @@ export const updateDeviceGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."})
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -106,8 +106,8 @@ export const updateLicense = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."})
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -121,8 +121,8 @@ export const deallocateLicense = async (req, res) => {
     try {
         let response = await deallocateLicenseFromDevice(macAddress);
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -141,7 +141,7 @@ export const deleteDevice = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

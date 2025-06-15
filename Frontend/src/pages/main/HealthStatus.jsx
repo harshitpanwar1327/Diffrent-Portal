@@ -19,56 +19,60 @@ const HealthStatus = () => {
   let itemsPerPage = 10;
   // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchGroupName = async () => {
-      try {
-        let fetchGroup = await API.get('/policy/fetch-group/');
-        setGroupData(fetchGroup.data);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchGroupName = async () => {
+    try {
+      let fetchGroup = await API.get('/policy/fetch-group/');
+      setGroupData(fetchGroup.data);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
+  }
 
-    const fetchAllDevices = async () => {
-      try {
-        let response = await API.get("/devices/fetch-devices/");
-        let healthData = response.data.data;
-        
-        const now = new Date();
+  const fetchAllDevices = async () => {
+    try {
+      let response = await API.get("/devices/fetch-devices/");
+      let healthData = response.data.data;
       
-        setHealthy(
-          healthData.filter((data) => {
-            if (!data.lastActive) return false;
-            const lastActive = new Date(data.lastActive);
-            const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-            return hoursDiff <= 72;
-          })
-        );
+      const now = new Date();
     
-        setUnknown(
-          healthData.filter((data) => {
-            if (!data.lastActive) return false;
-            const lastActive = new Date(data.lastActive);
-            const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-            return hoursDiff > 72 && hoursDiff <= 720;
-          })
-        );
-    
-        setRetired(
-          healthData.filter((data) => {
-            if (!data.lastActive) return false;
-            const lastActive = new Date(data.lastActive);
-            const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-            return hoursDiff > 720;
-          })
-        );
-      } catch (error) {
-        console.log(error);
-      }
+      setHealthy(
+        healthData.filter((data) => {
+          if (!data.lastActive) return false;
+          const lastActive = new Date(data.lastActive);
+          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+          return hoursDiff <= 72;
+        })
+      );
+  
+      setUnknown(
+        healthData.filter((data) => {
+          if (!data.lastActive) return false;
+          const lastActive = new Date(data.lastActive);
+          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+          return hoursDiff > 72 && hoursDiff <= 720;
+        })
+      );
+  
+      setRetired(
+        healthData.filter((data) => {
+          if (!data.lastActive) return false;
+          const lastActive = new Date(data.lastActive);
+          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
+          return hoursDiff > 720;
+        })
+      );
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
+  }
 
-    fetchGroupName();
-    fetchAllDevices();
+  useEffect(() => {
+    try {
+      fetchGroupName();
+      fetchAllDevices();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const handleGroupChange = async (e) => {
@@ -110,6 +114,17 @@ const HealthStatus = () => {
       );
     } catch(error) {
       console.log(error);
+      toast.error(error.response.data.message || 'Group not selected!', {
+        position: "top-center",
+        autoClose: 1800,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 
@@ -130,6 +145,17 @@ const HealthStatus = () => {
           setRetired(retired.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
           console.log(error);
+          toast.error(error.response.data.message || 'Device not deleted!', {
+            position: "top-center",
+            autoClose: 1800,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
         } finally {
           // setLoading(false);
         }

@@ -23,27 +23,31 @@ const Devices = () => {
     (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
   );
 
-  useEffect(() => {
-    const getDevices = async () => {
-      try {
-        let response = await API.get("/devices/fetch-devices/");
-        setDevicesData(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
+  const getDevices = async () => {
+    try {
+      let response = await API.get("/devices/fetch-devices/");
+      setDevicesData(response.data.data);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
+  }
 
-    const getLicense = async () => {
-      try {
-        let response = await API.get("/license/get-license/");
-        setLicense(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
+  const getLicense = async () => {
+    try {
+      let response = await API.get("/license/get-license/");
+      setLicense(response.data.data);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
-    
-    getDevices();
-    getLicense();
+  }
+
+  useEffect(() => {
+    try {
+      getDevices();
+      getLicense();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const deviceCount = (licenseKey) => {
@@ -110,7 +114,8 @@ const Devices = () => {
         transition: Bounce
       });
     } catch (error) {
-      toast.error('Something went Wrong! Please try again...', {
+      console.log(error);
+      toast.error(error.response.data.message || 'License not activated!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,
@@ -143,6 +148,17 @@ const Devices = () => {
           setDevicesData(devicesData.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
           console.log(error);
+          toast.error(error.response.data.message || 'Device not deleted!', {
+            position: "top-center",
+            autoClose: 1800,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
         } finally {
           // setLoading(false);
         }

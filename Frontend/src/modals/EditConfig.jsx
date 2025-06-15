@@ -26,17 +26,21 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
   const [notepad, setNotepad] = useState(false);
   const [prevData, setPrevData] = useState([]);
 
-  useEffect(()=>{
-    const fetchConfigData = async () => {
-      try {
-        let response = await API.get(`/config/get-config/${groupID}/`);
-        setPrevData([response.data.data[0]]);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchConfigData = async () => {
+    try {
+      let response = await API.get(`/config/get-config/${groupID}/`);
+      setPrevData([response.data.data[0]]);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
+  }
 
-    fetchConfigData();
+  useEffect(()=>{
+    try {
+      fetchConfigData();
+    } catch (error) {
+      console.log(error);
+    }
   }, [groupID]);
 
   useEffect(()=>{
@@ -97,7 +101,7 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
 
       setConfigData([configData]);
 
-      toast.success('Policy Saved Successfully!', {
+      toast.success('Configuration Saved Successfully!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,
@@ -109,7 +113,7 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
         transition: Bounce
       });
     } catch (error) {
-      toast.error('Something went Wrong! Please try again...', {
+      toast.error(error.response.data.message || 'Configuration not saved!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,

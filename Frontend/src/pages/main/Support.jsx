@@ -49,16 +49,21 @@ const Support = () => {
   let fileInputRef = useRef();
   // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    let fetchGroupName = async () => {
-      try {
-        let fetchGroup = await API.get('/policy/fetch-group/');
-        setGroupData(fetchGroup.data);
-      } catch (error) {
-        console.log(error);
-      }
+  let fetchGroupName = async () => {
+    try {
+      let fetchGroup = await API.get('/policy/fetch-group/');
+      setGroupData(fetchGroup.data);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
-    fetchGroupName()
+  }
+
+  useEffect(() => {
+    try {
+      fetchGroupName();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const handleGroupChange = async (e) => {
@@ -70,6 +75,17 @@ const Support = () => {
       setDeviceData(response.data.data);
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message || 'Group not selected!', {
+        position: "top-center",
+        autoClose: 1800,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 
@@ -113,7 +129,7 @@ const Support = () => {
         transition: Bounce
       });
     } catch (error) {
-      toast.error('Something went wrong! Please try again...', {
+      toast.error(error.response.data.message || 'Ticket not raised!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,

@@ -22,7 +22,7 @@ const CreateGroup = ({setOpenModal , setGroupData}) => {
       let response = await API.post("/policy/add-group/", groupData);
       setGroupData((prev) => [...prev, groupData]);
 
-      toast.success('Group Saved Successfully!', {
+      toast.success('Group Saved Successfully', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,
@@ -34,7 +34,7 @@ const CreateGroup = ({setOpenModal , setGroupData}) => {
         transition: Bounce
       });
     } catch (error) {
-      toast.error('Something went Wrong! Please try again...', {
+      toast.error(error.response.data.message || 'Group not saved!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,

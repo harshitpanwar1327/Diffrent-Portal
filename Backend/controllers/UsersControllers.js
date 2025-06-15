@@ -18,8 +18,8 @@ export const register = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -38,7 +38,7 @@ export const login = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

@@ -42,9 +42,9 @@ const Login = () => {
         transition: Bounce
       });
       navigate("/dashboard");
-    }catch(err){
-      console.log(err);
-      toast.error('Something went wrong! Please try again.', {
+    }catch(error){
+      console.log(error);
+      toast.error(error.response.data.message || 'Unable to login!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,
@@ -54,7 +54,7 @@ const Login = () => {
         progress: undefined,
         theme: "dark",
         transition: Bounce,
-        });
+      });
     }finally{
       setLoading(false);
     }

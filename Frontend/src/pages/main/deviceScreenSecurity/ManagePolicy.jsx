@@ -19,17 +19,21 @@ const ManagePolicy = () => {
   let [policy, setPolicy] = useState([]);
   // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchPolicyDetails = async () => {
-      try {
-        let response = await API.get(`/policy/fetch-policy/${groupID}`);
-        setPolicy(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchPolicyDetails = async () => {
+    try {
+      let response = await API.get(`/policy/fetch-policy/${groupID}`);
+      setPolicy(response.data.data);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    fetchPolicyDetails();
+  useEffect(() => {
+    try {
+      fetchPolicyDetails();
+    } catch (error) {
+      console.log(error);
+    }
   }, [groupID]);
 
   let interpretPolicy = (value) => {

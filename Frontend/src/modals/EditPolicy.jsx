@@ -16,29 +16,37 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   let [prevData, setPrevData] = useState([]);
   // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchPolicyDetails = async () => {
-      try {
-        let response = await API.get(`/policy/fetch-policy/${groupID}`);
-        setPrevData(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchPolicyDetails = async () => {
+    try {
+      let response = await API.get(`/policy/fetch-policy/${groupID}`);
+      setPrevData(response.data.data);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
+  }
 
-    fetchPolicyDetails();
+  useEffect(() => {
+    try {
+      fetchPolicyDetails();
+    } catch (error) {
+      console.log(error);
+    }
   }, [groupID]);
 
-  useEffect(() => {
-    const fetchPrevData = () => {
-      setUsb(prevData[0]?.usb || false);
-      setMtp(prevData[0]?.mtp  || false);
-      setPrinting(prevData[0]?.printing  || false);
-      setBrowserUpload(prevData[0]?.browserUpload  || false);
-      setBluetooth(prevData[0]?.bluetooth || false);
-    }
+  const fetchPrevData = () => {
+    setUsb(prevData[0]?.usb || false);
+    setMtp(prevData[0]?.mtp  || false);
+    setPrinting(prevData[0]?.printing  || false);
+    setBrowserUpload(prevData[0]?.browserUpload  || false);
+    setBluetooth(prevData[0]?.bluetooth || false);
+  }
 
-    fetchPrevData();
+  useEffect(() => {
+    try {
+      fetchPrevData();
+    } catch (error) {
+      console.log(error);
+    }
   }, [prevData]);
 
   const handlePolicy = async (e) => {
@@ -71,7 +79,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
         transition: Bounce
       });
     } catch (error) {
-      toast.error('Something went Wrong! Please try again...', {
+      toast.error(error.response.data.message || 'Policy not saved!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,

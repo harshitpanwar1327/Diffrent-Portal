@@ -19,7 +19,7 @@ export const configDetails = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Configuration not saved! Please try again." });
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
@@ -38,7 +38,7 @@ export const fetchConfig = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."})   
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" }); 
     }
 }

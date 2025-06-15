@@ -38,8 +38,30 @@ const ManageDevices = ({setOpenModal, groupID}) => {
     try {
       let response = await API.put(`/devices/update-group/`, groupInfo);
       fetchDevices();
+      toast.success('Device added to the group successfully', {
+        position: "top-center",
+        autoClose: 1800,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message || 'Group not allocated!', {
+        position: "top-center",
+        autoClose: 1800,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
   }
 

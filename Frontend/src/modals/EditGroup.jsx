@@ -8,17 +8,21 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
     let [groupName , setGroupName] = useState('');
     // const [loading, setLoading] = useState(false);
 
-    useEffect(()=>{
-        let fetchGroupDetails = async () => {
-            try {
-              let fetchData = await API.get(`/policy/fetch-by-groupID/${groupID}`);
-              setGroupName(fetchData.data[0].groupName);
-            } catch (error) {
-              console.log(error);
-            }
+    let fetchGroupDetails = async () => {
+        try {
+            let fetchData = await API.get(`/policy/fetch-by-groupID/${groupID}`);
+            setGroupName(fetchData.data[0].groupName);
+        } catch (error) {
+            console.log(error.response.data.message || error);
         }
-      
-        fetchGroupDetails();
+    }
+
+    useEffect(()=>{
+        try {
+            fetchGroupDetails();
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     const handleEditGroup = async (e)=>{
@@ -38,7 +42,7 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
                 return [...rem, groupData];
             });
 
-            toast.success('Group Saved Successfully!', {
+            toast.success('Group Edited Successfully', {
                 position: "top-center",
                 autoClose: 1800,
                 hideProgressBar: false,
@@ -50,7 +54,7 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
                 transition: Bounce
             });
         } catch (error) {
-            toast.error('Something went Wrong! Please try again...', {
+            toast.error(error.response.data.message || 'Group not edited!', {
                 position: "top-center",
                 autoClose: 1800,
                 hideProgressBar: false,

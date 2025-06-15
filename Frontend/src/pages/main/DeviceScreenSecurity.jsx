@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import API from '../../util/Api'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
+import {toast, Bounce} from 'react-toastify'
 
 const DeviceScreenSecurity = () => {
   const [openGroupModal, setOpenGroupModal] = useState(false);
@@ -24,18 +25,22 @@ const DeviceScreenSecurity = () => {
   let paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
   );
+
+  const getGroupData = async () => {
+    try {
+      const response = await API.get(`/policy/fetch-group/`);
+      setGroupData(response.data);
+    } catch (error) {
+      console.log(error.response.data.message || error);
+    }
+  };
   
   useEffect(() => {
-    const getGroupData = async () => {
-      try {
-        const response = await API.get(`/policy/fetch-group/`);
-        setGroupData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getGroupData();
+    try {
+      getGroupData();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const handleManageDevice = (groupID) => {
@@ -65,6 +70,17 @@ const DeviceScreenSecurity = () => {
           setGroupData(groupData.filter((prev) => prev.groupID !== groupID));
         } catch (error) {
           console.log(error);
+          toast.error(error.response.data.message || 'Group not deleted!', {
+            position: "top-center",
+            autoClose: 1800,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
         } finally {
           // setLoading(false);
         }

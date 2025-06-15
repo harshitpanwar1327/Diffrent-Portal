@@ -15,19 +15,23 @@ const LicenseManagement = () => {
   let itemsPerPage = 10;
   // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    let getLicenseData = async () => {
-      try {
-        let getData = await API.get('/license/get-license/');
-        let licenseKey = getData.data.data;
-        let decodedData = licenseKey.map(decodeLicenseCodeWithToken);
-        setLicenseData(decodedData);
-      } catch (error) {
-        console.log(error);
-      }
+  let getLicenseData = async () => {
+    try {
+      let getData = await API.get('/license/get-license/');
+      let licenseKey = getData.data.data;
+      let decodedData = licenseKey.map(decodeLicenseCodeWithToken);
+      setLicenseData(decodedData);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
+  }
 
-    getLicenseData();
+  useEffect(() => {
+    try {
+      getLicenseData();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   let paginatedData = licenseData.slice(
@@ -52,7 +56,7 @@ const LicenseManagement = () => {
       setLicenseData([...licenseData, decodeLicenseCodeWithToken(license)]);
       setLicenseNo('');
 
-      toast.success('License Added Successfully!', {
+      toast.success('License Added Successfully', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,
@@ -64,7 +68,7 @@ const LicenseManagement = () => {
         transition: Bounce
       });
     } catch (error) {
-      toast.error('Something went Wrong! Please try again...', {
+      toast.error(error.response.data.message || 'License not activated!', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,

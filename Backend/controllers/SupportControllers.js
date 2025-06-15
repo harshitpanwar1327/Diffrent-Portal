@@ -19,7 +19,7 @@ export const supportDetail = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving support ticket:", error);
-        return res.status(500).json({ success: false, message: "Ticket not saved! Please try again." });
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

@@ -18,8 +18,8 @@ export const groupDetail = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving group:", error);
-        return res.status(400).json({ success: false, message: "Group not saved! Please try again..." });
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
@@ -32,8 +32,8 @@ export const fetchGroupDetails = async (req, res) => {
             res.status(400).json({ message: result.message });
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong!"})
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -48,8 +48,8 @@ export const fetchGroupDetailsByID = async (req, res) => {
             res.status(400).json({ message: result.message });
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong!"})
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -70,8 +70,8 @@ export const updateGroupDetails = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving group:", error);
-        return res.status(400).json({ success: false, message: "Group not saved! Please try again..." });
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -90,8 +90,8 @@ export const deleteGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went Wrong! Please try again."});
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 
@@ -108,8 +108,8 @@ export const updatePolicy = async (req,res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving policy:", error);
-        return res.status(400).json({ success: false, message: "Policy not saved! Please try again..." });
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
@@ -128,7 +128,7 @@ export const fetchPolicyDetails = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({success: false, message: "Something went wrong! Please try again."})
+        console.error("Error saving configuration:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

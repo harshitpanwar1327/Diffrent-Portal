@@ -5,6 +5,99 @@ import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
 import Chart from 'react-apexcharts'
 import CountUp from 'react-countup'
 import API from '../../util/Api'
+import { ResponsivePie } from '@nivo/pie'
+import One from '../../assets/dashboard/One.png'
+import Two from '../../assets/dashboard/two.png'
+import Three from '../../assets/dashboard/Three.png'
+import Four from '../../assets/dashboard/Four.png'
+
+const MyPie = ({ data /* see data tab */ }) => (
+    <ResponsivePie /* or Pie for fixed dimensions */
+        data={data}
+        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+        innerRadius={0.5}
+        padAngle={2}
+        cornerRadius={5}
+        activeOuterRadiusOffset={8}
+        enableArcLinkLabels={false}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: 'color' }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+        defs={[
+            {
+                id: 'dots',
+                type: 'patternDots',
+                background: 'inherit',
+                color: 'rgba(255, 255, 255, 0.3)',
+                size: 4,
+                padding: 1,
+                stagger: true
+            },
+            {
+                id: 'lines',
+                type: 'patternLines',
+                background: 'inherit',
+                color: 'rgba(255, 255, 255, 0.3)',
+                rotation: -45,
+                lineWidth: 6,
+                spacing: 10
+            }
+        ]}
+        fill={[
+            {
+                match: {
+                    id: 'ruby'
+                },
+                id: 'dots'
+            },
+            {
+                match: {
+                    id: 'c'
+                },
+                id: 'dots'
+            },
+            {
+                match: {
+                    id: 'go'
+                },
+                id: 'dots'
+            },
+            {
+                match: {
+                    id: 'python'
+                },
+                id: 'dots'
+            },
+            {
+                match: {
+                    id: 'scala'
+                },
+                id: 'lines'
+            },
+            {
+                match: {
+                    id: 'lisp'
+                },
+                id: 'lines'
+            },
+            {
+                match: {
+                    id: 'elixir'
+                },
+                id: 'lines'
+            },
+            {
+                match: {
+                    id: 'javascript'
+                },
+                id: 'lines'
+            }
+        ]}
+    />
+)
 
 const Dashboard = () => {
   let [totalDevices, setTotalDevices] = useState(0);
@@ -14,36 +107,40 @@ const Dashboard = () => {
   let [groupData, setGroupData] = useState([]);
   let [licenseData, setLicenseData] = useState([]);
 
+  const fetchDeviceCount = async () => {
+    try {
+      let response = await API.get("/devices/device-count/");
+      setTotalDevices(response.data.data?.totalDevices[0].count);
+      setHealthyDevices(response.data.data?.healthyDevices[0].count);
+      setRetiredDevices(response.data.data?.retiredDevices[0].count);
+      setGroupData(response.data.data?.groupData);
+      setLicenseData(response.data.data?.licenseData);
+    } catch (error) {
+      console.log(error.response.data.message || error);
+    }
+  }
+
+  const fetchLicenseCount = async () => {
+    try {
+      let response = await API.get("/license/get-license/");
+      let licenseKeys = response.data.data;
+      setActiveLicense(licenseKeys.filter((data) => {
+        let licenseData = decodeLicenseCodeWithToken({licenseKey: data.licenseKey});
+        let expiryDate = licenseData.expiryDate;
+        return new Date(expiryDate) > new Date(getCurrentDate());
+      }).length);
+    } catch (error) {
+      console.log(error.response.data.message || error);
+    }
+  }
+
   useEffect(() => {
-    const fetchDeviceCount = async () => {
-      try {
-        let response = await API.get("/devices/device-count/");
-        setTotalDevices(response.data.data?.totalDevices[0].count);
-        setHealthyDevices(response.data.data?.healthyDevices[0].count);
-        setRetiredDevices(response.data.data?.retiredDevices[0].count);
-        setGroupData(response.data.data?.groupData);
-        setLicenseData(response.data.data?.licenseData);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      fetchDeviceCount();
+      fetchLicenseCount();
+    } catch (error) {
+      console.log(error);
     }
-
-    const fetchLicenseCount = async () => {
-      try {
-        let response = await API.get("/license/get-license/");
-        let licenseKeys = response.data.data;
-        setActiveLicense(licenseKeys.filter((data) => {
-          let licenseData = decodeLicenseCodeWithToken({licenseKey: data.licenseKey});
-          let expiryDate = licenseData.expiryDate;
-          return new Date(expiryDate) > new Date(getCurrentDate());
-        }).length);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchDeviceCount();
-    fetchLicenseCount();
   }, [])
 
   //Bar chart
@@ -114,75 +211,6 @@ const Dashboard = () => {
     },
   }
 
-  //Pie Chart
-  const pie = {
-    series: licenseData.map((data) => data.count),
-    options: {
-      chart: {
-        width: 380,
-        type: 'donut',
-        dropShadow: {
-          enabled: true,
-          color: '#111',
-          top: -1,
-          left: 3,
-          blur: 3,
-          opacity: 0.5
-        }
-      },
-      stroke: {
-        width: 0,
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            labels: {
-              show: true,
-              total: {
-                showAlways: true,
-                show: true
-              }
-            }
-          }
-        }
-      },
-      labels: licenseData.map(data => data.licenseKey?.slice(0,12) || 'null'),
-      dataLabels: {
-        dropShadow: {
-          blur: 3,
-          opacity: 1
-        }
-      },
-      fill: {
-      type: 'pattern',
-        opacity: 1,
-        pattern: {
-          enabled: true,
-          style: ['verticalLines', 'squares', 'horizontalLines', 'circles','slantedLines'],
-        },
-      },
-      states: {
-        hover: {
-          filter: 'none'
-        }
-      },
-      theme: {
-        palette: 'palette2'
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }]
-    },
-  }
-
   return (
     <div className='main-page'>
       <h2 className='dashboard-heading'>DASHBOARD</h2>
@@ -191,20 +219,24 @@ const Dashboard = () => {
           <p className='dashboard-subheading'>SYSTEM SUMMARY</p>
           <div className="summary-boxes">
             <div className="total-devices">
-              <p>Total Devices</p>
+              <img src={One} alt="icon" height={32}/>
               <h2><CountUp end={totalDevices} duration={2.5}/></h2>
+              <p>Total Devices</p>
             </div>
             <div className="license-count">
-              <p>Active License</p>
+              <img src={Two} alt="icon" height={32}/>
               <h2><CountUp end={activeLicense} duration={2.5}/></h2>
+              <p>Active License</p>
             </div>
             <div className="healthy-devices">
-              <p>Healthy Devices</p>
+              <img src={Three} alt="icon" height={32}/>
               <h2><CountUp end={healthyDevices} duration={2.5}/></h2>
+              <p>Healthy Devices</p>
             </div>
             <div className="retired-devices">
-              <p>Retired Devices</p>
+              <img src={Four} alt="icon" height={32}/>
               <h2><CountUp end={retiredDevices} duration={2.5}/></h2>
+              <p>Retired Devices</p>
             </div>
           </div>
         </div>
@@ -223,7 +255,13 @@ const Dashboard = () => {
         <div className="pie-chart">
           <p className='dashboard-subheading'>DEVICE DISTRIBUTION BY LICENSE</p>
           {licenseData.length > 0 ? (
-            <Chart key={licenseData.length} options={pie.options} series={pie.series} type="donut" height={350}/>
+            <MyPie
+              data={licenseData.map(data => ({
+                id: data.licenseKey || 'Unknown',
+                label: data.licenseKey || 'Unknown',
+                value: data.count
+              }))}
+            />
           ) : (
             <div className='no-data-message'>
               <p>No data available</p>

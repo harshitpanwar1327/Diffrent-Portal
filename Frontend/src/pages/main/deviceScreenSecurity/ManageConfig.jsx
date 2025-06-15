@@ -9,17 +9,21 @@ const ManageConfig = () => {
   let {groupID} = useParams();
   let [configData, setConfigData] = useState([]);
 
-  useEffect(()=>{
-    const fetchConfigData = async () => {
-      try {
-        let response = await API.get(`/config/get-config/${groupID}/`);
-        setConfigData(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
+  const fetchConfigData = async () => {
+    try {
+      let response = await API.get(`/config/get-config/${groupID}/`);
+      setConfigData(response.data.data);
+    } catch (error) {
+      console.log(error.response.data.message || error);
     }
+  }
 
-    fetchConfigData();
+  useEffect(()=>{
+    try {
+      fetchConfigData();
+    } catch (error) {
+      console.log(error);
+    }
   }, [groupID]);
 
   let interpretConfig = (value) => {
