@@ -70,13 +70,13 @@ export const deviceCount = async (req, res) => {
 }
 
 export const updateDeviceGroup = async (req, res) => {
-    let {macAddress, groupID} = req.body;
+    let {macAddress, groupId} = req.body;
 
     if(!macAddress) {
         return res.status(400).json({success: false, message:"MAC Address not found."});
     }
 
-    let deviceData = new DevicesModels({macAddress, groupID});
+    let deviceData = new DevicesModels({macAddress, groupId});
 
     try {
         let response = await updateDeviceGroupLogic(deviceData);

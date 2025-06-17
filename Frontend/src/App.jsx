@@ -35,8 +35,8 @@ function App() {
           <Route path='/support' element={<Support />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/devices' element={<DeviceManagement />} />
-          <Route path='/manage-policy/:groupID' element={<ManagePolicy />} />
-          <Route path='/manage-config/:groupID' element={<ManageConfig />} />
+          <Route path='/manage-policy/:groupId' element={<ManagePolicy />} />
+          <Route path='/manage-config/:groupId' element={<ManageConfig />} />
         </Route>
 
         {/* Catch-all Route */}

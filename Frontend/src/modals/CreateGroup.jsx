@@ -2,10 +2,10 @@ import {React , useState}from 'react'
 import './createGroup.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
-import {v4 as uuidv4} from 'uuid'
 import HashLoader from "react-spinners/HashLoader"
 
-const CreateGroup = ({setOpenModal , setGroupData}) => {
+const CreateGroup = ({setOpenModal , setGroupData, getGroupData}) => {
+  let userId = sessionStorage.getItem('userId');
   let [groupName , setGroupName] = useState('');
   let [loading, setLoading] = useState(false);
 
@@ -13,14 +13,15 @@ const CreateGroup = ({setOpenModal , setGroupData}) => {
     e.preventDefault();
 
     let groupData = {
-      groupID: uuidv4().slice(0,4),
-      groupName: groupName
+      userId,
+      groupName
     }
 
     try {
       setLoading(true);
       let response = await API.post("/policy/add-group/", groupData);
-      setGroupData((prev) => [...prev, groupData]);
+      
+      getGroupData();
 
       toast.success('Group Saved Successfully', {
         position: "top-center",

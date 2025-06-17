@@ -177,7 +177,7 @@ const Dashboard = () => {
       },
       
       xaxis: {
-        categories: groupData.map(data => data.groupID || 'null'),
+        categories: groupData.map(data => data.groupId || 'null'),
         position: 'bottom',
         axisBorder: {
           show: false

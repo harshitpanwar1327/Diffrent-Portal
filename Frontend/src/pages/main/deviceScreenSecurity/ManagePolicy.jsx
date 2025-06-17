@@ -15,13 +15,13 @@ const policyFields = [
 
 const ManagePolicy = () => {
   let [openModal, setOpenModal] = useState(false);
-  let {groupID} = useParams();
+  let {groupId} = useParams();
   let [policy, setPolicy] = useState([]);
   let [loading, setLoading] = useState(false);
 
   const fetchPolicyDetails = async () => {
     try {
-      let response = await API.get(`/policy/get-policy/${groupID}`);
+      let response = await API.get(`/policy/get-policy/${groupId}`);
       setPolicy(response.data.data);
     } catch (error) {
       console.log(error);
@@ -37,7 +37,7 @@ const ManagePolicy = () => {
     } finally {
       setLoading(false);
     }
-  }, [groupID]);
+  }, [groupId]);
 
   let interpretPolicy = (value) => {
     if(value === true || value === 1) {
@@ -55,7 +55,7 @@ const ManagePolicy = () => {
         <HashLoader color="#6F5FE7"/>
       </div>}
       <div className='policy-header'>
-        <h4 className='groupID-heading'>MANAGE CONFIG- GroupID: {groupID}</h4>
+        <h4 className='groupId-heading'>MANAGE CONFIG- GroupID: {groupId}</h4>
         <button onClick={() => setOpenModal(true)} className='create-group-button'>Edit Policy</button>
         {openModal && <EditPolicy setOpenModal={setOpenModal} setPolicy={setPolicy}/>}
       </div>

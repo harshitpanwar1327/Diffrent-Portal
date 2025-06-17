@@ -18,9 +18,9 @@ export const editConfigLogic = async (configData) => {
             configData.whitelist_processes,
             configData.groupId
         ];
+
         await pool.query(query,values);
         return {success: true, message: "Config updated successfully"};
-        
     } catch (error) {
         console.error("Error during data insertion:", error);
         return { success: false, message: "Config not updated!" };

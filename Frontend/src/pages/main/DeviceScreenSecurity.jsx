@@ -22,7 +22,7 @@ const DeviceScreenSecurity = () => {
   let itemsPerPage = 10;
   let [loading, setLoading] = useState(false);
 
-  let filteredData = groupData.filter(data => data.groupName.toLowerCase().includes(search.toLowerCase()) || data.groupID.toLowerCase().includes(search.toLowerCase()));
+  let filteredData = groupData.filter(data => data.groupName.toLowerCase().includes(search.toLowerCase()) || data.groupId === parseInt(search));
 
   let paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
@@ -48,17 +48,17 @@ const DeviceScreenSecurity = () => {
     }
   }, []);
 
-  const handleManageDevice = (groupID) => {
+  const handleManageDevice = (groupId) => {
     setOpenDevicesModal(true);
-    setSelectedGroupID(groupID);
+    setSelectedGroupID(groupId);
   }
 
-  const handleEditGroup = (groupID) => {
+  const handleEditGroup = (groupId) => {
     setOpenEditGroupModal(true);
-    setSelectedGroupID(groupID);
+    setSelectedGroupID(groupId);
   }
 
-  const handleDeleteGroup = async (groupID) => {
+  const handleDeleteGroup = async (groupId) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -71,8 +71,8 @@ const DeviceScreenSecurity = () => {
       if (result.isConfirmed) {
         try {
           setLoading(true);
-          let response = await API.delete(`/policy/delete-group/${groupID}`);
-          setGroupData(groupData.filter((prev) => prev.groupID !== groupID));
+          let response = await API.delete(`/policy/delete-group/${groupId}`);
+          setGroupData(groupData.filter((prev) => prev.groupId !== groupId));
         } catch (error) {
           console.log(error);
           toast.error(error.response.data.message || 'Group not deleted!', {
@@ -110,7 +110,7 @@ const DeviceScreenSecurity = () => {
       <div className="main-page-header">
         <input type="text" name="search" id="search" placeholder="&#128269; Search here" className="search-input" value={search} onChange={(e) => setSearch(e.target.value)}/>
         <button onClick={() => setOpenGroupModal(true)} className="create-group-button">+ Create Group</button>
-        {openGroupModal && <CreateGroup setOpenModal={setOpenGroupModal} setGroupData={setGroupData}/>}
+        {openGroupModal && <CreateGroup setOpenModal={setOpenGroupModal} setGroupData={setGroupData} getGroupData={getGroupData}/>}
       </div>
 
       <div className="group-table-container">
@@ -130,26 +130,26 @@ const DeviceScreenSecurity = () => {
             {paginatedData.length > 0 ? (
               paginatedData.map((data, index) => (
                 <tr key={index}>
-                  <td className="group-table-data">{data.groupID}</td>
+                  <td className="group-table-data">{data.groupId}</td>
                   <td className="group-table-data">{data.groupName}</td>
                   <td className="group-table-data">
-                    <button className="table-button device-btn" onClick={() => handleManageDevice(data.groupID)}>Manage Devices</button>
+                    <button className="table-button device-btn" onClick={() => handleManageDevice(data.groupId)}>Manage Devices</button>
                   </td>
                   <td className='group-table-data'>
-                    <NavLink to={`/manage-policy/${data.groupID}`}><button className='table-button policy-btn'>Manage Policy</button></NavLink>
+                    <NavLink to={`/manage-policy/${data.groupId}`}><button className='table-button policy-btn'>Manage Policy</button></NavLink>
                   </td>
                   <td className="group-table-data">
-                    <NavLink to={`/manage-config/${data.groupID}`}>
+                    <NavLink to={`/manage-config/${data.groupId}`}>
                       <button className="table-button policy-btn">Manage Config</button>
                     </NavLink>
                   </td>
-                  <td className="group-table-data"><i className="fa-solid fa-pen-to-square" onClick={()=>handleEditGroup(data.groupID)}></i></td>
-                  <td className="group-table-data"><i className="fa-solid fa-trash" onClick={()=>handleDeleteGroup(data.groupID)}></i></td>
+                  <td className="group-table-data"><i className="fa-solid fa-pen-to-square" onClick={()=>handleEditGroup(data.groupId)}></i></td>
+                  <td className="group-table-data"><i className="fa-solid fa-trash" onClick={()=>handleDeleteGroup(data.groupId)}></i></td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={6} className='empty-data-table'>No groups found.</td>
+                <td colSpan={7} className='empty-data-table'>No groups found.</td>
               </tr>
             )}
           </tbody>
@@ -161,8 +161,8 @@ const DeviceScreenSecurity = () => {
           <Pagination count={Math.ceil(filteredData.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
         </Stack>
       </div>
-      {openEditGroupModal && <EditGroup setOpenModal={setOpenEditGroupModal} groupID={selectedGroupID} setGroupData={setGroupData}/>}
-      {openDevicesModal && <ManageDevices setOpenModal={setOpenDevicesModal} groupID={selectedGroupID}/>}
+      {openEditGroupModal && <EditGroup setOpenModal={setOpenEditGroupModal} groupId={selectedGroupID} setGroupData={setGroupData}/>}
+      {openDevicesModal && <ManageDevices setOpenModal={setOpenDevicesModal} groupId={selectedGroupID}/>}
     </div>
   );
 };

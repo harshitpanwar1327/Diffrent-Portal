@@ -40,7 +40,7 @@ const Support = () => {
   let [deviceData, setDeviceData] = useState([]);
 
   let userId = sessionStorage.getItem('userId');
-  const [groupID, setGroupID] = useState("");
+  const [groupId, setGroupID] = useState("");
   const [deviceName, setDeviceName] = useState("");
   const [issueType, setIssueType] = useState("");
   const [description, setDescription] = useState("");
@@ -71,12 +71,12 @@ const Support = () => {
   }, []);
 
   const handleGroupChange = async (e) => {
-    let selectedGroupID = e.target.value;
-    setGroupID(selectedGroupID);
-
+    let selectedGroupId = e.target.value;
+    setGroupID(selectedGroupId);
+    
     try {
       setLoading(true);
-      let response = await API.get(`/devices/get-devices/${selectedGroupID}`);
+      let response = await API.get(`/devices/get-devices/${selectedGroupId}`);
       setDeviceData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -104,7 +104,7 @@ const Support = () => {
 
     formData.append("userId", userId);
     formData.append("ticketId", ticketID);
-    formData.append("groupId", groupID);
+    formData.append("groupId", groupId);
     formData.append("deviceName", deviceName);
     formData.append("issueType", issueType);
     formData.append("description", description);
@@ -161,10 +161,10 @@ const Support = () => {
       <h2 className="support-heading">Technical Support Request</h2>
       <div className="support-row">
         <label htmlFor="groupName" className="support-label">Group Name: </label>
-        <select name="groupName" id="groupName" className="support-select" value={groupID} onChange={handleGroupChange} required>
+        <select name="groupName" id="groupName" className="support-select" value={groupId} onChange={handleGroupChange} required>
           <option value="">Select</option>
           {groupData.map((data, index) => (
-            <option key={index} value={data.groupID}>{data.groupName}</option>
+            <option key={index} value={data.groupId}>{data.groupName}</option>
           ))}
         </select>
       </div>

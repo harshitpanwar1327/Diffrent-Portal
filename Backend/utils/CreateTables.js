@@ -22,7 +22,7 @@ const groupDetails = `CREATE TABLE IF NOT EXISTS groupDetails (
 const devices = `CREATE TABLE IF NOT EXISTS devices (
     deviceId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT NOT NULL,
-    groupId INT NOT NULL,
+    groupId INT,
     deviceName VARCHAR(50),
     os VARCHAR(50),
     macAddress VARCHAR(30) UNIQUE NOT NULL,

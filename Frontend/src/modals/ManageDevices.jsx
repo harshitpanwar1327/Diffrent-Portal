@@ -4,8 +4,9 @@ import API from '../util/Api'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 import HashLoader from "react-spinners/HashLoader"
+import {toast, Bounce} from 'react-toastify'
 
-const ManageDevices = ({setOpenModal, groupID}) => {
+const ManageDevices = ({setOpenModal, groupId}) => {
   let [search, setSearch] = useState('');
   let [devicesData, setDevicesData] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
@@ -20,7 +21,7 @@ const ManageDevices = ({setOpenModal, groupID}) => {
 
   const fetchDevices = async () => {
     try {
-      let response = await API.get(`/devices/manage-group/${groupID}`);
+      let response = await API.get(`/devices/manage-group/${groupId}`);
       setDevicesData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
@@ -36,12 +37,12 @@ const ManageDevices = ({setOpenModal, groupID}) => {
     } finally {
       setLoading(false);
     }
-  }, [groupID]);
+  }, [groupId]);
 
   const handleGroupAllocation = async (data) => {
     let groupInfo = {
       macAddress: data.macAddress,
-      groupID: data.groupID ? null : groupID
+      groupId: data.groupId ? null : groupId
     }
 
     try {
@@ -50,7 +51,7 @@ const ManageDevices = ({setOpenModal, groupID}) => {
 
       fetchDevices();
 
-      toast.success('Device added to the group successfully', {
+      toast.success('Device status updated', {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,
@@ -91,7 +92,7 @@ const ManageDevices = ({setOpenModal, groupID}) => {
       <div className="manage-devices-popup" onClick={(e) => e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
         <div className='main-page-header'>
-          <h4 className='groupID-heading'>MANAGE DEVICE- GroupID: {groupID}</h4>
+          <h4 className='groupId-heading'>MANAGE DEVICE- GroupID: {groupId}</h4>
           <input type="text" name='search' id='search' placeholder='&#128269; Search here' className='search-input' value={search} onChange={(e)=>setSearch(e.target.value)}/>
         </div>
         <div className="manage-devices-table">
@@ -111,7 +112,7 @@ const ManageDevices = ({setOpenModal, groupID}) => {
                     <td className='group-table-data'>{data.deviceName}</td>
                     <td className='group-table-data'>{data.macAddress}</td>
                     <td className='group-table-data'>{data.ipAddress}</td>
-                    <td className='group-table-data'><input type="checkbox" name="groupDevice" id="groupDevice" checked={data.groupID ? true: false} onChange={() => handleGroupAllocation(data)}/></td>
+                    <td className='group-table-data'><input type="checkbox" name="groupDevice" id="groupDevice" checked={data.groupId ? true: false} onChange={() => handleGroupAllocation(data)}/></td>
                   </tr>
                 ))
               ) : (

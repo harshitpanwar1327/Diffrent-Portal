@@ -7,13 +7,13 @@ import HashLoader from "react-spinners/HashLoader"
 
 const ManageConfig = () => {
   let [openModal, setOpenModal] = useState(false);
-  let {groupID} = useParams();
+  let {groupId} = useParams();
   let [configData, setConfigData] = useState([]);
   let [loading, setLoading] = useState(false);
 
   const fetchConfigData = async () => {
     try {
-      let response = await API.get(`/config/get-config/${groupID}/`);
+      let response = await API.get(`/config/get-config/${groupId}/`);
       setConfigData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
@@ -29,7 +29,7 @@ const ManageConfig = () => {
     } finally {
       setLoading(false);
     }
-  }, [groupID]);
+  }, [groupId]);
 
   let interpretConfig = (value) => {
     if(value === true || value === 1) {
@@ -47,7 +47,7 @@ const ManageConfig = () => {
         <HashLoader color="#6F5FE7"/>
       </div>}
       <div className='policy-header'>
-        <h4 className='groupID-heading'>MANAGE CONFIG- GroupID: {groupID}</h4>
+        <h4 className='groupId-heading'>MANAGE CONFIG- GroupID: {groupId}</h4>
         <button onClick={() => setOpenModal(true)} className='create-group-button'>Edit Config</button>
         {openModal && <EditConfig setOpenModal={setOpenModal} setConfigData={setConfigData}/>}
       </div>

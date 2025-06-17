@@ -10,9 +10,11 @@ export const getDevicesLogic =  async () => {
     }
 };
 
-export const getDevicesByGroupLogic = async (groupID) => {
+export const getDevicesByGroupLogic = async (groupId) => {
+    console.log(groupId);
+    
     try {
-        const [rows] = await pool.query(`SELECT * FROM Devices WHERE groupID = ? AND lastActive IS NOT NULL;`, [groupID]);
+        const [rows] = await pool.query(`SELECT * FROM Devices WHERE groupId = ?;`, [groupId]);
         return { success: true, data: rows };
     } catch (error) {
         console.log("Error fetching group data:", error);
@@ -20,9 +22,9 @@ export const getDevicesByGroupLogic = async (groupID) => {
     }
 }
 
-export const manageDeviceGroupLogic = async (groupID) => {
+export const manageDeviceGroupLogic = async (groupId) => {
     try {
-        const [rows] = await pool.query(`SELECT * FROM Devices WHERE groupID = ? OR groupID IS NULL;`, [groupID]);
+        const [rows] = await pool.query(`SELECT * FROM Devices WHERE groupId = ? OR groupId IS NULL;`, [groupId]);
         return { success: true, data: rows };
     } catch (error) {
         console.log("Error fetching group data:", error);
@@ -35,7 +37,7 @@ export const deviceCountLogic = async () => {
         let [totalDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices;`);
         let [healthyDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive >= NOW() - INTERVAL 3 DAY`);
         let [retiredDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive > NOW ()- INTERVAL 30 DAY`);
-        let [groupData] = await pool.query(`SELECT groupID, COUNT(*) AS count FROM devices WHERE groupID IS NOT NULL GROUP BY groupID`);
+        let [groupData] = await pool.query(`SELECT groupId, COUNT(*) AS count FROM devices WHERE groupId IS NOT NULL GROUP BY groupId`);
         let [licenseData] = await pool.query(`SELECT licenseKey, COUNT(*) AS count FROM devices WHERE licenseKey IS NOT NULL GROUP BY licenseKey`);
 
         return {success: true, data : {
@@ -53,7 +55,7 @@ export const deviceCountLogic = async () => {
 
 export const updateDeviceGroupLogic = async (deviceData) => {
     try {
-        await pool.query(`UPDATE devices SET groupID = ? WHERE macAddress = ?`, [deviceData.groupID, deviceData.macAddress]);
+        await pool.query(`UPDATE devices SET groupId = ? WHERE macAddress = ?`, [deviceData.groupId, deviceData.macAddress]);
 
         return {success: true, message: "Group assigned successfully."};
     } catch (error) {

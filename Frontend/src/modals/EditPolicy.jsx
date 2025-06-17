@@ -11,14 +11,14 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   let [printing, setPrinting] = useState(false);
   let [browserUpload, setBrowserUpload] = useState(false);
   let [bluetooth, setBluetooth] = useState(false);
-  let {groupID} = useParams();
+  let {groupId} = useParams();
 
   let [prevData, setPrevData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchPolicyDetails = async () => {
     try {
-      let response = await API.get(`/policy/get-policy/${groupID}`);
+      let response = await API.get(`/policy/get-policy/${groupId}`);
       setPrevData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
@@ -34,7 +34,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
     } finally {
       setLoading(false)
     }
-  }, [groupID]);
+  }, [groupId]);
 
   const fetchPrevData = () => {
     setUsb(prevData[0]?.usb || false);
@@ -59,7 +59,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
     e.preventDefault();
 
     const policy = {
-      groupID: groupID,
+      groupId: groupId,
       usb: usb,
       mtp: mtp,
       printing: printing,

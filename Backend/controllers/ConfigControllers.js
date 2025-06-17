@@ -4,8 +4,8 @@ import { editConfigLogic, getConfigLogic } from "../services/ConfigServices.js";
 export const editConfig = async (req, res) => {
     let {groupId, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes} = req.body;
 
-    if (!groupId || !macAddress || !ipAddress || !date_enabled || !tagline_enabled || !layout || !qr_top_left || !qr_top_right || !qr_bottom_left || !qr_bottom_right) {
-        return res.status(400).json({ success: false, message: "Fill all the required fields." });
+    if (!groupId) {
+        return res.status(400).json({ success: false, message: "GroupId not found!" });
     }
 
     let configData = new ConfigModels({groupId, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes});

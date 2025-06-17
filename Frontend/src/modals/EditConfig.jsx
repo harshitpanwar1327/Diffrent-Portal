@@ -6,8 +6,8 @@ import {useParams} from 'react-router-dom'
 import HashLoader from "react-spinners/HashLoader"
 
 const EditConfig = ({setOpenModal, setConfigData}) => {
-  const {groupID} = useParams();
-  const [organizationName, setOrganizationName] = useState('');
+  const {groupId} = useParams();
+  const [organization, setOrganization] = useState('');
   const [macAddress, setMacAddress] = useState(false);
   const [ipAddress, setIpAddress] = useState(false);
   const [date, setDate] = useState(false);
@@ -30,7 +30,7 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
 
   const fetchConfigData = async () => {
     try {
-      let response = await API.get(`/config/get-config/${groupID}/`);
+      let response = await API.get(`/config/get-config/${groupId}/`);
       setPrevData([response.data.data[0]]);
     } catch (error) {
       console.log(error.response.data.message || error);
@@ -46,10 +46,10 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
     } finally {
       setLoading(false);
     }
-  }, [groupID]);
+  }, [groupId]);
 
   useEffect(()=>{
-    setOrganizationName(prevData[0]?.organization || '');
+    setOrganization(prevData[0]?.organization || '');
     setMacAddress(prevData[0]?.macAddress || false);
     setIpAddress(prevData[0]?.ipAddress || false);
     setDate(prevData[0]?.date_enabled || false);
@@ -87,13 +87,13 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
     let processString = processArray.join(',');
 
     let configData = {
-      id: groupID,
-      organization: organizationName,
-      macAddress: macAddress,
-      ipAddress: ipAddress,
+      groupId,
+      organization,
+      macAddress,
+      ipAddress,
       date_enabled: date,
       tagline_enabled: tagline,
-      layout: layout,
+      layout,
       qr_top_left: topLeft,
       qr_top_right: topRight,
       qr_bottom_left: bottomLeft,
@@ -147,7 +147,7 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
         <h3 className='policy-modal-heading'>Configuration Settings</h3>
         <form className="config-form" onSubmit={handleConfigForm}>
           <label htmlFor="companyName" className='config-form-label'>Organization</label>
-          <input type="text" name="companyName" id="companyName" placeholder='Organization' className='company-input' value={organizationName} onChange={(e) => setOrganizationName(e.target.value)}/>
+          <input type="text" name="companyName" id="companyName" placeholder='Organization' className='company-input' value={organization} onChange={(e) => setOrganization(e.target.value)}/>
 
           <div className="watermark-settings">
             <h4 className='config-form-label'>Watermark Setting</h4>

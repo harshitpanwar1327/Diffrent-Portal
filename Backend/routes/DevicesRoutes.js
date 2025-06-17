@@ -4,8 +4,8 @@ import { getDevices, getDevicesByGroup, manageDeviceGroup, deviceCount, updateDe
 const router = express.Router();
 
 router.get("/get-devices", getDevices);
-router.get("/get-devices/:groupID", getDevicesByGroup);
-router.get("/manage-group/:groupID", manageDeviceGroup);
+router.get("/get-devices/:groupId", getDevicesByGroup);
+router.get("/manage-group/:groupId", manageDeviceGroup);
 router.get("/device-count", deviceCount);
 router.put("/update-group", updateDeviceGroup);
 router.put("/update-license", updateDeviceLicense);

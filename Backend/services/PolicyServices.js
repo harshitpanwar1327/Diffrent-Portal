@@ -10,11 +10,11 @@ export const addGroupLogic = async (groupData) => {
         ];
 
         let [row] = await pool.query(query, value);
-        let groupId = row[0].groupId;
+        let groupId = row.insertId;
         
-        await pool.query(`INSERT INTO policy VALUES (?, true, true, true, true, true);`, [groupId]);
+        await pool.query(`INSERT INTO policy(groupId, usb, mtp, printing, browserUpload, bluetooth) VALUES (?, true, true, true, true, true);`, [groupId]);
 
-        await pool.query(`INSERT INTO config VALUES (?, "ProtectionMark", true, true, true, true, "medium", true, true, true, true, "");`, [groupId]); 
+        await pool.query(`INSERT INTO config(groupId, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes) VALUES (?, "ProtectionMark", true, true, true, true, "medium", true, true, true, true, "");`, [groupId]); 
 
         return { success: true, message: "Group Added Successfully" };
     } catch (error) {
@@ -33,9 +33,9 @@ export const getGroupLogic =  async () => {
     }
 };
 
-export const getGroupByIdLogic = async (groupID) => {
+export const getGroupByIdLogic = async (groupId) => {
     try {
-        const [rows] = await pool.query(`SELECT * FROM GroupDetails WHERE groupID=?`, [groupID]);
+        const [rows] = await pool.query(`SELECT * FROM GroupDetails WHERE groupID=?`, [groupId]);
         return { success: true, data: rows };
     } catch (error) {
         console.error("Error fetching group data:", error);
@@ -45,8 +45,8 @@ export const getGroupByIdLogic = async (groupID) => {
 
 export const updateGroupLogic = async (groupData) => {
     try {
-        let query = `UPDATE groupDetails SET groupName=? WHERE userId=?`;
-        let values = [groupData.groupName, groupData.userId];
+        let query = `UPDATE groupDetails SET groupName=? WHERE groupId=?`;
+        let values = [groupData.groupName, groupData.groupId];
 
         await pool.query(query, values);
 

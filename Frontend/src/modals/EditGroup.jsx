@@ -10,8 +10,8 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
 
     let fetchGroupDetails = async () => {
         try {
-            let fetchData = await API.get(`/policy/get-group/${groupId}`);
-            setGroupName(fetchData.data[0].groupName);
+            let response = await API.get(`/policy/get-group/${groupId}`);
+            setGroupName(response.data[0].groupName);
         } catch (error) {
             console.log(error.response.data.message || error);
         }
@@ -32,16 +32,16 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
         e.preventDefault();
 
         let groupData = {
-            groupId: groupId,
-            groupName: groupName
-        }
+            groupId,
+            groupName
+        };
 
         try {
             setLoading(true);
             let response = await API.put("/policy/update-group/", groupData);
             
             setGroupData(prev => {
-                let rem = prev.filter(data => data.groupID!==groupData.groupID);
+                let rem = prev.filter(data => data.groupId!==groupData.groupId);
                 return [...rem, groupData];
             });
 
