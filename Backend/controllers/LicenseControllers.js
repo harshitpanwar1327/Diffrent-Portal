@@ -1,4 +1,4 @@
-import {createLicenseCode, decodeLicenseCodeWithToken, activateLicense, getLicenseData} from '../services/LicenseServices.js';
+import {generateLicenseLogic, decodeLicenseCodeWithToken, activateLicenseLogic, getLicenseLogic} from '../services/LicenseServices.js';
 
 export const generateLicense = (req, res) => {
   try {
@@ -8,7 +8,7 @@ export const generateLicense = (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const { licenseCode, token } = createLicenseCode({
+    const { licenseCode, token } = generateLicenseLogic({
         organization,
         totalDevices,
         purchaseDate,
@@ -38,7 +38,7 @@ export const validateLicense = (req, res) => {
   }
 };
 
-export const activeLicense = async (req, res) => {
+export const activateLicense = async (req, res) => {
     let {licenseKey} = req.body;
 
     if(!licenseKey) {
@@ -46,7 +46,7 @@ export const activeLicense = async (req, res) => {
     }
 
     try {
-        let response = await activateLicense(licenseKey);
+        let response = await activateLicenseLogic(licenseKey);
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -60,7 +60,7 @@ export const activeLicense = async (req, res) => {
 
 export const getLicense = async (req, res) => {
     try {
-        let response = await getLicenseData();
+        let response = await getLicenseLogic();
         if(response.success) {
             return res.status(200).json(response);
         } else {

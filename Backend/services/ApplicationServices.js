@@ -1,7 +1,7 @@
 import {pool} from '../config/Database.js';
 import {decodeLicenseCodeWithToken} from '../services/LicenseServices.js';
 
-export const insertDeviceData = async (deviceData) => {
+export const insertDeviceLogic = async (deviceData) => {
     try {
         const [existingDevice] = await pool.query(`SELECT * FROM devices WHERE macAddress = ?`, [deviceData.macAddress]);
 

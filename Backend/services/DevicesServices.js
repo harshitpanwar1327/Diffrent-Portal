@@ -1,6 +1,6 @@
 import { pool } from '../config/Database.js';
 
-export const getDevicesData =  async () => {
+export const getDevicesLogic =  async () => {
     try {
         const [rows] = await pool.query(`SELECT * FROM Devices;`);
         return { success: true, data: rows };
@@ -10,7 +10,7 @@ export const getDevicesData =  async () => {
     }
 };
 
-export const getDevicesGroupData = async (groupID) => {
+export const getDevicesByGroupLogic = async (groupID) => {
     try {
         const [rows] = await pool.query(`SELECT * FROM Devices WHERE groupID = ? AND lastActive IS NOT NULL;`, [groupID]);
         return { success: true, data: rows };
@@ -20,7 +20,7 @@ export const getDevicesGroupData = async (groupID) => {
     }
 }
 
-export const manageDevicesGroupData = async (groupID) => {
+export const manageDeviceGroupLogic = async (groupID) => {
     try {
         const [rows] = await pool.query(`SELECT * FROM Devices WHERE groupID = ? OR groupID IS NULL;`, [groupID]);
         return { success: true, data: rows };
@@ -30,7 +30,7 @@ export const manageDevicesGroupData = async (groupID) => {
     }
 }
 
-export const deviceCountData = async () => {
+export const deviceCountLogic = async () => {
     
     try {
         let [totalDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices;`);
@@ -52,7 +52,7 @@ export const deviceCountData = async () => {
     }
 }
 
-export const updateDeviceGroupData = async (deviceData) => {
+export const updateDeviceGroupLogic = async (deviceData) => {
     try {
         await pool.query(`UPDATE devices SET groupID = ? WHERE macAddress = ?`, [deviceData.groupID, deviceData.macAddress]);
 
@@ -63,7 +63,7 @@ export const updateDeviceGroupData = async (deviceData) => {
     }
 }
 
-export const updateLicenseData = async (licenseKey, macAddress, deviceCount) => {
+export const updateDeviceLicenseLogic = async (licenseKey, macAddress, deviceCount) => {
     try {
         let [allocatedLicense] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE licenseKey = ?`, [licenseKey]);
 
@@ -80,7 +80,7 @@ export const updateLicenseData = async (licenseKey, macAddress, deviceCount) => 
     }
 }
 
-export const deallocateLicenseFromDevice = async (macAddress) => {
+export const deallocateLicenseLogic = async (macAddress) => {
     try {
         let query = `UPDATE devices SET licenseKey = ? WHERE macAddress = ?;`;
         let values = [null, macAddress];
@@ -94,7 +94,7 @@ export const deallocateLicenseFromDevice = async (macAddress) => {
     }
 }
 
-export const deleteDeviceData = async (macAddress) => {
+export const deleteDeviceLogic = async (macAddress) => {
     try {
         let query = `DELETE FROM devices WHERE macAddress=?`;
         let values = [macAddress];

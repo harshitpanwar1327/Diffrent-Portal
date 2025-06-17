@@ -1,7 +1,7 @@
 import { ConfigModels } from "../models/ConfigModels.js";
-import { insertConfigTable, getConfigData } from "../services/ConfigServices.js";
+import { editConfigLogic, getConfigLogic } from "../services/ConfigServices.js";
 
-export const configDetails = async (req, res) => {
+export const editConfig = async (req, res) => {
     let {id, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes} = req.body;
 
     if (!id) {
@@ -11,7 +11,7 @@ export const configDetails = async (req, res) => {
     let configData = new ConfigModels({id, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes});
 
     try {
-        let response = await insertConfigTable(configData);
+        let response = await editConfigLogic(configData);
         if (response.success) {
             return res.status(200).json(response);
         } else {
@@ -23,7 +23,7 @@ export const configDetails = async (req, res) => {
     }
 };
 
-export const fetchConfig = async (req, res) => {
+export const getConfig = async (req, res) => {
     let {groupID} = req.params;
 
     if(!groupID) {
@@ -31,7 +31,7 @@ export const fetchConfig = async (req, res) => {
     }
 
     try {
-        let response = await getConfigData(groupID);
+        let response = await getConfigLogic(groupID);
         if(response.success){
             return res.status(200).json(response);
         } else {

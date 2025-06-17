@@ -10,37 +10,44 @@ const users = `CREATE TABLE IF NOT EXISTS users (
 
 //groupDetails Table
 const groupDetails = `CREATE TABLE IF NOT EXISTS groupDetails (
-    groupID VARCHAR(4) PRIMARY KEY,
-    groupName VARCHAR(50) NOT NULL
+    groupId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    groupName VARCHAR(50) NOT NULL,
+    FOREIGN KEY (userID) REFERENCES users(id)
+        ON DELETE CASCADE
 );`;
 
 //Devices Table
 const devices = `CREATE TABLE IF NOT EXISTS Devices (
-    deviceID INT AUTO_INCREMENT PRIMARY KEY,
+    deviceId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    groupId INT NOT NULL,
     deviceName VARCHAR(50),
     os VARCHAR(50),
     macAddress VARCHAR(30) UNIQUE NOT NULL,
     ipAddress VARCHAR(45),
-    groupID VARCHAR(4),
     licenseKey VARCHAR(255),
-    lastActive DATETIME
+    FOREIGN KEY (userId) REFERENCES users(id)
+        ON DELETE CASCADE
 );`;
 
 //Policy Table
 const policyDetails = `CREATE TABLE IF NOT EXISTS Policy (
-    groupID VARCHAR(36) PRIMARY KEY,
+    policyId INT AUTO_INCREMENT PRIMARY KEY,
+    groupId INT NOT NULL,
     usb BOOLEAN NOT NULL,
     mtp BOOLEAN NOT NULL,
     printing BOOLEAN NOT NULL,
     browserUpload BOOLEAN NOT NULL,
     bluetooth BOOLEAN NOT NULL,
-    FOREIGN KEY (groupID) REFERENCES groupDetails(groupID)
+    FOREIGN KEY (groupId) REFERENCES groupDetails(groupId)
         ON DELETE CASCADE
 );`;
 
 //Config Table
 const configDetails = `CREATE TABLE IF NOT EXISTS Config(
-    groupID VARCHAR(4) PRIMARY KEY,
+    configId INT AUTO_INCREMENT PRIMARY KEY,
+    groupId INT NOT NULL,
     organization VARCHAR(30),
     macAddress BOOLEAN NOT NULL,
     ipAddress BOOLEAN NOT NULL,
@@ -51,23 +58,32 @@ const configDetails = `CREATE TABLE IF NOT EXISTS Config(
     qr_top_right BOOLEAN NOT NULL,
     qr_bottom_left BOOLEAN NOT NULL,
     qr_bottom_right BOOLEAN NOT NULL,
-    whitelist_processes TEXT
+    whitelist_processes TEXT,
+    FOREIGN KEY (groupId) REFERENCES groupDetails(groupId)
+        ON DELETE CASCADE
 );`;
 
 //License Table
 const licenseDetails = `CREATE TABLE IF NOT EXISTS License (
-    licenseKey VARCHAR(255) PRIMARY KEY
+    licenseId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    licenseKey VARCHAR(255),
+    FOREIGN KEY (userId) REFERENCES users(id)
+        ON DELETE CASCADE
 )`;
 
 //SupportDetails Table
 const supportDetails = `CREATE TABLE IF NOT EXISTS Support (
+    userId INT NOT NULL,
     ticketID VARCHAR(36) PRIMARY KEY,
     groupID VARCHAR(4)  NOT NULL,
     deviceName VARCHAR(50)  NOT NULL,
     issueType VARCHAR(100) NOT NULL,
     description LONGTEXT  NOT NULL,
     screenshot LONGTEXT,
-    urgency VARCHAR(10)
+    urgency VARCHAR(10),
+    FOREIGN KEY (userId) REFERENCES users(userId)
+        ON DELETE CASCADE
 );`;
 
 const createTable = async (tableName, query) => {

@@ -1,9 +1,9 @@
 import { DevicesModels } from "../models/DevicesModels.js";
-import {getDevicesData, getDevicesGroupData, manageDevicesGroupData, deviceCountData, updateDeviceGroupData, updateLicenseData, deallocateLicenseFromDevice, deleteDeviceData} from "../services/DevicesServices.js";
+import {getDevicesLogic, getDevicesByGroupLogic, manageDeviceGroupLogic, deviceCountLogic, updateDeviceGroupLogic, updateDeviceLicenseLogic, deallocateLicenseLogic, deleteDeviceLogic} from "../services/DevicesServices.js";
 
-export const fetchDevices = async (req, res) => {
+export const getDevices = async (req, res) => {
     try {
-        const result = await getDevicesData();
+        const result = await getDevicesLogic();
         if (result.success) {
             res.status(200).json(result);
         } else {
@@ -15,7 +15,7 @@ export const fetchDevices = async (req, res) => {
     }
 };
 
-export const fetchDevicesGroup = async (req, res) => {
+export const getDevicesByGroup = async (req, res) => {
     let {groupID} = req.params;
 
     if(!groupID) {
@@ -23,7 +23,7 @@ export const fetchDevicesGroup = async (req, res) => {
     }
 
     try {
-        let response = await getDevicesGroupData(groupID);
+        let response = await getDevicesByGroupLogic(groupID);
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -35,7 +35,7 @@ export const fetchDevicesGroup = async (req, res) => {
     }
 }
 
-export const manageDevicesGroup = async (req, res) => {
+export const manageDeviceGroup = async (req, res) => {
     let {groupID} = req.params;
 
     if(!groupID) {
@@ -43,7 +43,7 @@ export const manageDevicesGroup = async (req, res) => {
     }
 
     try {
-        let response = await manageDevicesGroupData(groupID);
+        let response = await manageDeviceGroupLogic(groupID);
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -55,9 +55,9 @@ export const manageDevicesGroup = async (req, res) => {
     }
 }
 
-export const fetchDeviceCount = async (req, res) => {
+export const deviceCount = async (req, res) => {
     try {
-        let response = await deviceCountData();
+        let response = await deviceCountLogic();
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -79,7 +79,7 @@ export const updateDeviceGroup = async (req, res) => {
     let deviceData = new DevicesModels({macAddress, groupID});
 
     try {
-        let response = await updateDeviceGroupData(deviceData);
+        let response = await updateDeviceGroupLogic(deviceData);
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -91,7 +91,7 @@ export const updateDeviceGroup = async (req, res) => {
     }
 }
 
-export const updateLicense = async (req, res) => {
+export const updateDeviceLicense = async (req, res) => {
     let {licenseKey, macAddress, deviceCount} = req.body;
 
     if(!licenseKey || !macAddress) {
@@ -99,7 +99,7 @@ export const updateLicense = async (req, res) => {
     }
 
     try {
-        let response = await updateLicenseData(licenseKey, macAddress, deviceCount);
+        let response = await updateDeviceLicenseLogic(licenseKey, macAddress, deviceCount);
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -119,7 +119,7 @@ export const deallocateLicense = async (req, res) => {
     }
 
     try {
-        let response = await deallocateLicenseFromDevice(macAddress);
+        let response = await deallocateLicenseLogic(macAddress);
     } catch (error) {
         console.error("Error saving configuration:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -134,7 +134,7 @@ export const deleteDevice = async (req, res) => {
     }
 
     try {
-        let response = await deleteDeviceData(macAddress);
+        let response = await deleteDeviceLogic(macAddress);
         if(response.success) {
             return res.status(200).json(response);
         } else {

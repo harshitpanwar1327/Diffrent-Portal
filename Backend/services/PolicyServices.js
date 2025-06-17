@@ -1,6 +1,6 @@
 import { pool } from '../config/Database.js';
 
-export const insertGroupData = async (groupData) => {
+export const addGroupLogic = async (groupData) => {
     try {
         const query = `INSERT INTO groupDetails ( groupID, groupName )
         VALUES (?, ?)`;
@@ -22,7 +22,7 @@ export const insertGroupData = async (groupData) => {
     }
 };
 
-export const getGroupData =  async () => {
+export const getGroupLogic =  async () => {
     try {
         const [rows] = await pool.query(`SELECT * FROM GroupDetails`);
         return { success: true, data: rows };
@@ -32,7 +32,7 @@ export const getGroupData =  async () => {
     }
 };
 
-export const getGroupByID = async (groupID) => {
+export const getGroupByIdLogic = async (groupID) => {
     try {
         const [rows] = await pool.query(`SELECT * FROM GroupDetails WHERE groupID=?`, [groupID]);
         return { success: true, data: rows };
@@ -42,7 +42,7 @@ export const getGroupByID = async (groupID) => {
     }
 }
 
-export const updateGroupData = async (groupData) => {
+export const updateGroupLogic = async (groupData) => {
     try {
         let query = `UPDATE groupDetails SET groupName=? WHERE groupID=?`;
         let values = [groupData.groupName, groupData.groupID];
@@ -56,7 +56,7 @@ export const updateGroupData = async (groupData) => {
     }
 }
 
-export const deleteGroupData = async (groupID) => {
+export const deleteGroupLogic = async (groupID) => {
     try {
         let query = `DELETE FROM groupDetails WHERE groupID = ?`;
         let values = [groupID];
@@ -72,7 +72,7 @@ export const deleteGroupData = async (groupID) => {
     }
 }
 
-export const updatePolicyData = async (policyData) => {
+export const updatePolicyLogic = async (policyData) => {
     try {
         const query = `UPDATE policy SET usb = ?, mtp = ?, printing = ?, browserUpload = ?, bluetooth = ? WHERE groupID = ?`;
 
@@ -87,7 +87,7 @@ export const updatePolicyData = async (policyData) => {
     }
 }
 
-export const fetchPolicyData = async (groupID) => {
+export const getPolicyLogic = async (groupID) => {
     try {
         let [rows] = await pool.query("SELECT * FROM policy WHERE groupID = ?", [groupID]);
         return {success: true, data: rows};

@@ -1,7 +1,7 @@
 import { SupportModels } from '../models/SupportModels.js';
-import { insertSupportData } from "../services/SupportServices.js";
+import { ticketDetailsLogic } from "../services/SupportServices.js";
 
-export const supportDetail = async (req, res) => {
+export const ticketDetails = async (req, res) => {
     let {ticketID, groupID, deviceName, issueType, description, urgency} = req.body;
     let screenshot = req.file.filename;
 
@@ -12,7 +12,7 @@ export const supportDetail = async (req, res) => {
     let supportData = new SupportModels({ticketID, groupID, deviceName, issueType, description, screenshot, urgency});
 
     try {
-        let response = await insertSupportData(supportData);
+        let response = await ticketDetailsLogic(supportData);
         if (response.success) {
             return res.status(200).json(response);
         } else {

@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 
 const SECRET_KEY = CryptoJS.SHA256("protectionmark").toString(); 
 
-export const createLicenseCode = ({ organization, totalDevices, purchaseDate, expiryDate }) => {
+export const generateLicenseLogic = ({ organization, totalDevices, purchaseDate, expiryDate }) => {
   const dataString = `${organization}|${totalDevices}|${purchaseDate}|${expiryDate}`;
   const encrypted = CryptoJS.AES.encrypt(dataString, SECRET_KEY).toString();
 
@@ -50,7 +50,7 @@ export const activateLicense = async (licenseKey) => {
   }
 };
 
-export const getLicenseData = async () => {
+export const getLicenseLogic = async () => {
   try {
     let [rows] = await pool.query(`SELECT * FROM license;`);
     return { success: true, data: rows };

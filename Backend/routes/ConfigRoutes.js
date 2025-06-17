@@ -1,9 +1,9 @@
 import express from 'express';
-import { configDetails, fetchConfig } from '../controllers/ConfigControllers.js';
+import { editConfig, getConfig } from '../controllers/ConfigControllers.js';
 
 const router = express.Router();
 
-router.put('/edit-config', configDetails);
-router.get('/get-config/:groupID', fetchConfig);
+router.put('/edit-config', editConfig);
+router.get('/get-config/:groupID', getConfig);
 
 export default router;

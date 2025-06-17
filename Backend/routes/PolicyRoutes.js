@@ -1,15 +1,15 @@
 import express from 'express';
-import { groupDetail, fetchGroupDetails, fetchGroupDetailsByID, updateGroupDetails, deleteGroup, updatePolicy, fetchPolicyDetails } from '../controllers/PolicyControllers.js';
+import { addGroup, getGroup, getGroupById, updateGroup, deleteGroup, updatePolicy, getPolicy } from '../controllers/PolicyControllers.js';
 
 const router = express.Router();
 
-router.post("/add-group", groupDetail);
-router.get("/fetch-group", fetchGroupDetails);
-router.get("/fetch-by-groupID/:groupID", fetchGroupDetailsByID);
-router.put("/update-group", updateGroupDetails);
+router.post("/add-group", addGroup);
+router.get("/get-group", getGroup);
+router.get("/get-group/:groupID", getGroupById);
+router.put("/update-group", updateGroup);
 router.delete("/delete-group/:groupID", deleteGroup);
 
 router.post("/update-policy", updatePolicy);
-router.get("/fetch-policy/:groupID", fetchPolicyDetails);
+router.get("/get-policy/:groupID", getPolicy);
 
 export default router;

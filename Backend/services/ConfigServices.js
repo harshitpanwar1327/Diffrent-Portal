@@ -1,6 +1,6 @@
 import {pool} from '../config/Database.js';
 
-export const insertConfigTable = async (configData) => {
+export const editConfigLogic = async (configData) => {
     try {
         const query = `UPDATE Config SET organization = ?, macAddress = ?, ipAddress = ?, date_enabled = ?, tagline_enabled = ?, layout = ?, qr_top_left = ?, qr_top_right = ?, qr_bottom_left = ?, qr_bottom_right = ?, whitelist_processes = ? WHERE groupID = ?`;
 
@@ -27,7 +27,7 @@ export const insertConfigTable = async (configData) => {
     }
 }
 
-export const getConfigData = async (groupID) => {
+export const getConfigLogic = async (groupID) => {
     try {
         let [rows] = await pool.query(`SELECT * FROM config WHERE groupID = ?`, [groupID]);
         return {success: true, data: rows};

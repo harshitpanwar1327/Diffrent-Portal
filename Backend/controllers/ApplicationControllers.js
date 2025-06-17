@@ -1,5 +1,5 @@
 import { ApplicationModels } from "../models/ApplicationModels.js";
-import { insertDeviceData } from "../services/ApplicationServices.js";
+import { insertDeviceLogic } from "../services/ApplicationServices.js";
 
 export const insertDevice = async (req, res) => {
     let {deviceName, os, macAddress, ipAddress} = req.body;
@@ -38,7 +38,7 @@ export const insertDevice = async (req, res) => {
     let deviceData = new ApplicationModels({deviceName, os, macAddress, ipAddress});
 
     try {
-        let response = await insertDeviceData(deviceData);
+        let response = await insertDeviceLogic(deviceData);
         res.setHeader('Content-Type', 'text/plain');
         res.send(response.data);
     } catch (error) {

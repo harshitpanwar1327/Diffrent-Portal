@@ -1,7 +1,7 @@
 import { GroupDetails, PolicyDetails } from "../models/PolicyModels.js";
-import { insertGroupData, getGroupData, getGroupByID, updateGroupData, deleteGroupData, updatePolicyData, fetchPolicyData } from "../services/PolicyServices.js";
+import { addGroupLogic, getGroupLogic, getGroupByIdLogic, updateGroupLogic, deleteGroupLogic, updatePolicyLogic, getPolicyLogic } from "../services/PolicyServices.js";
 
-export const groupDetail = async (req, res) => {
+export const addGroup = async (req, res) => {
     const { groupID, groupName } = req.body;
 
     if (!groupID || !groupName) {
@@ -11,7 +11,7 @@ export const groupDetail = async (req, res) => {
     const groupData = new GroupDetails({ groupID, groupName });
 
     try {
-        const response = await insertGroupData(groupData);
+        const response = await addGroupLogic(groupData);
         if (response.success) {
             return res.status(200).json(response);
         } else {
@@ -23,9 +23,9 @@ export const groupDetail = async (req, res) => {
     }
 };
 
-export const fetchGroupDetails = async (req, res) => {
+export const getGroup = async (req, res) => {
     try {
-        const result = await getGroupData();
+        const result = await getGroupLogic();
         if (result.success) {
             res.status(200).json(result.data);
         } else {
@@ -37,11 +37,11 @@ export const fetchGroupDetails = async (req, res) => {
     }
 }
 
-export const fetchGroupDetailsByID = async (req, res) => {
+export const getGroupById = async (req, res) => {
     let {groupID} = req.params;
     
     try {
-        const result = await getGroupByID(groupID);
+        const result = await getGroupByIdLogic(groupID);
         if (result.success) {
             res.status(200).json(result.data);
         } else {
@@ -53,7 +53,7 @@ export const fetchGroupDetailsByID = async (req, res) => {
     }
 }
 
-export const updateGroupDetails = async (req, res) => {
+export const updateGroup = async (req, res) => {
     let {groupID, groupName} = req.body;
 
     if (!groupID || !groupName) {
@@ -63,7 +63,7 @@ export const updateGroupDetails = async (req, res) => {
     const groupData = new GroupDetails({ groupID, groupName });
 
     try {
-        const response = await updateGroupData(groupData);
+        const response = await updateGroupLogic(groupData);
         if (response.success) {
             return res.status(200).json(response);
         } else {
@@ -83,7 +83,7 @@ export const deleteGroup = async (req, res) => {
     }
 
     try {
-        let response = await deleteGroupData(groupID);
+        let response = await deleteGroupLogic(groupID);
         if (response.success) {
             return res.status(200).json(response);
         } else {
@@ -101,7 +101,7 @@ export const updatePolicy = async (req,res) => {
     const policyData = new PolicyDetails({groupID, usb, mtp, printing, browserUpload, bluetooth});
 
     try {
-        const response = await updatePolicyData(policyData);
+        const response = await updatePolicyLogic(policyData);
         if (response.success) {
             return res.status(200).json(response);
         } else {
@@ -113,7 +113,7 @@ export const updatePolicy = async (req,res) => {
     }
 };
 
-export const fetchPolicyDetails = async (req, res) => {
+export const getPolicy = async (req, res) => {
     let {groupID} = req.params;
 
     if(!groupID) {
@@ -121,7 +121,7 @@ export const fetchPolicyDetails = async (req, res) => {
     }
 
     try {
-        let response = await fetchPolicyData(groupID);
+        let response = await getPolicyLogic(groupID);
         if(response.success) {
             return res.status(200).json(response);
         } else {

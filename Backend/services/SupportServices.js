@@ -1,6 +1,6 @@
 import { pool } from '../config/Database.js';
 
-export const insertSupportData = async (supportData) => {
+export const ticketDetailsLogic = async (supportData) => {
     try {
         const SupportQuery = `INSERT INTO Support ( ticketID, groupID, deviceName, issueType, 
         description, screenshot, urgency) VALUES (?, ?, ?, ?, ?, ?, ?)`;

@@ -1,5 +1,5 @@
 import {UsersModels} from '../models/UsersModels.js'
-import {registerUser, loginUser} from '../services/UsersService.js';
+import {registerLogic, loginLogic} from '../services/UsersService.js';
 
 export const register = async (req, res) => {
     let {email, password, organization} = req.body;
@@ -11,7 +11,7 @@ export const register = async (req, res) => {
     let registerData = new UsersModels({email, password, organization});
 
     try {
-        let response = await registerUser(registerData);
+        let response = await registerLogic(registerData);
         if(response.success){
             return res.status(200).json(response);
         } else {
@@ -31,7 +31,7 @@ export const login = async (req, res) => {
     }
 
     try {
-        let response = await loginUser(email, password);
+        let response = await loginLogic(email, password);
         if(response.success){
             return res.status(200).json(response);
         } else{

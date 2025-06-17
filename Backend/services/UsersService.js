@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const registerUser = async (registerData) => {
+export const registerLogic = async (registerData) => {
     try {
         let hashedPassword = await bcrypt.hash(registerData.password, 10);
         let query = `INSERT INTO users(email, password, organization) VALUE(?,?,?)`;
@@ -20,7 +20,7 @@ export const registerUser = async (registerData) => {
     }
 }
 
-export const loginUser = async (email, password) => {
+export const loginLogic = async (email, password) => {
     try {
         let [rows] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
         if(rows.length===0) {
