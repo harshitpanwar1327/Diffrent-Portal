@@ -2,14 +2,14 @@ import { SupportModels } from '../models/SupportModels.js';
 import { ticketDetailsLogic } from "../services/SupportServices.js";
 
 export const ticketDetails = async (req, res) => {
-    let {ticketID, groupID, deviceName, issueType, description, urgency} = req.body;
+    let {userId, ticketID, groupID, deviceName, issueType, description, urgency} = req.body;
     let screenshot = req.file.filename;
 
-    if(!ticketID || !groupID || !deviceName || !issueType || !description){
+    if(!userId || !ticketID || !groupID || !deviceName || !issueType || !description){
         return res.status(400).json({success: false, message: "All required fields are not filled."})
     }
 
-    let supportData = new SupportModels({ticketID, groupID, deviceName, issueType, description, screenshot, urgency});
+    let supportData = new SupportModels({userId, ticketID, groupID, deviceName, issueType, description, screenshot, urgency});
 
     try {
         let response = await ticketDetailsLogic(supportData);

@@ -2,15 +2,15 @@ import {React , useEffect, useState}from 'react'
 import './editGroup.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
-// import HashLoader from "react-spinners/HashLoader"
+import HashLoader from "react-spinners/HashLoader"
 
-const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
+const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
     let [groupName , setGroupName] = useState('');
-    // const [loading, setLoading] = useState(false);
+    let [loading, setLoading] = useState(false);
 
     let fetchGroupDetails = async () => {
         try {
-            let fetchData = await API.get(`/policy/fetch-by-groupID/${groupID}`);
+            let fetchData = await API.get(`/policy/get-group/${groupId}`);
             setGroupName(fetchData.data[0].groupName);
         } catch (error) {
             console.log(error.response.data.message || error);
@@ -19,9 +19,12 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
 
     useEffect(()=>{
         try {
+            setLoading(true);
             fetchGroupDetails();
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -29,12 +32,12 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
         e.preventDefault();
 
         let groupData = {
-            groupID: groupID,
+            groupId: groupId,
             groupName: groupName
         }
 
         try {
-            // setLoading(true);
+            setLoading(true);
             let response = await API.put("/policy/update-group/", groupData);
             
             setGroupData(prev => {
@@ -66,16 +69,16 @@ const EditGroup = ({setOpenModal, groupID, setGroupData}) => {
                 transition: Bounce
             });
         } finally {
-            // setLoading(false);
+            setLoading(false);
             setOpenModal(false);
         }
     }
 
     return (
         <div className="overlay" onClick={() => setOpenModal(false)}>
-        {/* {loading && <div className="loader">
+        {loading && <div className="loader">
             <HashLoader color="#6F5FE7"/>
-        </div>} */}
+        </div>}
         <div className='create-group-popup' onClick={(e) => e.stopPropagation()}>
             <i onClick={()=>{setOpenModal(false)}} className="fa-solid fa-xmark"></i>
             <form onSubmit={handleEditGroup}>

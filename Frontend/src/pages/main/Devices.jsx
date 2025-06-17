@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 import {toast, Bounce} from 'react-toastify'
-// import HashLoader from "react-spinners/HashLoader"
+import HashLoader from "react-spinners/HashLoader"
 
 const Devices = () => {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
@@ -15,7 +15,7 @@ const Devices = () => {
   let [license, setLicense] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
-  // const [loading, setLoading] = useState(false);
+  let [loading, setLoading] = useState(false);
 
   let filteredData = devicesData.filter(data => data?.deviceName?.toLowerCase().includes(search.toLowerCase()) || data?.macAddress?.toLowerCase().includes(search.toLowerCase()) || data?.ipAddress?.toLowerCase().includes(search.toLowerCase()));
 
@@ -25,7 +25,7 @@ const Devices = () => {
 
   const getDevices = async () => {
     try {
-      let response = await API.get("/devices/fetch-devices/");
+      let response = await API.get("/devices/get-devices/");
       setDevicesData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
@@ -43,10 +43,13 @@ const Devices = () => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       getDevices();
       getLicense();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -91,7 +94,7 @@ const Devices = () => {
     }
 
     try {
-      // setLoading(true);
+      setLoading(true);
       let response = await API.put('/devices/update-license/', updateLicenseData);
 
       setDevicesData(prev => prev.map((device) => (
@@ -127,7 +130,7 @@ const Devices = () => {
         transition: Bounce
       });
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }
 
@@ -143,7 +146,7 @@ const Devices = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // setLoading(true);
+          setLoading(true);
           let response = await API.delete(`/devices/delete-device/${macAddress}`);
           setDevicesData(devicesData.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
@@ -160,7 +163,7 @@ const Devices = () => {
             transition: Bounce,
           });
         } finally {
-          // setLoading(false);
+          setLoading(false);
         }
         Swal.fire({
           title: "Deleted!",
@@ -177,9 +180,9 @@ const Devices = () => {
 
   return (
     <div className='main-page'>
-      {/* {loading && <div className="loader">
+      {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
-      </div>} */}
+      </div>}
       <div className='main-page-header'>
         <input type="text" name='search' id='search' placeholder='&#128269; Search here' className='search-input' value={search} onChange={(e)=>setSearch(e.target.value)}/>
       </div>

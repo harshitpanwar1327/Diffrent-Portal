@@ -3,7 +3,7 @@ import "./support.css"
 import API from '../../util/Api'
 import {toast, Bounce} from 'react-toastify'
 import {v4 as uuidv4} from 'uuid'
-// import HashLoader from "react-spinners/HashLoader"
+import HashLoader from "react-spinners/HashLoader"
 
 const Support = () => {
   const issuesList = ["Application crashes on launch",
@@ -39,6 +39,7 @@ const Support = () => {
   let [groupData, setGroupData] = useState([]);
   let [deviceData, setDeviceData] = useState([]);
 
+  let userId = sessionStorage.getItem('userId');
   const [groupID, setGroupID] = useState("");
   const [deviceName, setDeviceName] = useState("");
   const [issueType, setIssueType] = useState("");
@@ -47,12 +48,12 @@ const Support = () => {
   const [urgency, setUrgency] = useState("");
 
   let fileInputRef = useRef();
-  // const [loading, setLoading] = useState(false);
+  let [loading, setLoading] = useState(false);
 
   let fetchGroupName = async () => {
     try {
-      let fetchGroup = await API.get('/policy/fetch-group/');
-      setGroupData(fetchGroup.data);
+      let response = await API.get('/policy/get-group/');
+      setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     }
@@ -60,9 +61,12 @@ const Support = () => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       fetchGroupName();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -71,7 +75,8 @@ const Support = () => {
     setGroupID(selectedGroupID);
 
     try {
-      let response = await API.get(`/devices/fetch-by-group/${selectedGroupID}`);
+      setLoading(true);
+      let response = await API.get(`/devices/get-devices/${selectedGroupID}`);
       setDeviceData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -85,7 +90,9 @@ const Support = () => {
         progress: undefined,
         theme: "light",
         transition: Bounce,
-      });
+      })
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -95,8 +102,9 @@ const Support = () => {
     let formData = new FormData();
     let ticketID = uuidv4();
 
-    formData.append("ticketID", ticketID);
-    formData.append("groupID", groupID);
+    formData.append("userId", userId);
+    formData.append("ticketId", ticketID);
+    formData.append("groupId", groupID);
     formData.append("deviceName", deviceName);
     formData.append("issueType", issueType);
     formData.append("description", description);
@@ -104,7 +112,7 @@ const Support = () => {
     formData.append("urgency", urgency);
 
     try {
-      // setLoading(true);
+      setLoading(true);
       let response = await API.post("/support/raise-ticket/", formData, {
         "Content-type": "multipart/form-data"
       });
@@ -141,15 +149,15 @@ const Support = () => {
         transition: Bounce
       });
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }
 
   return (
     <form className="support-form" onSubmit={handleSubmit}>
-      {/* {loading && <div className="loader">
+      {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
-      </div>} */}
+      </div>}
       <h2 className="support-heading">Technical Support Request</h2>
       <div className="support-row">
         <label htmlFor="groupName" className="support-label">Group Name: </label>

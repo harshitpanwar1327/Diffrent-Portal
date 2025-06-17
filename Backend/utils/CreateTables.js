@@ -5,7 +5,8 @@ const users = `CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    organization VARCHAR(50)
+    organization VARCHAR(50),
+    created_At DATETIME DEFAULT CURRENT_TIMESTAMP
 );`;
 
 //groupDetails Table
@@ -18,7 +19,7 @@ const groupDetails = `CREATE TABLE IF NOT EXISTS groupDetails (
 );`;
 
 //Devices Table
-const devices = `CREATE TABLE IF NOT EXISTS Devices (
+const devices = `CREATE TABLE IF NOT EXISTS devices (
     deviceId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT NOT NULL,
     groupId INT NOT NULL,
@@ -27,12 +28,13 @@ const devices = `CREATE TABLE IF NOT EXISTS Devices (
     macAddress VARCHAR(30) UNIQUE NOT NULL,
     ipAddress VARCHAR(45),
     licenseKey VARCHAR(255),
+    lastActive DATETIME,
     FOREIGN KEY (userId) REFERENCES users(id)
         ON DELETE CASCADE
 );`;
 
 //Policy Table
-const policyDetails = `CREATE TABLE IF NOT EXISTS Policy (
+const policyDetails = `CREATE TABLE IF NOT EXISTS policy (
     policyId INT AUTO_INCREMENT PRIMARY KEY,
     groupId INT NOT NULL,
     usb BOOLEAN NOT NULL,
@@ -45,7 +47,7 @@ const policyDetails = `CREATE TABLE IF NOT EXISTS Policy (
 );`;
 
 //Config Table
-const configDetails = `CREATE TABLE IF NOT EXISTS Config(
+const configDetails = `CREATE TABLE IF NOT EXISTS config(
     configId INT AUTO_INCREMENT PRIMARY KEY,
     groupId INT NOT NULL,
     organization VARCHAR(30),
@@ -64,25 +66,25 @@ const configDetails = `CREATE TABLE IF NOT EXISTS Config(
 );`;
 
 //License Table
-const licenseDetails = `CREATE TABLE IF NOT EXISTS License (
+const licenseDetails = `CREATE TABLE IF NOT EXISTS license (
     licenseId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT NOT NULL,
-    licenseKey VARCHAR(255),
+    licenseKey VARCHAR(255) NOT NULL,
     FOREIGN KEY (userId) REFERENCES users(id)
         ON DELETE CASCADE
 )`;
 
 //SupportDetails Table
-const supportDetails = `CREATE TABLE IF NOT EXISTS Support (
+const supportDetails = `CREATE TABLE IF NOT EXISTS support (
     userId INT NOT NULL,
-    ticketID VARCHAR(36) PRIMARY KEY,
-    groupID VARCHAR(4)  NOT NULL,
+    ticketId VARCHAR(36) PRIMARY KEY,
+    groupId INT NOT NULL,
     deviceName VARCHAR(50)  NOT NULL,
     issueType VARCHAR(100) NOT NULL,
     description LONGTEXT  NOT NULL,
     screenshot LONGTEXT,
     urgency VARCHAR(10),
-    FOREIGN KEY (userId) REFERENCES users(userId)
+    FOREIGN KEY (userId) REFERENCES users(id)
         ON DELETE CASCADE
 );`;
 

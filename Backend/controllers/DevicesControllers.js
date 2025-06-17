@@ -11,19 +11,19 @@ export const getDevices = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 };
 
 export const getDevicesByGroup = async (req, res) => {
-    let {groupID} = req.params;
+    let {groupId} = req.params;
 
-    if(!groupID) {
-        return res.status(400).json({success: false, message: "Group not found."});
+    if(!groupId) {
+        return res.status(400).json({success: false, message: "Group not found!"});
     }
 
     try {
-        let response = await getDevicesByGroupLogic(groupID);
+        let response = await getDevicesByGroupLogic(groupId);
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -31,19 +31,19 @@ export const getDevicesByGroup = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
 
 export const manageDeviceGroup = async (req, res) => {
-    let {groupID} = req.params;
+    let {groupId} = req.params;
 
-    if(!groupID) {
+    if(!groupId) {
         return res.status(400).json({success: false, message: "Group not found."});
     }
 
     try {
-        let response = await manageDeviceGroupLogic(groupID);
+        let response = await manageDeviceGroupLogic(groupId);
         if(response.success) {
             return res.status(200).json(response);
         } else {
@@ -65,7 +65,7 @@ export const deviceCount = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
 

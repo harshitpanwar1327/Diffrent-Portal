@@ -3,7 +3,7 @@ import './editPolicy.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
 import {useParams} from 'react-router-dom'
-// import HashLoader from "react-spinners/HashLoader"
+import HashLoader from "react-spinners/HashLoader"
 
 const EditPolicy = ({setOpenModal, setPolicy}) => {
   let [usb, setUsb] = useState(false);
@@ -14,11 +14,11 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   let {groupID} = useParams();
 
   let [prevData, setPrevData] = useState([]);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchPolicyDetails = async () => {
     try {
-      let response = await API.get(`/policy/fetch-policy/${groupID}`);
+      let response = await API.get(`/policy/get-policy/${groupID}`);
       setPrevData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
@@ -27,9 +27,12 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       fetchPolicyDetails();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false)
     }
   }, [groupID]);
 
@@ -43,9 +46,12 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       fetchPrevData();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, [prevData]);
 
@@ -62,7 +68,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
     }
 
     try {
-      // setLoading(true);
+      setLoading(true);
       let response = await API.post("/policy/update-policy/", policy);
 
       setPolicy([policy]);
@@ -91,16 +97,16 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
         transition: Bounce
       });
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setOpenModal(false);
     }
   }
 
   return (
     <div className='overlay' onClick={()=>setOpenModal(false)}>
-      {/* {loading && <div className="loader">
+      {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
-      </div>} */}
+      </div>}
       <div className='add-policy-popup' onClick={(e)=>e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
         <form className="policy-form" onSubmit={handlePolicy}>

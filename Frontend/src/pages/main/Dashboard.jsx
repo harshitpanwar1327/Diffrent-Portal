@@ -10,9 +10,10 @@ import One from '../../assets/dashboard/One.png'
 import Two from '../../assets/dashboard/two.png'
 import Three from '../../assets/dashboard/Three.png'
 import Four from '../../assets/dashboard/Four.png'
+import HashLoader from "react-spinners/HashLoader"
 
-const MyPie = ({ data /* see data tab */ }) => (
-    <ResponsivePie /* or Pie for fixed dimensions */
+const MyPie = ({ data }) => (
+    <ResponsivePie
         data={data}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
         innerRadius={0.5}
@@ -106,6 +107,7 @@ const Dashboard = () => {
   let [retiredDevices, setRetiredDevices] = useState(0);
   let [groupData, setGroupData] = useState([]);
   let [licenseData, setLicenseData] = useState([]);
+  let [loading, setLoading] = useState(false);
 
   const fetchDeviceCount = async () => {
     try {
@@ -136,10 +138,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       fetchDeviceCount();
       fetchLicenseCount();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, [])
 
@@ -206,13 +211,15 @@ const Dashboard = () => {
         labels: {
           show: false
         }
-      
       },
     },
   }
 
   return (
     <div className='main-page'>
+      {loading && <div className="loader">
+        <HashLoader color="#6F5FE7"/>
+      </div>}
       <h2 className='dashboard-heading'>DASHBOARD</h2>
       <div className="dashboard-page">
         <div className="system-summary">

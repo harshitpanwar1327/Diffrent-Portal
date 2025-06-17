@@ -3,12 +3,14 @@ import './manageDevices.css'
 import API from '../util/Api'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
+import HashLoader from "react-spinners/HashLoader"
 
 const ManageDevices = ({setOpenModal, groupID}) => {
   let [search, setSearch] = useState('');
   let [devicesData, setDevicesData] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [loading, setLoading] = useState(false);
 
   let filteredData = devicesData.filter(data => data?.deviceName?.toLowerCase().includes(search.toLowerCase()) || data?.macAddress?.toLowerCase().includes(search.toLowerCase()) || data?.ipAddress?.toLowerCase().includes(search.toLowerCase()));
 
@@ -18,15 +20,22 @@ const ManageDevices = ({setOpenModal, groupID}) => {
 
   const fetchDevices = async () => {
     try {
-      let response = await API.get(`/devices/manage-device-group/${groupID}`);
+      let response = await API.get(`/devices/manage-group/${groupID}`);
       setDevicesData(response.data.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message || error);
     }
   }
 
   useEffect(()=>{
-    fetchDevices();
+    try {
+      setLoading(true);
+      fetchDevices();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }, [groupID]);
 
   const handleGroupAllocation = async (data) => {
@@ -36,8 +45,11 @@ const ManageDevices = ({setOpenModal, groupID}) => {
     }
 
     try {
+      setLoading(true);
       let response = await API.put(`/devices/update-group/`, groupInfo);
+
       fetchDevices();
+
       toast.success('Device added to the group successfully', {
         position: "top-center",
         autoClose: 1800,
@@ -62,6 +74,8 @@ const ManageDevices = ({setOpenModal, groupID}) => {
         theme: "dark",
         transition: Bounce,
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -71,6 +85,9 @@ const ManageDevices = ({setOpenModal, groupID}) => {
 
   return (
     <div className='overlay' onClick={() => setOpenModal(false)}>
+      {loading && <div className="loader">
+        <HashLoader color="#6F5FE7"/>
+      </div>}
       <div className="manage-devices-popup" onClick={(e) => e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
         <div className='main-page-header'>

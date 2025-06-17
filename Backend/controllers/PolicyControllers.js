@@ -2,13 +2,13 @@ import { GroupDetails, PolicyDetails } from "../models/PolicyModels.js";
 import { addGroupLogic, getGroupLogic, getGroupByIdLogic, updateGroupLogic, deleteGroupLogic, updatePolicyLogic, getPolicyLogic } from "../services/PolicyServices.js";
 
 export const addGroup = async (req, res) => {
-    const { groupID, groupName } = req.body;
+    const { userId, groupName } = req.body;
 
-    if (!groupID || !groupName) {
-        return res.status(400).json({ success: false, message: "All required fields must be filled." });
+    if (!userId || !groupName) {
+        return res.status(400).json({ success: false, message: "Fill all the required fields!" });
     }
 
-    const groupData = new GroupDetails({ groupID, groupName });
+    const groupData = new GroupDetails({ userId, groupName });
 
     try {
         const response = await addGroupLogic(groupData);
@@ -19,29 +19,29 @@ export const addGroup = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 };
 
 export const getGroup = async (req, res) => {
     try {
-        const result = await getGroupLogic();
-        if (result.success) {
-            res.status(200).json(result.data);
+        const response = await getGroupLogic();
+        if (response.success) {
+            res.status(200).json(response);
         } else {
-            res.status(400).json({ message: result.message });
+            res.status(400).json(response);
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
 
 export const getGroupById = async (req, res) => {
-    let {groupID} = req.params;
+    let {groupId} = req.params;
     
     try {
-        const result = await getGroupByIdLogic(groupID);
+        const result = await getGroupByIdLogic(groupId);
         if (result.success) {
             res.status(200).json(result.data);
         } else {
@@ -49,18 +49,18 @@ export const getGroupById = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
 
 export const updateGroup = async (req, res) => {
-    let {groupID, groupName} = req.body;
+    let {groupId, groupName} = req.body;
 
-    if (!groupID || !groupName) {
-        return res.status(400).json({success: false, message: "All fields not filled!"});
+    if (!groupId || !groupName) {
+        return res.status(400).json({success: false, message: "Fill all the required fields!"});
     }
 
-    const groupData = new GroupDetails({ groupID, groupName });
+    const groupData = new GroupDetails({ groupId, groupName });
 
     try {
         const response = await updateGroupLogic(groupData);
@@ -71,7 +71,7 @@ export const updateGroup = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
 
@@ -79,7 +79,7 @@ export const deleteGroup = async (req, res) => {
     let {groupID} = req.params;
     
     if(!groupID) {
-        return res.status(400).json({success: false, message: "Element not found."});
+        return res.status(400).json({success: false, message: "GroupId not found!"});
     }
 
     try {
@@ -91,14 +91,14 @@ export const deleteGroup = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
 
 export const updatePolicy = async (req,res) => {
-    const {groupID, usb, mtp, printing, browserUpload, bluetooth} = req.body;
+    const {groupId, usb, mtp, printing, browserUpload, bluetooth} = req.body;
 
-    const policyData = new PolicyDetails({groupID, usb, mtp, printing, browserUpload, bluetooth});
+    const policyData = new PolicyDetails({groupId, usb, mtp, printing, browserUpload, bluetooth});
 
     try {
         const response = await updatePolicyLogic(policyData);
@@ -114,14 +114,14 @@ export const updatePolicy = async (req,res) => {
 };
 
 export const getPolicy = async (req, res) => {
-    let {groupID} = req.params;
+    let {groupId} = req.params;
 
-    if(!groupID) {
+    if(!groupId) {
         return res.status(400).json({success: false, message: "GroupID not found!"})
     }
 
     try {
-        let response = await getPolicyLogic(groupID);
+        let response = await getPolicyLogic(groupId);
         if(response.success) {
             return res.status(200).json(response);
         } else {

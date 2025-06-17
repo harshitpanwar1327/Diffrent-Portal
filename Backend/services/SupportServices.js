@@ -2,9 +2,10 @@ import { pool } from '../config/Database.js';
 
 export const ticketDetailsLogic = async (supportData) => {
     try {
-        const SupportQuery = `INSERT INTO Support ( ticketID, groupID, deviceName, issueType, 
-        description, screenshot, urgency) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        const SupportValues = [ 
+        const query = `INSERT INTO Support (userId, ticketID, groupID, deviceName, issueType, 
+        description, screenshot, urgency) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        const values = [ 
+            supportData.userId,
             supportData.ticketID, 
             supportData.groupID, 
             supportData.deviceName, 
@@ -13,11 +14,11 @@ export const ticketDetailsLogic = async (supportData) => {
             supportData.screenshot, 
             supportData.urgency
         ];
-        await pool.query(SupportQuery, SupportValues);
+        await pool.query(query, values);
 
-        return { success: true, message: "Data Saved Successfully!" };
+        return { success: true, message: "Ticket Raised Successfully" };
     } catch (error) {
         console.error("Error during data insertion:", error);
-        return { success: false, message: "Data not Saved! Please try again..." };
+        return { success: false, message: "Ticket not raised!" };
     }
 };

@@ -26,7 +26,9 @@ const Login = () => {
     try{
       setLoading(true);
       let response = await API.post("/users/login", userData);
-      let token = response.data.data;
+      let token = response.data.token;
+      let userId = response.data.userId;
+      sessionStorage.setItem("userId", userId);
       sessionStorage.setItem("AuthToken", token);
       sessionStorage.setItem("isAuthenticated", true);
 

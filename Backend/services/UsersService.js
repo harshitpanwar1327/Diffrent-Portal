@@ -16,7 +16,7 @@ export const registerLogic = async (registerData) => {
         return {success: true, message: "User registered successfully."}
     } catch (error) {
         console.log(error);
-        return {success: false, message: "User not registered."}
+        return {success: false, message: "User not registered!"}
     }
 }
 
@@ -24,12 +24,12 @@ export const loginLogic = async (email, password) => {
     try {
         let [rows] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
         if(rows.length===0) {
-            return {success: false, message: "User not found."}
+            return {success: false, message: "User not found!"}
         }
 
         let passwordCompare = await bcrypt.compare(password, rows[0].password);
         if(!passwordCompare) {
-            return {success: false, message: "Password not match."};
+            return {success: false, message: "Password not match!"};
         }
 
         let token = jwt.sign(
@@ -38,9 +38,9 @@ export const loginLogic = async (email, password) => {
             {'expiresIn': '3h'}
         );
 
-        return {success: true, message: "User login successfully", data: token};
+        return {success: true, message: "User login successfully", token: token, userId: rows[0].id};
     } catch (error) {
         console.log(error);
-        return {success: false, message: "User not found."};
+        return {success: false, message: "User not found!"};
     }
 }

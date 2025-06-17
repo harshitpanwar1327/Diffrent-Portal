@@ -9,6 +9,7 @@ import API from '../../util/Api'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 import {toast, Bounce} from 'react-toastify'
+import HashLoader from "react-spinners/HashLoader"
 
 const DeviceScreenSecurity = () => {
   const [openGroupModal, setOpenGroupModal] = useState(false);
@@ -19,6 +20,7 @@ const DeviceScreenSecurity = () => {
   const [selectedGroupID, setSelectedGroupID] = useState('');
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [loading, setLoading] = useState(false);
 
   let filteredData = groupData.filter(data => data.groupName.toLowerCase().includes(search.toLowerCase()) || data.groupID.toLowerCase().includes(search.toLowerCase()));
 
@@ -28,8 +30,8 @@ const DeviceScreenSecurity = () => {
 
   const getGroupData = async () => {
     try {
-      const response = await API.get(`/policy/fetch-group/`);
-      setGroupData(response.data);
+      const response = await API.get(`/policy/get-group/`);
+      setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     }
@@ -37,9 +39,12 @@ const DeviceScreenSecurity = () => {
   
   useEffect(() => {
     try {
+      setLoading(true);
       getGroupData();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -65,7 +70,7 @@ const DeviceScreenSecurity = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // setLoading(true);
+          setLoading(true);
           let response = await API.delete(`/policy/delete-group/${groupID}`);
           setGroupData(groupData.filter((prev) => prev.groupID !== groupID));
         } catch (error) {
@@ -82,7 +87,7 @@ const DeviceScreenSecurity = () => {
             transition: Bounce,
           });
         } finally {
-          // setLoading(false);
+          setLoading(false);
         }
         Swal.fire({
           title: "Deleted!",
@@ -99,6 +104,9 @@ const DeviceScreenSecurity = () => {
 
   return (
     <div className="main-page">
+      {loading && <div className="loader">
+        <HashLoader color="#6F5FE7"/>
+      </div>}
       <div className="main-page-header">
         <input type="text" name="search" id="search" placeholder="&#128269; Search here" className="search-input" value={search} onChange={(e) => setSearch(e.target.value)}/>
         <button onClick={() => setOpenGroupModal(true)} className="create-group-button">+ Create Group</button>

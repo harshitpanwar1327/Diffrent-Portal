@@ -3,11 +3,13 @@ import './manageConfig.css'
 import EditConfig from '../../../modals/EditConfig'
 import API from '../../../util/Api'
 import {useParams} from 'react-router-dom'
+import HashLoader from "react-spinners/HashLoader"
 
 const ManageConfig = () => {
   let [openModal, setOpenModal] = useState(false);
   let {groupID} = useParams();
   let [configData, setConfigData] = useState([]);
+  let [loading, setLoading] = useState(false);
 
   const fetchConfigData = async () => {
     try {
@@ -20,9 +22,12 @@ const ManageConfig = () => {
 
   useEffect(()=>{
     try {
+      setLoading(true);
       fetchConfigData();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, [groupID]);
 
@@ -38,6 +43,9 @@ const ManageConfig = () => {
 
   return (
     <div className='main-page'>
+      {loading && <div className="loader">
+        <HashLoader color="#6F5FE7"/>
+      </div>}
       <div className='policy-header'>
         <h4 className='groupID-heading'>MANAGE CONFIG- GroupID: {groupID}</h4>
         <button onClick={() => setOpenModal(true)} className='create-group-button'>Edit Config</button>

@@ -6,7 +6,7 @@ import API from '../../util/Api'
 import Swal from 'sweetalert2'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
-// import HashLoader from "react-spinners/HashLoader"
+import HashLoader from "react-spinners/HashLoader"
 
 const HealthStatus = () => {
   let [groupData, setGroupData] = useState([]);
@@ -17,12 +17,12 @@ const HealthStatus = () => {
   let [currentPage, setCurrentPage] = useState(1);
   let [currentTab, setCurrentTab] = useState(0);
   let itemsPerPage = 10;
-  // const [loading, setLoading] = useState(false);
+  let [loading, setLoading] = useState(false);
 
   const fetchGroupName = async () => {
     try {
-      let fetchGroup = await API.get('/policy/fetch-group/');
-      setGroupData(fetchGroup.data);
+      let response = await API.get('/policy/get-group/');
+      setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     }
@@ -30,7 +30,7 @@ const HealthStatus = () => {
 
   const fetchAllDevices = async () => {
     try {
-      let response = await API.get("/devices/fetch-devices/");
+      let response = await API.get("/devices/get-devices/");
       let healthData = response.data.data;
       
       const now = new Date();
@@ -68,10 +68,13 @@ const HealthStatus = () => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       fetchGroupName();
       fetchAllDevices();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -79,7 +82,8 @@ const HealthStatus = () => {
     setGroupID(e.target.value);
     
     try {
-      let response = await API.get(`/devices/fetch-by-group/${e.target.value}`);
+      setLoading(true);
+      let response = await API.get(`/devices/get-devices/${e.target.value}`);
       let healthData = response.data.data;
       
       setCurrentPage(1);
@@ -125,6 +129,8 @@ const HealthStatus = () => {
         theme: "light",
         transition: Bounce,
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -140,7 +146,7 @@ const HealthStatus = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // setLoading(true);
+          setLoading(true);
           let response = await API.delete(`/policy/delete-device/${macAddress}`);
           setRetired(retired.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
@@ -157,7 +163,7 @@ const HealthStatus = () => {
             transition: Bounce,
           });
         } finally {
-          // setLoading(false);
+          setLoading(false);
         }
         Swal.fire({
           title: "Deleted!",
@@ -189,13 +195,13 @@ const HealthStatus = () => {
   
   return (
     <div className='main-page'>
-      {/* {loading && <div className="loader">
+      {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
-      </div>} */}
+      </div>}
       <div className="main-page-header">
         <select name="group" id="group" className='select-dropdown' value={groupID} onChange={handleGroupChange} required>
           <option value="">Select Group</option>
-          {groupData.map((data, index) => (
+          {groupData?.map((data, index) => (
             <option key={index} value={data.groupID}>{data.groupName}</option>
           ))}
         </select>

@@ -6,14 +6,15 @@ import {getCurrentDate} from '../../util/DateUtil'
 import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
-// import HashLoader from "react-spinners/HashLoader"
+import HashLoader from "react-spinners/HashLoader"
 
 const LicenseManagement = () => {
-  let [licenseNo, setLicenseNo] = useState('');
+  let [licenseKey, setLicenseKey] = useState('');
   let [licenseData, setLicenseData] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
-  // const [loading, setLoading] = useState(false);
+  let userId = sessionStorage.getItem('userId');
+  let [loading, setLoading] = useState(false);
 
   let getLicenseData = async () => {
     try {
@@ -38,23 +39,24 @@ const LicenseManagement = () => {
     (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
   );
 
-  const handleAdd = async () => {
-    let addLicense = {
-      licenseKey: licenseNo
-    }
-
+  const handleActivate = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
+      let addLicense = {
+        licenseKey
+      }
+
       let response = await API.post('/license/validate/', addLicense);
 
       let license = {
+        userId,
         licenseKey: addLicense.licenseKey
       }
       
-      let saveResponse = await API.post('/license/active-license/', license);
+      let saveResponse = await API.post('/license/activate-license/', license);
 
       setLicenseData([...licenseData, decodeLicenseCodeWithToken(license)]);
-      setLicenseNo('');
+      setLicenseKey('');
 
       toast.success('License Added Successfully', {
         position: "top-center",
@@ -80,7 +82,7 @@ const LicenseManagement = () => {
         transition: Bounce
       });
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }
 
@@ -90,12 +92,12 @@ const LicenseManagement = () => {
 
   return (
     <div className='main-page'>
-      {/* {loading && <div className="loader">
+      {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
-      </div>} */}
+      // </div>}
       <div className='licence-header'>
-        <input type="text" placeholder='Enter your licence key' className='add-licence-input' value={licenseNo} onChange={(e) => setLicenseNo(e.target.value)}/>
-        <button className='create-group-button' onClick={handleAdd}>Activate License</button>
+        <input type="text" placeholder='Enter your licence key' className='add-licence-input' value={licenseKey} onChange={(e) => setLicenseKey(e.target.value)}/>
+        <button className='create-group-button' onClick={handleActivate}>Activate License</button>
       </div>
 
       <div className="group-table-container">

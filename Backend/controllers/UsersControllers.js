@@ -5,7 +5,7 @@ export const register = async (req, res) => {
     let {email, password, organization} = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({success: false, message: "All required fields are not filled."});
+        return res.status(400).json({success: false, message: "Fill all the required fields"});
     }
 
     let registerData = new UsersModels({email, password, organization});
@@ -27,7 +27,7 @@ export const login = async (req, res) => {
     let {email, password} = req.body;
 
     if(!email || !password) {
-        return res.status(400).json({success: false, message: "Email or password not found."});
+        return res.status(400).json({success: false, message: "Email or password not found"});
     }
 
     try {

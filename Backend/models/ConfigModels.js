@@ -1,6 +1,6 @@
 export class ConfigModels{
     constructor(configData){
-        this.id = configData.id;
+        this.groupId = configData.groupId;
         this.organization = configData.organization;
         this.macAddress = configData.macAddress;
         this.ipAddress = configData.ipAddress;

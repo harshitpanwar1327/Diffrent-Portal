@@ -2,7 +2,7 @@ import {pool} from '../config/Database.js';
 
 export const editConfigLogic = async (configData) => {
     try {
-        const query = `UPDATE Config SET organization = ?, macAddress = ?, ipAddress = ?, date_enabled = ?, tagline_enabled = ?, layout = ?, qr_top_left = ?, qr_top_right = ?, qr_bottom_left = ?, qr_bottom_right = ?, whitelist_processes = ? WHERE groupID = ?`;
+        const query = `UPDATE Config SET organization = ?, macAddress = ?, ipAddress = ?, date_enabled = ?, tagline_enabled = ?, layout = ?, qr_top_left = ?, qr_top_right = ?, qr_bottom_left = ?, qr_bottom_right = ?, whitelist_processes = ? WHERE groupId = ?`;
 
         const values = [
             configData.organization,
@@ -16,23 +16,23 @@ export const editConfigLogic = async (configData) => {
             configData.qr_bottom_left,
             configData.qr_bottom_right,
             configData.whitelist_processes,
-            configData.id
+            configData.groupId
         ];
         await pool.query(query,values);
-        return {success: true, message: "Data Saved Successfully"};
+        return {success: true, message: "Config updated successfully"};
         
     } catch (error) {
         console.error("Error during data insertion:", error);
-        return { success: false, message: "Data not Saved! Please try again..." };
+        return { success: false, message: "Config not updated!" };
     }
 }
 
-export const getConfigLogic = async (groupID) => {
+export const getConfigLogic = async (groupId) => {
     try {
-        let [rows] = await pool.query(`SELECT * FROM config WHERE groupID = ?`, [groupID]);
+        let [rows] = await pool.query(`SELECT * FROM config WHERE groupID = ?`, [groupId]);
         return {success: true, data: rows};
     } catch (error) {
         console.error("Error during data insertion:", error);
-        return {success: false, message: "Config details not found."};
+        return {success: false, message: "Config details not found!"};
     }
 }

@@ -2,13 +2,13 @@ import { ConfigModels } from "../models/ConfigModels.js";
 import { editConfigLogic, getConfigLogic } from "../services/ConfigServices.js";
 
 export const editConfig = async (req, res) => {
-    let {id, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes} = req.body;
+    let {groupId, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes} = req.body;
 
-    if (!id) {
-        return res.status(400).json({ success: false, message: "GroupID not found." });
+    if (!groupId || !macAddress || !ipAddress || !date_enabled || !tagline_enabled || !layout || !qr_top_left || !qr_top_right || !qr_bottom_left || !qr_bottom_right) {
+        return res.status(400).json({ success: false, message: "Fill all the required fields." });
     }
 
-    let configData = new ConfigModels({id, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes});
+    let configData = new ConfigModels({groupId, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes});
 
     try {
         let response = await editConfigLogic(configData);
@@ -24,14 +24,14 @@ export const editConfig = async (req, res) => {
 };
 
 export const getConfig = async (req, res) => {
-    let {groupID} = req.params;
+    let {groupId} = req.params;
 
-    if(!groupID) {
+    if(!groupId) {
         return res.status(400).json({success: false, message: "GroupID not found."});
     }
 
     try {
-        let response = await getConfigLogic(groupID);
+        let response = await getConfigLogic(groupId);
         if(response.success){
             return res.status(200).json(response);
         } else {

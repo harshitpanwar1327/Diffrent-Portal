@@ -3,6 +3,7 @@ import "./editConfig.css"
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
 import {useParams} from 'react-router-dom'
+import HashLoader from "react-spinners/HashLoader"
 
 const EditConfig = ({setOpenModal, setConfigData}) => {
   const {groupID} = useParams();
@@ -25,6 +26,7 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
   const [vscode, setVscode] = useState(false);
   const [notepad, setNotepad] = useState(false);
   const [prevData, setPrevData] = useState([]);
+  let [loading, setLoading] = useState(false);
 
   const fetchConfigData = async () => {
     try {
@@ -37,9 +39,12 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
 
   useEffect(()=>{
     try {
+      setLoading(true);
       fetchConfigData();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, [groupID]);
 
@@ -97,6 +102,8 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
     }
 
     try {
+      setLoading(true);
+
       let response = await API.put(`/config/edit-config/`, configData);
 
       setConfigData([configData]);
@@ -125,12 +132,16 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
         transition: Bounce
       });
     } finally {
+      setLoading(false);
       setOpenModal(false);
     }
   }
 
   return (
     <div className='overlay' onClick={()=>setOpenModal(false)}>
+      {loading && <div className="loader">
+        <HashLoader color="#6F5FE7"/>
+      </div>}
       <div className='make-config-container' onClick={(e)=>e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
         <h3 className='policy-modal-heading'>Configuration Settings</h3>

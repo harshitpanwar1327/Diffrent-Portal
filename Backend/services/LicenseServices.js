@@ -37,16 +37,16 @@ export const decodeLicenseCodeWithToken = (licenseKey) => {
   }
 };
 
-export const activateLicense = async (licenseKey) => {
+export const activateLicenseLogic = async (licenseData) => {
   try {
-    let query = `INSERT INTO license VALUES (?);`;
-    let values = [licenseKey];
+    let query = `INSERT INTO license(userId, licenseKey) VALUES (?, ?);`;
+    let values = [licenseData.userId, licenseData.licenseKey];
 
     await pool.query(query, values);
-    return { success: true, message: "License activated successfully." };
+    return { success: true, message: "License activated successfully" };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "License not activated." };
+    return { success: false, message: "License not activated!" };
   }
 };
 
@@ -56,6 +56,6 @@ export const getLicenseLogic = async () => {
     return { success: true, data: rows };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Active license not found." };
+    return { success: false, message: "Active license not found!" };
   }
 };

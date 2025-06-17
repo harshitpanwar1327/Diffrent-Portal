@@ -6,7 +6,7 @@ export const getDevicesLogic =  async () => {
         return { success: true, data: rows };
     } catch (error) {
         console.log("Error fetching group data:", error);
-        return { success: false, message: "Could not retrieve data." };
+        return { success: false, message: "Could not retrieve device data." };
     }
 };
 
@@ -16,7 +16,7 @@ export const getDevicesByGroupLogic = async (groupID) => {
         return { success: true, data: rows };
     } catch (error) {
         console.log("Error fetching group data:", error);
-        return { success: false, message: "Could not retrieve data." };
+        return { success: false, message: "Could not retrieve device data." };
     }
 }
 
@@ -26,12 +26,11 @@ export const manageDeviceGroupLogic = async (groupID) => {
         return { success: true, data: rows };
     } catch (error) {
         console.log("Error fetching group data:", error);
-        return { success: false, message: "Could not retrieve data." };
+        return { success: false, message: "Could not retrieve device data." };
     }
 }
 
 export const deviceCountLogic = async () => {
-    
     try {
         let [totalDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices;`);
         let [healthyDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive >= NOW() - INTERVAL 3 DAY`);
