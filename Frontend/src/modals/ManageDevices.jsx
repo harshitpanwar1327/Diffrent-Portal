@@ -39,6 +39,10 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
     }
   }, [groupId]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
   const handleGroupAllocation = async (data) => {
     let groupInfo = {
       macAddress: data.macAddress,

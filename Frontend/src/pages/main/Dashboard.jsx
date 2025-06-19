@@ -111,7 +111,6 @@ const Dashboard = () => {
 
   const fetchDeviceCount = async () => {
     try {
-      setLoading(true);
       let response = await API.get("/devices/device-count/");
       setTotalDevices(response.data.data?.totalDevices[0].count);
       setHealthyDevices(response.data.data?.healthyDevices[0].count);
@@ -120,14 +119,11 @@ const Dashboard = () => {
       setLicenseData(response.data.data?.licenseData);
     } catch (error) {
       console.log(error.response.data.message || error);
-    } finally {
-      setLoading(false);
     }
   }
 
   const fetchLicenseCount = async () => {
     try {
-      setLoading(true);
       let response = await API.get("/license/get-license/");
       let licenseKeys = response.data.data;
       setActiveLicense(licenseKeys.filter((data) => {
@@ -137,18 +133,23 @@ const Dashboard = () => {
       }).length);
     } catch (error) {
       console.log(error.response.data.message || error);
-    } finally {
-      setLoading(false);
     }
   }
 
   useEffect(() => {
-    try {
-      fetchDeviceCount();
-      fetchLicenseCount();
-    } catch (error) {
-      console.log(error);
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        await fetchDeviceCount();
+        await fetchLicenseCount();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
+
+    fetchDashboardData();
   }, [])
 
   //Bar chart

@@ -49,6 +49,10 @@ const DeviceScreenSecurity = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
   const handleManageDevice = (data) => {
     setOpenDevicesModal(true);
     setSelectedGroupID(data.groupId);
