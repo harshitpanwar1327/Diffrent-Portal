@@ -21,21 +21,21 @@ const ManagePolicy = () => {
 
   const fetchPolicyDetails = async () => {
     try {
+      setLoading(true);
       let response = await API.get(`/policy/get-policy/${groupId}`);
       setPolicy(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     try {
-      setLoading(true);
       fetchPolicyDetails();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, [groupId]);
 

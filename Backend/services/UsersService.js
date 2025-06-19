@@ -20,14 +20,14 @@ export const registerLogic = async (registerData) => {
     }
 }
 
-export const loginLogic = async (email, password) => {
+export const loginLogic = async (userData) => {
     try {
-        let [rows] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
+        let [rows] = await pool.query(`SELECT * FROM users WHERE email = ?`, [userData.email]);
         if(rows.length===0) {
             return {success: false, message: "User not found!"}
         }
 
-        let passwordCompare = await bcrypt.compare(password, rows[0].password);
+        let passwordCompare = await bcrypt.compare(userData.password, rows[0].password);
         if(!passwordCompare) {
             return {success: false, message: "Password not match!"};
         }

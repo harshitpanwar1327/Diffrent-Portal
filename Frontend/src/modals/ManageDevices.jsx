@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack'
 import HashLoader from "react-spinners/HashLoader"
 import {toast, Bounce} from 'react-toastify'
 
-const ManageDevices = ({setOpenModal, groupId}) => {
+const ManageDevices = ({setOpenModal, groupId, groupName}) => {
   let [search, setSearch] = useState('');
   let [devicesData, setDevicesData] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
@@ -21,28 +21,29 @@ const ManageDevices = ({setOpenModal, groupId}) => {
 
   const fetchDevices = async () => {
     try {
+      setLoading(true);
       let response = await API.get(`/devices/manage-group/${groupId}`);
       setDevicesData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(()=>{
     try {
-      setLoading(true);
       fetchDevices();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, [groupId]);
 
   const handleGroupAllocation = async (data) => {
     let groupInfo = {
       macAddress: data.macAddress,
-      groupId: data.groupId ? null : groupId
+      groupId: data.groupId ? null : groupId,
+      groupName: data.groupName ? null : groupName
     }
 
     try {

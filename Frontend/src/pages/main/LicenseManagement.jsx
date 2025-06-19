@@ -18,12 +18,15 @@ const LicenseManagement = () => {
 
   let getLicenseData = async () => {
     try {
+      setLoading(true);
       let getData = await API.get('/license/get-license/');
       let licenseKey = getData.data.data;
       let decodedData = licenseKey.map(decodeLicenseCodeWithToken);
       setLicenseData(decodedData);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   }
 

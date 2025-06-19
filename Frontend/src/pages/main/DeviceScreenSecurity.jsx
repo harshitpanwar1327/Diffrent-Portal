@@ -18,6 +18,7 @@ const DeviceScreenSecurity = () => {
   const [search, setSearch] = useState('');
   const [groupData, setGroupData] = useState([]);
   const [selectedGroupID, setSelectedGroupID] = useState('');
+  const [selectedGroupName, setSelectedGroupName] = useState('');
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
   let [loading, setLoading] = useState(false);
@@ -30,27 +31,28 @@ const DeviceScreenSecurity = () => {
 
   const getGroupData = async () => {
     try {
+      setLoading(true);
       const response = await API.get(`/policy/get-group/`);
       setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   };
   
   useEffect(() => {
     try {
-      setLoading(true);
       getGroupData();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
-  const handleManageDevice = (groupId) => {
+  const handleManageDevice = (data) => {
     setOpenDevicesModal(true);
-    setSelectedGroupID(groupId);
+    setSelectedGroupID(data.groupId);
+    setSelectedGroupName(data.groupName);
   }
 
   const handleEditGroup = (groupId) => {
@@ -133,7 +135,7 @@ const DeviceScreenSecurity = () => {
                   <td className="group-table-data">{data.groupId}</td>
                   <td className="group-table-data">{data.groupName}</td>
                   <td className="group-table-data">
-                    <button className="table-button device-btn" onClick={() => handleManageDevice(data.groupId)}>Manage Devices</button>
+                    <button className="table-button device-btn" onClick={() => handleManageDevice(data)}>Manage Devices</button>
                   </td>
                   <td className='group-table-data'>
                     <NavLink to={`/manage-policy/${data.groupId}`}><button className='table-button policy-btn'>Manage Policy</button></NavLink>
@@ -162,7 +164,7 @@ const DeviceScreenSecurity = () => {
         </Stack>
       </div>
       {openEditGroupModal && <EditGroup setOpenModal={setOpenEditGroupModal} groupId={selectedGroupID} setGroupData={setGroupData}/>}
-      {openDevicesModal && <ManageDevices setOpenModal={setOpenDevicesModal} groupId={selectedGroupID}/>}
+      {openDevicesModal && <ManageDevices setOpenModal={setOpenDevicesModal} groupId={selectedGroupID} groupName={selectedGroupName}/>}
     </div>
   );
 };

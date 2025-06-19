@@ -10,21 +10,21 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
 
     let fetchGroupDetails = async () => {
         try {
+            setLoading(true);
             let response = await API.get(`/policy/get-group/${groupId}`);
             setGroupName(response.data[0].groupName);
         } catch (error) {
             console.log(error.response.data.message || error);
+        } finally {
+            setLoading(false);
         }
     }
 
     useEffect(()=>{
         try {
-            setLoading(true);
             fetchGroupDetails();
         } catch (error) {
             console.log(error);
-        } finally {
-            setLoading(false);
         }
     }, []);
 

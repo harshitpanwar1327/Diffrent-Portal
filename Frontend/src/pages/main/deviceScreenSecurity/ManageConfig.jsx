@@ -13,21 +13,21 @@ const ManageConfig = () => {
 
   const fetchConfigData = async () => {
     try {
+      setLoading(true);
       let response = await API.get(`/config/get-config/${groupId}/`);
       setConfigData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(()=>{
     try {
-      setLoading(true);
       fetchConfigData();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, [groupId]);
 

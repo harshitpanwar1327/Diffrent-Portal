@@ -18,7 +18,7 @@ export const generateLicense = (req, res) => {
 
     res.status(200).json({ licenseCode, token });
   } catch (error) {
-    console.error("Error saving configuration:", error);
+    console.error("Error:", error);
     return res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 };
@@ -34,7 +34,7 @@ export const validateLicense = (req, res) => {
     const licenseData = decodeLicenseCodeWithToken(licenseKey);
     res.status(200).json(licenseData);
   } catch (error) {
-    console.error("Error saving configuration:", error);
+    console.error("Error:", error);
     return res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 };
@@ -56,7 +56,7 @@ export const activateLicense = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
@@ -70,7 +70,7 @@ export const getLicense = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }

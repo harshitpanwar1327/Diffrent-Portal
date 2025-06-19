@@ -18,7 +18,7 @@ export const register = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
@@ -30,15 +30,17 @@ export const login = async (req, res) => {
         return res.status(400).json({success: false, message: "Email or password not found"});
     }
 
+    const userData = new UsersModels({email, password});
+
     try {
-        let response = await loginLogic(email, password);
+        let response = await loginLogic(userData);
         if(response.success){
             return res.status(200).json(response);
         } else{
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

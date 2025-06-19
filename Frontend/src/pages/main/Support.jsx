@@ -52,21 +52,21 @@ const Support = () => {
 
   let fetchGroupName = async () => {
     try {
+      setLoading(true);
       let response = await API.get('/policy/get-group/');
       setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     try {
-      setLoading(true);
       fetchGroupName();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 

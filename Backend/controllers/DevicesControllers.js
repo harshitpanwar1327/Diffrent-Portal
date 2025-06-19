@@ -10,7 +10,7 @@ export const getDevices = async (req, res) => {
             res.status(400).json(result);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 };
@@ -30,7 +30,7 @@ export const getDevicesByGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
@@ -50,7 +50,7 @@ export const manageDeviceGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
@@ -64,19 +64,19 @@ export const deviceCount = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
 
 export const updateDeviceGroup = async (req, res) => {
-    let {macAddress, groupId} = req.body;
+    let {macAddress, groupId, groupName} = req.body;
 
     if(!macAddress) {
         return res.status(400).json({success: false, message:"MAC Address not found."});
     }
 
-    let deviceData = new DevicesModels({macAddress, groupId});
+    let deviceData = new DevicesModels({macAddress, groupId, groupName});
 
     try {
         let response = await updateDeviceGroupLogic(deviceData);
@@ -86,7 +86,7 @@ export const updateDeviceGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
@@ -106,7 +106,7 @@ export const updateDeviceLicense = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
@@ -121,7 +121,7 @@ export const deallocateLicense = async (req, res) => {
     try {
         let response = await deallocateLicenseLogic(macAddress);
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
@@ -141,7 +141,7 @@ export const deleteDevice = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

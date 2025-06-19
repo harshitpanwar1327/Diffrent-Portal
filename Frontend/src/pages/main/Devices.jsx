@@ -25,31 +25,34 @@ const Devices = () => {
 
   const getDevices = async () => {
     try {
+      setLoading(true);
       let response = await API.get("/devices/get-devices/");
       setDevicesData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   }
 
   const getLicense = async () => {
     try {
+      setLoading(true);
       let response = await API.get("/license/get-license/");
       setLicense(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     try {
-      setLoading(true);
       getDevices();
       getLicense();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 

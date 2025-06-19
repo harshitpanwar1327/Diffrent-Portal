@@ -18,7 +18,7 @@ export const addGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 };
@@ -32,7 +32,7 @@ export const getGroup = async (req, res) => {
             res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
@@ -48,7 +48,7 @@ export const getGroupById = async (req, res) => {
             res.status(400).json({ message: result.message });
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
@@ -70,7 +70,7 @@ export const updateGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }
@@ -90,7 +90,7 @@ export const deleteGroup = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }

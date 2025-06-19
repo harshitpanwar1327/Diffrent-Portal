@@ -36,8 +36,8 @@ export const deviceCountLogic = async () => {
     try {
         let [totalDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices;`);
         let [healthyDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive >= NOW() - INTERVAL 3 DAY`);
-        let [retiredDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive > NOW ()- INTERVAL 30 DAY`);
-        let [groupData] = await pool.query(`SELECT groupId, COUNT(*) AS count FROM devices WHERE groupId IS NOT NULL GROUP BY groupId`);
+        let [retiredDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices WHERE lastActive < NOW ()- INTERVAL 30 DAY`);
+        let [groupData] = await pool.query(`SELECT groupName, COUNT(*) AS count FROM devices WHERE groupName IS NOT NULL GROUP BY groupName`);
         let [licenseData] = await pool.query(`SELECT licenseKey, COUNT(*) AS count FROM devices WHERE licenseKey IS NOT NULL GROUP BY licenseKey`);
 
         return {success: true, data : {
@@ -55,7 +55,7 @@ export const deviceCountLogic = async () => {
 
 export const updateDeviceGroupLogic = async (deviceData) => {
     try {
-        await pool.query(`UPDATE devices SET groupId = ? WHERE macAddress = ?`, [deviceData.groupId, deviceData.macAddress]);
+        await pool.query(`UPDATE devices SET groupId = ?, groupName = ? WHERE macAddress = ?`, [deviceData.groupId, deviceData.groupName, deviceData.macAddress]);
 
         return {success: true, message: "Group assigned successfully."};
     } catch (error) {

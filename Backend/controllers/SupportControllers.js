@@ -19,7 +19,7 @@ export const ticketDetails = async (req, res) => {
             return res.status(400).json(response);
         }
     } catch (error) {
-        console.error("Error saving configuration:", error);
+        console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

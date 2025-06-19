@@ -18,21 +18,21 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
 
   const fetchPolicyDetails = async () => {
     try {
+      setLoading(true);
       let response = await API.get(`/policy/get-policy/${groupId}`);
       setPrevData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     try {
-      setLoading(true);
       fetchPolicyDetails();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false)
     }
   }, [groupId]);
 
@@ -46,12 +46,9 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
 
   useEffect(() => {
     try {
-      setLoading(true);
       fetchPrevData();
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }, [prevData]);
 

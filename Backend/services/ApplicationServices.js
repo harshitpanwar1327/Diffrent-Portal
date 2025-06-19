@@ -6,11 +6,40 @@ export const insertDeviceLogic = async (deviceData) => {
         const [existingDevice] = await pool.query(`SELECT * FROM devices WHERE macAddress = ?`, [deviceData.macAddress]);
 
         if (existingDevice.length > 0) {
+            let current = new Date();
+            await pool.query(`UPDATE devices SET lastActive = ? WHERE macAddress = ?`, [current, deviceData.macAddress]);
+
             const groupID = existingDevice[0].groupID;
             const [configRow] = await pool.query(`SELECT * FROM config WHERE groupID = ?`, [groupID]);
 
             if (configRow.length === 0) {
-                return { success: false, message: 'Config not found' };
+                const newINI = `
+                    [License]
+                    Active=true
+                    [Settings]
+                    Version=1.0.1
+                    Enable=true
+                    Organization=ProtectionMark
+                    MacAddress=true
+                    IPAddress=true
+                    Date=true
+                    Tagline=true
+                    Layout=medium
+                    QRTopLeft=true
+                    QRTopRight=true
+                    QRBottomLeft=true
+                    QRBottomRight=true
+                    [WhiteLists]
+                    processes=
+                    [DATABLOCK]
+                    BLUETOOTH=true
+                    USB=true
+                    PRINT=true
+                    MTP=true
+                    UPLOAD=true
+                `.trim();
+
+                return { success: true, data: newINI, message: "Device registered successfully."};
             }
 
             const config = configRow[0];
@@ -18,7 +47,33 @@ export const insertDeviceLogic = async (deviceData) => {
             const [policyRow] = await pool.query(`SELECT * FROM policy WHERE groupID = ?`, [groupID]);
 
             if (policyRow.length === 0) {
-                return { success: false, message: 'Policy not found' };
+                const newINI = `
+                    [License]
+                    Active=true
+                    [Settings]
+                    Version=1.0.1
+                    Enable=true
+                    Organization=ProtectionMark
+                    MacAddress=true
+                    IPAddress=true
+                    Date=true
+                    Tagline=true
+                    Layout=medium
+                    QRTopLeft=true
+                    QRTopRight=true
+                    QRBottomLeft=true
+                    QRBottomRight=true
+                    [WhiteLists]
+                    processes=
+                    [DATABLOCK]
+                    BLUETOOTH=true
+                    USB=true
+                    PRINT=true
+                    MTP=true
+                    UPLOAD=true
+                `.trim();
+
+                return { success: true, data: newINI, message: "Device registered successfully."};
             }
 
             const policy = policyRow[0];
@@ -55,8 +110,9 @@ export const insertDeviceLogic = async (deviceData) => {
 
             return { success: true, data: iniContent };
         } else {
-            const insertQuery = `INSERT INTO devices(userId, deviceName, os, macAddress, ipAddress) VALUES (?,?,?,?,?)`;
-            const values = [deviceData.userId, deviceData.deviceName, deviceData.os, deviceData.macAddress, deviceData.ipAddress];
+            let current = new Date();
+            const insertQuery = `INSERT INTO devices(userId, deviceName, os, macAddress, ipAddress, lastActive) VALUES (?,?,?,?,?,?)`;
+            const values = [deviceData.userId, deviceData.deviceName, deviceData.os, deviceData.macAddress, deviceData.ipAddress, current];
             await pool.query(insertQuery, values);
 
             const newINI = `
@@ -85,8 +141,7 @@ export const insertDeviceLogic = async (deviceData) => {
                 UPLOAD=true
             `.trim();
 
-            return { success: true, data: newINI, message: "Device registered successfully." 
-            };
+            return { success: true, data: newINI, message: "Device registered successfully."};
         }
     } catch (error) {
         console.log(error);
