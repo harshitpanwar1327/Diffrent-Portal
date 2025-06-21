@@ -13,14 +13,16 @@ const LicenseManagement = () => {
   let [licenseData, setLicenseData] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [totalData, setTotalPages] = useState(1);
   let userId = sessionStorage.getItem('userId');
   let [loading, setLoading] = useState(false);
 
-  let getLicenseData = async () => {
+  let getLicenseData = async (currentPage, itemsPerPage) => {
     try {
       setLoading(true);
-      let getData = await API.get('/license/get-license/');
-      let licenseKey = getData.data.data;
+      let response = await API.get(`/license/get-license?page=${currentPage}&limit=${itemsPerPage}`);
+      setTotalPages(response.data.total);
+      let licenseKey = response.data.data;
       let decodedData = licenseKey.map(decodeLicenseCodeWithToken);
       setLicenseData(decodedData);
     } catch (error) {
@@ -32,15 +34,11 @@ const LicenseManagement = () => {
 
   useEffect(() => {
     try {
-      getLicenseData();
+      getLicenseData(currentPage, itemsPerPage);
     } catch (error) {
       console.log(error);
     }
   }, []);
-
-  let paginatedData = licenseData.slice(
-    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
-  );
 
   const handleActivate = async () => {
     try {
@@ -97,7 +95,7 @@ const LicenseManagement = () => {
     <div className='main-page'>
       {loading && <div className="loader">
         <HashLoader color="#6F5FE7"/>
-      // </div>}
+      </div>}
       <div className='licence-header'>
         <input type="text" placeholder='Enter your licence key' className='add-licence-input' value={licenseKey} onChange={(e) => setLicenseKey(e.target.value)}/>
         <button className='create-group-button' onClick={handleActivate}>Activate License</button>
@@ -115,8 +113,8 @@ const LicenseManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.length > 0 ? (
-              paginatedData.map((data, index) => (
+            {licenseData.length > 0 ? (
+              licenseData.map((data, index) => (
                   <tr key={index}>
                     <td className='group-table-data'>{data.organization}</td>
                     <td className='group-table-data'>{data.totalDevices}</td>
@@ -139,7 +137,7 @@ const LicenseManagement = () => {
 
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={Math.ceil(licenseData.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
+          <Pagination count={Math.ceil(totalData/itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
         </Stack>
       </div>
     </div>

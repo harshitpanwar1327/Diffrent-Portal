@@ -2,8 +2,13 @@ import { DevicesModels } from "../models/DevicesModels.js";
 import {getDevicesLogic, getDevicesByGroupLogic, manageDeviceGroupLogic, deviceCountLogic, updateDeviceGroupLogic, updateDeviceLicenseLogic, deallocateLicenseLogic, deleteDeviceLogic} from "../services/DevicesServices.js";
 
 export const getDevices = async (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    let search = req.query.search || '';
+    let offset = (page - 1) * limit;
+
     try {
-        const result = await getDevicesLogic();
+        const result = await getDevicesLogic(limit, offset, search);
         if (result.success) {
             res.status(200).json(result);
         } else {
@@ -35,26 +40,6 @@ export const getDevicesByGroup = async (req, res) => {
     }
 }
 
-export const manageDeviceGroup = async (req, res) => {
-    let {groupId} = req.params;
-
-    if(!groupId) {
-        return res.status(400).json({success: false, message: "Group not found."});
-    }
-
-    try {
-        let response = await manageDeviceGroupLogic(groupId);
-        if(response.success) {
-            return res.status(200).json(response);
-        } else {
-            return res.status(400).json(response);
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
-    }
-}
-
 export const deviceCount = async (req, res) => {
     try {
         let response = await deviceCountLogic();
@@ -66,6 +51,29 @@ export const deviceCount = async (req, res) => {
     } catch (error) {
         console.error("Error:", error);
         return res.status(500).json({ success: false, message: "Internal Server Error!" });
+    }
+}
+
+export const manageDeviceGroup = async (req, res) => {
+    let page = req.body.page || 1;
+    let limit = req.body.limit || 10;
+    let search = req.body.search || '';
+    let groupId = req.body.groupId;
+
+    if(!groupId) {
+        return res.status(400).json({success: false, message: "Group not found."});
+    }
+
+    try {
+        let response = await manageDeviceGroupLogic(page, limit, search, groupId);
+        if(response.success) {
+            return res.status(200).json(response);
+        } else {
+            return res.status(400).json(response);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }
 

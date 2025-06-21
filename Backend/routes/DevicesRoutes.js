@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get("/get-devices", getDevices);
 router.get("/get-devices/:groupId", getDevicesByGroup);
-router.get("/manage-group/:groupId", manageDeviceGroup);
 router.get("/device-count", deviceCount);
+router.post("/manage-group", manageDeviceGroup);
 router.put("/update-group", updateDeviceGroup);
 router.put("/update-license", updateDeviceLicense);
 router.put("/deallocate-license/:macAddress", deallocateLicense);

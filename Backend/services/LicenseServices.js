@@ -50,10 +50,13 @@ export const activateLicenseLogic = async (licenseData) => {
   }
 };
 
-export const getLicenseLogic = async () => {
+export const getLicenseLogic = async (limit, offset) => {
   try {
-    let [rows] = await pool.query(`SELECT * FROM license;`);
-    return { success: true, data: rows };
+    let [rows] = await pool.query(`SELECT * FROM license LIMIT ? OFFSET ?;`, [limit, offset]);
+    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license;`);
+    const total = countRows[0].total;
+
+    return { success: true, data: rows, total };
   } catch (error) {
     console.log(error);
     return { success: false, message: "Active license not found!" };

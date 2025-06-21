@@ -21,19 +21,15 @@ const DeviceScreenSecurity = () => {
   const [selectedGroupName, setSelectedGroupName] = useState('');
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
 
-  let filteredData = groupData.filter(data => data.groupName.toLowerCase().includes(search.toLowerCase()) || data.groupId === parseInt(search));
-
-  let paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
-  );
-
-  const getGroupData = async () => {
+  const getGroupData = async (currentPage, itemsPerPage, search) => {
     try {
       setLoading(true);
-      const response = await API.get(`/policy/get-group/`);
+      const response = await API.get(`/policy/get-group?page=${currentPage}&limit=${itemsPerPage}&search=${search}`);
       setGroupData(response.data.data);
+      setTotalPages(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
@@ -42,16 +38,17 @@ const DeviceScreenSecurity = () => {
   };
   
   useEffect(() => {
+    setCurrentPage(1);
     try {
-      getGroupData();
+      getGroupData(currentPage, itemsPerPage, search);
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [search]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [search]);
+    getGroupData(currentPage, itemsPerPage, search);
+  }, [currentPage, search])
 
   const handleManageDevice = (data) => {
     setOpenDevicesModal(true);
@@ -106,6 +103,7 @@ const DeviceScreenSecurity = () => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+    getGroupData(value, itemsPerPage, search);
   }
 
   return (
@@ -133,8 +131,8 @@ const DeviceScreenSecurity = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.length > 0 ? (
-              paginatedData.map((data, index) => (
+            {groupData.length > 0 ? (
+              groupData.map((data, index) => (
                 <tr key={index}>
                   <td className="group-table-data">{data.groupId}</td>
                   <td className="group-table-data">{data.groupName}</td>
@@ -164,7 +162,7 @@ const DeviceScreenSecurity = () => {
 
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={Math.ceil(filteredData.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
+          <Pagination count={Math.ceil(totalData/itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
         </Stack>
       </div>
       {openEditGroupModal && <EditGroup setOpenModal={setOpenEditGroupModal} groupId={selectedGroupID} setGroupData={setGroupData}/>}

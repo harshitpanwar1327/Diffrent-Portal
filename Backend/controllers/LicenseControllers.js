@@ -40,37 +40,41 @@ export const validateLicense = (req, res) => {
 };
 
 export const activateLicense = async (req, res) => {
-    let {userId, licenseKey} = req.body;
+  let {userId, licenseKey} = req.body;
 
-    if(!userId || !licenseKey) {
-        res.status(400).json({success: false, message: "Fill all the required fields!"});
-    }
+  if(!userId || !licenseKey) {
+      res.status(400).json({success: false, message: "Fill all the required fields!"});
+  }
 
-    const licenseData = new LicenseModels({userId, licenseKey});
+  const licenseData = new LicenseModels({userId, licenseKey});
 
-    try {
-        let response = await activateLicenseLogic(licenseData);
-        if(response.success) {
-            return res.status(200).json(response);
-        } else {
-            return res.status(400).json(response);
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error!" });
-    }
+  try {
+      let response = await activateLicenseLogic(licenseData);
+      if(response.success) {
+          return res.status(200).json(response);
+      } else {
+          return res.status(400).json(response);
+      }
+  } catch (error) {
+      console.error("Error:", error);
+      return res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
 }
 
 export const getLicense = async (req, res) => {
-    try {
-        let response = await getLicenseLogic();
-        if(response.success) {
-            return res.status(200).json(response);
-        } else {
-            return res.status(400).json(response);
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error!" });
-    }
+  let page = parseInt(req.query.page) || 1;
+  let limit = parseInt(req.query.limit) || 10;
+  let offset = (page - 1) * limit;
+
+  try {
+      let response = await getLicenseLogic(limit, offset);
+      if(response.success) {
+          return res.status(200).json(response);
+      } else {
+          return res.status(400).json(response);
+      }
+  } catch (error) {
+      console.error("Error:", error);
+      return res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
 }

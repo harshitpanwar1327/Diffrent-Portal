@@ -24,8 +24,13 @@ export const addGroup = async (req, res) => {
 };
 
 export const getGroup = async (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    let search = req.query.search || '';
+    let offset = (page - 1) * limit;
+
     try {
-        const response = await getGroupLogic();
+        const response = await getGroupLogic(limit, offset, search);
         if (response.success) {
             res.status(200).json(response);
         } else {
@@ -76,14 +81,14 @@ export const updateGroup = async (req, res) => {
 }
 
 export const deleteGroup = async (req, res) => {
-    let {groupID} = req.params;
+    let {groupId} = req.params;
     
-    if(!groupID) {
+    if(!groupId) {
         return res.status(400).json({success: false, message: "GroupId not found!"});
     }
 
     try {
-        let response = await deleteGroupLogic(groupID);
+        let response = await deleteGroupLogic(groupId);
         if (response.success) {
             return res.status(200).json(response);
         } else {

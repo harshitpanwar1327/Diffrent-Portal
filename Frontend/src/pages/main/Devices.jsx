@@ -15,18 +15,14 @@ const Devices = () => {
   let [license, setLicense] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
 
-  let filteredData = devicesData.filter(data => data?.deviceName?.toLowerCase().includes(search.toLowerCase()) || data?.macAddress?.toLowerCase().includes(search.toLowerCase()) || data?.ipAddress?.toLowerCase().includes(search.toLowerCase()));
-
-  let paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
-  );
-
-  const getDevices = async () => {
+  const getDevices = async (currentPage, itemsPerPage, search) => {
     try {
-      let response = await API.get("/devices/get-devices/");
+      let response = await API.get(`/devices/get-devices?page=${currentPage}&limit=${itemsPerPage}&search=${search}`);
       setDevicesData(response.data.data);
+      setTotalPages(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
     }
@@ -45,7 +41,7 @@ const Devices = () => {
     const fetchDeviceData = async () => {
       try {
         setLoading(true);
-        await getDevices();
+        await getDevices(currentPage, itemsPerPage, search);
         await getLicense();
       } catch (error) {
         console.log(error);
@@ -54,12 +50,13 @@ const Devices = () => {
       }
     }
 
+    setCurrentPage(1);
     fetchDeviceData();
-  }, []);
+  }, [search]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [search]);
+    getDevices(currentPage, itemsPerPage, search);
+  }, [currentPage, search])
 
   const deviceCount = (licenseKey) => {
     let licenseData = license.find(data => data.licenseKey === licenseKey);
@@ -206,8 +203,8 @@ const Devices = () => {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.length > 0 ? (
-              paginatedData.map((data, index) => (
+            {devicesData.length > 0 ? (
+              devicesData.map((data, index) => (
                 <tr key={index}>
                   <td className='group-table-data'>{data.deviceName}</td>
                   <td className='group-table-data'>{data.macAddress}</td>
@@ -234,7 +231,7 @@ const Devices = () => {
       
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={Math.ceil(filteredData.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
+          <Pagination count={Math.ceil(totalData / itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
         </Stack>
       </div>
     </div>

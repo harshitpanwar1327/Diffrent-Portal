@@ -11,19 +11,20 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
   let [devicesData, setDevicesData] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [totalData, setTotalData] = useState(1);
   let [loading, setLoading] = useState(false);
-
-  let filteredData = devicesData.filter(data => data?.deviceName?.toLowerCase().includes(search.toLowerCase()) || data?.macAddress?.toLowerCase().includes(search.toLowerCase()) || data?.ipAddress?.toLowerCase().includes(search.toLowerCase()));
-
-  let paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
-  )
 
   const fetchDevices = async () => {
     try {
       setLoading(true);
-      let response = await API.get(`/devices/manage-group/${groupId}`);
+      let response = await API.post(`/devices/manage-group/`, {
+        page: currentPage,
+        limit: itemsPerPage,
+        search,
+        groupId
+      });
       setDevicesData(response.data.data);
+      setTotalData(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
@@ -33,15 +34,19 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
 
   useEffect(()=>{
     try {
-      fetchDevices();
+      fetchDevices(currentPage, itemsPerPage, search, groupId);
     } catch (error) {
       console.log(error);
     }
-  }, [groupId]);
+  }, [currentPage, itemsPerPage, search, groupId]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [search]);
+
+  useEffect(() => {
+    fetchDevices(currentPage, itemsPerPage, search);
+  }, [currentPage, search])
 
   const handleGroupAllocation = async (data) => {
     let groupInfo = {
@@ -111,8 +116,8 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
               </tr>
             </thead>
             <tbody>
-              {paginatedData.length > 0 ? (
-                paginatedData.map((data, index)=>(
+              {devicesData.length > 0 ? (
+                devicesData.map((data, index)=>(
                   <tr key={index}>
                     <td className='group-table-data'>{data.deviceName}</td>
                     <td className='group-table-data'>{data.macAddress}</td>
@@ -129,7 +134,7 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
           </table>
         </div>
         <Stack spacing={2}>
-          <Pagination count={Math.ceil(filteredData.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
+          <Pagination count={Math.ceil(totalData/itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
         </Stack>
       </div>
     </div>

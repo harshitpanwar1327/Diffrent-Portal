@@ -23,10 +23,15 @@ export const addGroupLogic = async (groupData) => {
     }
 };
 
-export const getGroupLogic =  async () => {
+export const getGroupLogic =  async (limit, offset, search) => {
     try {
-        const [rows] = await pool.query(`SELECT * FROM GroupDetails`);
-        return { success: true, data: rows };
+        let searchQuery = `%${search}%`;
+
+        const [rows] = await pool.query(`SELECT * FROM groupDetails WHERE groupName LIKE ? OR groupId LIKE ? LIMIT ? OFFSET ?;`, [searchQuery, searchQuery, limit, offset]);
+        const [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM groupDetails WHERE groupName LIKE ? OR groupId LIKE ?;`, [searchQuery, searchQuery]);
+        const total = countRows[0].total;
+
+        return { success: true, data: rows, total };
     } catch (error) {
         console.error("Error fetching group data:", error);
         return { success: false, message: "Could not retrieve group data." };

@@ -14,15 +14,17 @@ const HealthStatus = () => {
   let [healthy, setHealthy] = useState([]);
   let [unknown, setUnknown] = useState([]);
   let [retired, setRetired] = useState([]);
-  let [currentPage, setCurrentPage] = useState(1);
   let [currentTab, setCurrentTab] = useState(0);
+  let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
 
-  const fetchGroupName = async () => {
+  const fetchGroupName = async (currentPage, itemsPerPage) => {
     try {
-      let response = await API.get('/policy/get-group/');
+      let response = await API.get(`/policy/get-group?page=${currentPage}&limit=${itemsPerPage}`);
       setGroupData(response.data.data);
+      setTotalPages(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
     }
@@ -303,7 +305,7 @@ const HealthStatus = () => {
 
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} color="primary" />
+          <Pagination count={Math.ceil(totalData/itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
         </Stack>
       </div>
     </div>
