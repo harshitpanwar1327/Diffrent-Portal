@@ -13,6 +13,14 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

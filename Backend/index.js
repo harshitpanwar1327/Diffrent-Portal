@@ -6,6 +6,7 @@ import { rateLimit } from 'express-rate-limit';
 import { authMiddleware } from './middleware/AuthMiddleware.js';
 import createAllTables from './utils/CreateTables.js';
 import { checkConnection } from './config/Database.js';
+import adminConnect from './config/Admin.js';
 import PolicyRoutes from './routes/PolicyRoutes.js';
 import SupportRoutes from './routes/SupportRoutes.js';
 import LicensesRoutes from './routes/LicensesRoutes.js';
@@ -13,6 +14,7 @@ import ConfigRoutes from './routes/ConfigRoutes.js';
 import DevicesRoutes from './routes/DevicesRoutes.js';
 import ApplicationRoutes from './routes/ApplicationRoutes.js';
 import UsersRoutes from './routes/UsersRoutes.js';
+import AdminRoutes from './routes/AdminRoutes.js';
 
 dotenv.config();
 
@@ -29,6 +31,8 @@ const limiter = rateLimit({
 	limit: 1000,
 });
 app.use(limiter);
+
+app.use("/api/admin", AdminRoutes);
 
 app.use("/api/users", UsersRoutes);
 
@@ -60,7 +64,8 @@ app.listen(PORT, async() => {
     try {
         await checkConnection();
         await createAllTables();
+        await adminConnect();
     } catch (error) {
-        console.log('Something went wrong!',error);
+        console.log('Something went wrong!', error);
     }
 });

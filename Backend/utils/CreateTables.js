@@ -92,7 +92,7 @@ const supportDetails = `CREATE TABLE IF NOT EXISTS support (
 const createTable = async (tableName, query) => {
     try {
         await pool.query(query);
-        console.log(`${tableName} table created successfully!`);
+        console.log(`${tableName} table created successfully`);
     } catch (error) {
         console.error(`Failed to create ${tableName} table:`, error);
     }

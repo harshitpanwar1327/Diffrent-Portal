@@ -16,7 +16,7 @@ const pool = mysql2.createPool({
 const checkConnection = async () =>{
     try {
         const connection = await pool.getConnection();
-        console.log("Database created Sucessfully");
+        console.log("Database created sucessfully");
         connection.release();
     } catch (error) {
         console.log("Something Went Wrong! Database Connection Lost!", error);

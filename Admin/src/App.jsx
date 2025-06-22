@@ -1,8 +1,38 @@
 import './App.css'
+import {Routes, Route, Navigate, useLocation} from 'react-router-dom'
+import NavigationBar from './components/NavigationBar'
+import ProtectedRoutes from './components/ProtectedRoutes'
+import Login from './pages/auth/Login'
+import Users from './pages/main/Users'
+import License from './pages/main/License'
+import Feedbacks from './pages/main/Feedbacks'
 
 function App() {
+  const location = useLocation();
+  const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+
+  const hideNavigationBar = ['/', '/login'];
+
   return (
     <>
+      {!hideNavigationBar.includes(location.pathname) && (
+        <NavigationBar />
+      )}
+
+      <Routes>
+        {/* Public Routes */}
+        <Route path='/' element={isAuthenticated ? <Navigate to='/users' /> : <Login />}/>
+        <Route path='/login' element={isAuthenticated ? <Navigate to='/users' /> : <Login />}/>
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route path='/users' element={<Users />}/>
+          <Route path='/license' element={<License />}/>
+          <Route path='/feedbacks' element={<Feedbacks />}/>
+        </Route>
+
+        <Route path='*' element={<Navigate to='/' />}/>
+      </Routes>
     </>
   )
 }
