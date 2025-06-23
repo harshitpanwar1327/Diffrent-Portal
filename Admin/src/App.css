@@ -26,10 +26,6 @@
   text-align: left;
 }
 
-.table-data {
-  padding: 8px;
-}
-
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

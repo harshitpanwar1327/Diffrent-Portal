@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import NavigationBar from '../../components/NavigationBar'
 import {toast, Bounce} from 'react-toastify'
 import API from '../../utils/API'
+import {FadeLoader} from 'react-spinners'
 
 const License = () => {
   const [organization, setOrganization] = useState('');
@@ -9,11 +10,13 @@ const License = () => {
   const [purchaseDate, setPurchaseDate] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [licenseCode, setLicenseCode] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleGenerateLicense = async (e) => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const licenseData = {
         organization,
         totalDevices,
@@ -53,6 +56,8 @@ const License = () => {
         theme: "colored",
         transition: Bounce,
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -83,6 +88,11 @@ const License = () => {
 
   return (
     <div className='flex flex-col w-full h-full'>
+      {loading && (
+        <div className="overlay">
+          <FadeLoader color='rgba(255, 32, 86)'/>
+        </div>
+      )}
       <NavigationBar heading='Generate License' />
       <div className='grow p-2 grid grid-cols-1 lg:grid-cols-3 grid-rows-2 lg:grid-rows-1 gap-8'>
         <form className='col-span-1 border border-gray-300 rounded-md flex flex-col justify-center gap-5 p-4' onSubmit={handleGenerateLicense}>

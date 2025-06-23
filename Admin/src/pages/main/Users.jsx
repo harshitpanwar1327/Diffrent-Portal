@@ -6,6 +6,7 @@ import API from '../../utils/API'
 import {toast, Bounce} from 'react-toastify'
 import Swal from 'sweetalert2'
 import EditUser from '../../modals/EditUser'
+import {FadeLoader} from 'react-spinners'
 
 const Users = () => {
   const [usersData, setUsersData] = useState([]);
@@ -15,13 +16,17 @@ const Users = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const fetchUsersData = async () => {
     try {
+      setLoading(true);
       const response = await API.get('/users/get-users');
       setUsersData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -48,6 +53,7 @@ const Users = () => {
     }
 
     try {
+      setLoading(true);
       const userData = {
         email,
         password,
@@ -87,6 +93,8 @@ const Users = () => {
         theme: "colored",
         transition: Bounce,
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -107,7 +115,8 @@ const Users = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = API.delete(`/users/delete-user/${id}`);
+          setLoading(true);
+          const response = await API.delete(`/users/delete-user/${id}`);
           setUsersData(usersData.filter(data => data.id !== id));
         } catch (error) {
           console.log(error);
@@ -122,6 +131,8 @@ const Users = () => {
             theme: "colored",
             transition: Bounce,
           });
+        } finally {
+          setLoading(false);
         }
         Swal.fire({
           title: "Deleted!",
@@ -134,6 +145,11 @@ const Users = () => {
 
   return (
     <div className='flex flex-col w-full h-full'>
+      {loading && (
+        <div className="overlay">
+          <FadeLoader color='rgba(255, 32, 86)'/>
+        </div>
+      )}
       <NavigationBar heading='Add Users' />
       <div className='grow p-2 grid grid-cols-1 lg:grid-cols-3 grid-rows-2 lg:grid-rows-1 gap-8'>
         <form className='col-span-1 border border-gray-300 rounded-md flex flex-col justify-center gap-5 p-4' onSubmit={handleCreateUser}>
@@ -169,16 +185,19 @@ const Users = () => {
               </tr>
             </thead>
             <tbody>
-              {usersData.length > 0 && 
+              {usersData.length > 0 ? 
                 usersData.map((data) => (
                   <tr key={data.id} className='hover:bg-[#f8f7ff] border-b border-[#848484]'>
-                    <td className='table-data'>{data.organization}</td>
-                    <td className='table-data'>{data.email}</td>
-                    <td className='table-data'>{data.created_At.split("T")[0]} {data.created_At.split("T")[1].split(".")[0]}</td>
-                    <td className='table-data'><EditIcon className='text-blue-500 hover:text-blue-700 cursor-pointer' onClick={() => handleEdit(data)}/></td>
-                    <td className='table-data'><DeleteIcon className='text-red-500 hover:text-red-700 cursor-pointer' onClick={() => handleDelete(data.id)}/></td>
+                    <td className='p-2'>{data.organization}</td>
+                    <td className='p-2'>{data.email}</td>
+                    <td className='p-2'>{data.created_At.split("T")[0]} {data.created_At.split("T")[1].split(".")[0]}</td>
+                    <td className='p-2'><EditIcon className='text-blue-500 hover:text-blue-700 cursor-pointer' onClick={() => handleEdit(data)}/></td>
+                    <td className='p-2'><DeleteIcon className='text-red-500 hover:text-red-700 cursor-pointer' onClick={() => handleDelete(data.id)}/></td>
                   </tr>
-                ))
+                )) : 
+                  <tr className='hover:bg-[#f8f7ff] border-b border-[#848484]'>
+                    <td className='p-2' colSpan={5}>No user data available</td>
+                  </tr>
               }
             </tbody>
           </table>

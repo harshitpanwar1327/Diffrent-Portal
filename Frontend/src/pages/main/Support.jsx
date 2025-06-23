@@ -100,10 +100,10 @@ const Support = () => {
     e.preventDefault();
 
     let formData = new FormData();
-    let ticketID = uuidv4();
+    let ticketId = uuidv4();
 
     formData.append("userId", userId);
-    formData.append("ticketId", ticketID);
+    formData.append("ticketId", ticketId);
     formData.append("groupId", groupId);
     formData.append("deviceName", deviceName);
     formData.append("issueType", issueType);
@@ -125,7 +125,7 @@ const Support = () => {
       setUrgency('');
       fileInputRef.current.value = "";
 
-      toast.success(`Ticket raised with ticketID ${ticketID}.`, {
+      toast.success(`Ticket raised with ticketID ${ticketId}.`, {
         position: "top-center",
         autoClose: 1800,
         hideProgressBar: false,

@@ -6,8 +6,8 @@ export const ticketDetailsLogic = async (supportData) => {
         description, screenshot, urgency) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
         const values = [ 
             supportData.userId,
-            supportData.ticketID, 
-            supportData.groupID, 
+            supportData.ticketId, 
+            supportData.groupId, 
             supportData.deviceName, 
             supportData.issueType, 
             supportData.description, 

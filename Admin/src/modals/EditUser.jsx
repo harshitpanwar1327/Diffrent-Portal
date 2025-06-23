@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import {toast, Bounce} from 'react-toastify'
 import API from '../utils/API'
+import {FadeLoader} from 'react-spinners'
 
 const EditUser = ({setOpenModal, data, fetchUsersData}) => {
   const id = data.id;
@@ -9,6 +10,7 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
   const [email, setEmail] = useState(data.email);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -29,6 +31,7 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
     }
 
     try {
+      setLoading(true);
       const updatedData = {
         organization,
         email,
@@ -64,11 +67,18 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
         theme: "colored",
         transition: Bounce,
       });
+    } finally {
+      setLoading(false);
     }
   }
   
   return (
     <div className='fixed top-0 left-0 z-100 flex justify-center items-center bg-[#0000003a] w-screen h-screen' onClick={() => setOpenModal(false)}>
+      {loading && (
+        <div className="overlay">
+          <FadeLoader color='rgba(255, 32, 86)'/>
+        </div>
+      )}
       <form className='bg-white p-4 flex flex-col gap-5' onClick={(e) => e.stopPropagation()} onSubmit={handleUpdate}>
         <CloseIcon className='cursor-pointer hover:text-red-500' onClick={() => setOpenModal(false)}/>
         <h2 className='text-2xl font-semibold text-center'>Edit Profile</h2>
