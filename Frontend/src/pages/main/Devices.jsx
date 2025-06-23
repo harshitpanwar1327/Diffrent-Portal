@@ -139,7 +139,7 @@ const Devices = () => {
     }
   }
 
-  const handleDeleteDevice = async (macAddress) => {
+  const handleDeleteDevice = (macAddress) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",

@@ -44,3 +44,35 @@ export const loginLogic = async (userData) => {
         return {success: false, message: "User not found!"};
     }
 }
+
+export const getUsersLogic = async () => {
+    try {
+        let [rows] = await pool.query(`SELECT * FROM users;`);
+
+        return {success: true, message: "User fetched successfully", data: rows};
+    } catch (error) {
+        console.log(error);
+        return {success: false, message: "User not fetched!"};
+    }
+}
+
+export const updateUserLogic = async () => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+export const deleteUserLogic = async (id) => {
+    try {
+        let query = `DELETE FROM users WHERE id = ?`;
+        let values = [id];
+        await pool.query(query, values);
+
+        return {success: true, message: "User deleted successfully"}
+    } catch (error) {
+        console.log(error);
+        return {success: false, message: "User not deleted!"};
+    }
+}

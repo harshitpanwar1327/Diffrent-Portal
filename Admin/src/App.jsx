@@ -1,28 +1,24 @@
 import './App.css'
 import {Routes, Route, Navigate, useLocation} from 'react-router-dom'
-import NavigationBar from './components/NavigationBar'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import Login from './pages/auth/Login'
+import Signup from './pages/auth/Signup'
 import Users from './pages/main/Users'
 import License from './pages/main/License'
 import Feedbacks from './pages/main/Feedbacks'
 
 function App() {
   const location = useLocation();
-  const isAuthenticated = sessionStorage.getItem('isAuthenticated');
-
-  const hideNavigationBar = ['/', '/login'];
+  
+  let isAuthenticated = sessionStorage.getItem('isAuthenticated');
 
   return (
     <>
-      {!hideNavigationBar.includes(location.pathname) && (
-        <NavigationBar />
-      )}
-
       <Routes>
         {/* Public Routes */}
-        <Route path='/' element={isAuthenticated ? <Navigate to='/users' /> : <Login />}/>
-        <Route path='/login' element={isAuthenticated ? <Navigate to='/users' /> : <Login />}/>
+        <Route path='/' element={isAuthenticated === "true" ? <Navigate to='/users' /> : <Login />}/>
+        <Route path='/login' element={isAuthenticated === "true" ? <Navigate to='/users' /> : <Login />}/>
+        <Route path='/signup' element={isAuthenticated === "true" ? <Navigate to='/users' /> : <Signup />}/>
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
