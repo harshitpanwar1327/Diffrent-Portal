@@ -3,6 +3,7 @@ import {toast, Bounce} from 'react-toastify'
 import {FadeLoader} from 'react-spinners'
 import API from '../../utils/API'
 import {useNavigate, NavLink} from 'react-router-dom'
+import {motion} from 'motion/react'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -64,7 +65,11 @@ const Login = () => {
           <FadeLoader color='rgba(255, 32, 86)'/>
         </div>
       )}
-      <form className='bg-white rounded-md py-6 px-12' onSubmit={handleSignIn}>
+      <motion.form className='bg-white rounded-md py-6 px-12' onSubmit={handleSignIn}
+        initial={{opacity: 0, scale: 0}}
+        animate={{opacity: 1, scale: 1}}
+        transition={{type: 'spring', stiffness: 100, damping: 12, delay: 0.2}}
+      >
         <h2 className='font-bold text-2xl mb-4 text-center'>Welcome Back!</h2>
         <div className='flex flex-col mb-4'>
           <label htmlFor="email">Email</label>
@@ -76,7 +81,7 @@ const Login = () => {
         </div>
         <button className='text-white bg-rose-500 w-full'>Sign in</button>
         <p>Don't have an account? <NavLink to='/signup'>Sign up</NavLink></p>
-      </form>
+      </motion.form>
     </div>
   )
 }

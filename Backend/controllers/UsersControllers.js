@@ -1,5 +1,5 @@
 import {UsersModels} from '../models/UsersModels.js'
-import {registerLogic, loginLogic, getUsersLogic, deleteUserLogic} from '../services/UsersService.js';
+import {registerLogic, loginLogic, getUsersLogic, updateUserLogic, deleteUserLogic} from '../services/UsersService.js';
 
 export const register = async (req, res) => {
     let {email, password, organization} = req.body;
@@ -48,6 +48,29 @@ export const login = async (req, res) => {
 export const getUsers = async (req, res) => {
     try {
         const response = await getUsersLogic();
+        if(response.success) {
+            return res.status(200).json(response);
+        } else {
+            return res.status(400).json(response);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+export const updateUser = async (req, res) => {
+    let {id} = req.params;
+    let {email, password, organization} = req.body;
+
+    if(!email || !password) {
+        return res.status(400).json({success: false, message: "Fill all the required fields"});
+    }
+
+    let userData = new UsersModels({email, password, organization});
+
+    try {
+        const response = await updateUserLogic(userData, id);
         if(response.success) {
             return res.status(200).json(response);
         } else {

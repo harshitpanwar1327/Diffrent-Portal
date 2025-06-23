@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import API from '../../utils/API'
 import {toast, Bounce} from 'react-toastify'
 import Swal from 'sweetalert2'
+import EditUser from '../../modals/EditUser'
 
 const Users = () => {
   const [usersData, setUsersData] = useState([]);
@@ -12,6 +13,9 @@ const Users = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
+
   const fetchUsersData = async () => {
     try {
       const response = await API.get('/users/get-users');
@@ -86,6 +90,11 @@ const Users = () => {
     }
   }
 
+  const handleEdit = (data) => {
+    setSelectedUser(data);
+    setOpenModal(true);
+  }
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -126,8 +135,8 @@ const Users = () => {
   return (
     <div className='flex flex-col w-full h-full'>
       <NavigationBar heading='Add Users' />
-      <div className='grow p-2 grid grid-cols-3 gap-8'>
-        <form className='col-span-1 border border-gray-300 rounded-md flex flex-col justify-center items-center gap-5' onSubmit={handleCreateUser}>
+      <div className='grow p-2 grid grid-cols-1 lg:grid-cols-3 grid-rows-2 lg:grid-rows-1 gap-8'>
+        <form className='col-span-1 border border-gray-300 rounded-md flex flex-col justify-center gap-5 p-4' onSubmit={handleCreateUser}>
           <h2 className='text-xl font-semibold'>Create New User</h2>
           <div className='flex flex-col'>
             <label htmlFor="organization" className='text-sm'>Organization</label>
@@ -145,10 +154,10 @@ const Users = () => {
             <label htmlFor="confirmPassword" className='text-sm'>Confirm Password</label>
             <input type="password" name='confirmPassword' id='confirmPassword' placeholder="Confirm Password" className='px-4 py-2 border border-gray-500 rounded-lg' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
           </div>
-          <button className='text-white bg-blue-500 hover:bg-blue-600'>Create User</button>
+          <button className='text-white bg-blue-500 hover:bg-blue-600 mb-4'>Create User</button>
         </form>
 
-        <div className='col-span-2 overflow-auto'>
+        <div className='col-span-1 lg:col-span-2 overflow-auto'>
           <table className='w-full'>
             <thead>
               <tr className='bg-[#f5f3ff] border-b border-[#434343]'>
@@ -166,7 +175,7 @@ const Users = () => {
                     <td className='table-data'>{data.organization}</td>
                     <td className='table-data'>{data.email}</td>
                     <td className='table-data'>{data.created_At.split("T")[0]} {data.created_At.split("T")[1].split(".")[0]}</td>
-                    <td className='table-data'><EditIcon className='text-blue-500 hover:text-blue-700 cursor-pointer'/></td>
+                    <td className='table-data'><EditIcon className='text-blue-500 hover:text-blue-700 cursor-pointer' onClick={() => handleEdit(data)}/></td>
                     <td className='table-data'><DeleteIcon className='text-red-500 hover:text-red-700 cursor-pointer' onClick={() => handleDelete(data.id)}/></td>
                   </tr>
                 ))
@@ -175,6 +184,7 @@ const Users = () => {
           </table>
         </div>
       </div>
+      {openModal && <EditUser setOpenModal={setOpenModal} data={selectedUser} fetchUsersData={fetchUsersData}/>}
     </div>
   )
 }

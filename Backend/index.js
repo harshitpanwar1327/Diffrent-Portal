@@ -40,6 +40,8 @@ app.use("/api/config", ApplicationRoutes);
 
 app.use("/api/license", LicensesRoutes);
 
+app.use("/api/support", SupportRoutes);
+
 app.use(authMiddleware);
 
 app.use("/api/policy", PolicyRoutes);
@@ -47,8 +49,6 @@ app.use("/api/policy", PolicyRoutes);
 app.use("/api/config", ConfigRoutes);
 
 app.use("/api/devices", DevicesRoutes);
-
-app.use("/api/support", SupportRoutes);
 
 app.use((req, res, next) => {
     res.status(404).json({message: "Route not exist"});

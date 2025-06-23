@@ -18,7 +18,18 @@ export const ticketDetailsLogic = async (supportData) => {
 
         return { success: true, message: "Ticket Raised Successfully" };
     } catch (error) {
-        console.error("Error during data insertion:", error);
+        console.error("Error:", error);
         return { success: false, message: "Ticket not raised!" };
     }
 };
+
+export const getFeedbacksLogic = async () => {
+    try {
+        let [rows] = await pool.query(`SELECT * FROM support;`);
+
+        return { success: true, message: "Feedbacks Fetched Successfully", data: rows };
+    } catch (error) {
+        console.error("Error:", error);
+        return { success: false, message: "Feedbacks not fetched!" };
+    }
+}

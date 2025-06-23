@@ -3,6 +3,7 @@ import {toast, Bounce} from 'react-toastify'
 import {FadeLoader} from 'react-spinners'
 import API from '../../utils/API'
 import {useNavigate, NavLink} from 'react-router-dom'
+import {motion} from 'motion/react'
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -16,18 +17,18 @@ const Signup = () => {
     e.preventDefault();
 
     if(password !== confirmPassword) {
-        toast.error('Password and confirm password not match!', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-        });
-        return;
+      toast.error('Password and confirm password not match!', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      return;
     }
 
     try {
@@ -77,7 +78,11 @@ const Signup = () => {
           <FadeLoader color='rgba(255, 32, 86)'/>
         </div>
       )}
-      <form className='bg-white rounded-md py-6 px-12' onSubmit={handleRegister}>
+      <motion.form className='bg-white rounded-md py-6 px-12' onSubmit={handleRegister}
+        initial={{opacity: 0, scale: 0}}
+        animate={{opacity: 1, scale: 1}}
+        transition={{type: 'spring', stiffness: 100, damping: 12, delay: 0.2}}
+      >
         <h2 className='font-bold text-2xl mb-4 text-center'>Create Your Account</h2>
         <div className='flex flex-col mb-4'>
           <label htmlFor="name">Name</label>
@@ -97,7 +102,7 @@ const Signup = () => {
         </div>
         <button className='text-white bg-rose-500 w-full'>Register</button>
         <p>Already have an account? <NavLink to='/login'>Sign in</NavLink></p>
-      </form>
+      </motion.form>
     </div>
   )
 }

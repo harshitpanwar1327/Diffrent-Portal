@@ -56,11 +56,17 @@ export const getUsersLogic = async () => {
     }
 }
 
-export const updateUserLogic = async () => {
+export const updateUserLogic = async (userData, id) => {
     try {
-        
+        let hashedPassword = await bcrypt.hash(userData.password, 10);
+        let query = `UPDATE users SET email = ?, password = ?, organization = ? WHERE id = ?;`;
+        let values = [userData.email, hashedPassword, userData.organization, id];
+        await pool.query(query, values);
+
+        return {success: true, message: "User updated successfully"}
     } catch (error) {
-        
+        console.log(error);
+        return {success: false, message: "User not updated!"};
     }
 }
 

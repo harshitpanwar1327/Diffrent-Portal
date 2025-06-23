@@ -1,5 +1,5 @@
 import express from 'express';
-import {ticketDetails} from '../controllers/SupportControllers.js';
+import {ticketDetails, getFeedbacks} from '../controllers/SupportControllers.js';
 import multer from 'multer';
 import path from 'path';
 
@@ -18,5 +18,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.post('/raise-ticket', upload.single('screenshot'), ticketDetails);
+router.get('/get-feedback', getFeedbacks);
 
 export default router;
