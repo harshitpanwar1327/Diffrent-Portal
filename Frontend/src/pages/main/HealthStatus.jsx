@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './healthStatus.css'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
@@ -19,6 +19,7 @@ const HealthStatus = () => {
   let itemsPerPage = 10;
   let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
+  let loaderTimeout = useRef(null);
 
   const fetchGroupName = async (currentPage, itemsPerPage) => {
     try {
@@ -71,12 +72,13 @@ const HealthStatus = () => {
   useEffect(() => {
     const fetchHealthData = async () => {
       try {
-        setLoading(true);
+        loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
         await fetchGroupName();
         await fetchAllDevices();
       } catch (error) {
         console.log(error);
       } finally {
+        clearTimeout(loaderTimeout.current);
         setLoading(false);
       }
     }
@@ -88,7 +90,7 @@ const HealthStatus = () => {
     setGroupID(e.target.value);
     
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/devices/get-devices/${e.target.value}`);
       let healthData = response.data.data;
       
@@ -136,6 +138,7 @@ const HealthStatus = () => {
         transition: Bounce,
       });
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }
@@ -152,7 +155,7 @@ const HealthStatus = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          setLoading(true);
+          loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
           let response = await API.delete(`/policy/delete-device/${macAddress}`);
           setRetired(retired.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
@@ -169,6 +172,7 @@ const HealthStatus = () => {
             transition: Bounce,
           });
         } finally {
+          clearTimeout(loaderTimeout.current);
           setLoading(false);
         }
         Swal.fire({
@@ -305,7 +309,7 @@ const HealthStatus = () => {
 
       <div className="pagination">
         <Stack spacing={2}>
-          <Pagination count={Math.ceil(totalData/itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
+          <Pagination count={pageCount} page={currentPage} onChange={handlePageChange} color="primary" />
         </Stack>
       </div>
     </div>

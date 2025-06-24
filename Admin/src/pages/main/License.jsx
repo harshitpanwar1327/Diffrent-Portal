@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import NavigationBar from '../../components/NavigationBar'
 import {toast, Bounce} from 'react-toastify'
 import API from '../../utils/API'
@@ -11,12 +11,14 @@ const License = () => {
   const [expiryDate, setExpiryDate] = useState('');
   const [licenseCode, setLicenseCode] = useState('');
   const [loading, setLoading] = useState(false);
+  let loaderTimeout = useRef(null);
 
   const handleGenerateLicense = async (e) => {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+
       const licenseData = {
         organization,
         totalDevices,
@@ -57,6 +59,7 @@ const License = () => {
         transition: Bounce,
       });
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }

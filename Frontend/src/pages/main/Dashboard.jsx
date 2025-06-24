@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import './dashboard.css'
 import {getCurrentDate} from '../../util/DateUtil'
 import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
@@ -13,91 +13,91 @@ import Four from '../../assets/dashboard/Four.png'
 import HashLoader from "react-spinners/HashLoader"
 
 const MyPie = ({ data }) => (
-    <ResponsivePie
-        data={data}
-        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-        innerRadius={0.5}
-        padAngle={2}
-        cornerRadius={5}
-        activeOuterRadiusOffset={8}
-        enableArcLinkLabels={false}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-        defs={[
-            {
-                id: 'dots',
-                type: 'patternDots',
-                background: 'inherit',
-                color: 'rgba(255, 255, 255, 0.3)',
-                size: 4,
-                padding: 1,
-                stagger: true
+  <ResponsivePie
+    data={data}
+    margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+    innerRadius={0.5}
+    padAngle={2}
+    cornerRadius={5}
+    activeOuterRadiusOffset={8}
+    enableArcLinkLabels={false}
+    arcLinkLabelsSkipAngle={10}
+    arcLinkLabelsTextColor="#333333"
+    arcLinkLabelsThickness={2}
+    arcLinkLabelsColor={{ from: 'color' }}
+    arcLabelsSkipAngle={10}
+    arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+    defs={[
+        {
+            id: 'dots',
+            type: 'patternDots',
+            background: 'inherit',
+            color: 'rgba(255, 255, 255, 0.3)',
+            size: 4,
+            padding: 1,
+            stagger: true
+        },
+        {
+            id: 'lines',
+            type: 'patternLines',
+            background: 'inherit',
+            color: 'rgba(255, 255, 255, 0.3)',
+            rotation: -45,
+            lineWidth: 6,
+            spacing: 10
+        }
+    ]}
+    fill={[
+        {
+            match: {
+                id: 'ruby'
             },
-            {
-                id: 'lines',
-                type: 'patternLines',
-                background: 'inherit',
-                color: 'rgba(255, 255, 255, 0.3)',
-                rotation: -45,
-                lineWidth: 6,
-                spacing: 10
-            }
-        ]}
-        fill={[
-            {
-                match: {
-                    id: 'ruby'
-                },
-                id: 'dots'
+            id: 'dots'
+        },
+        {
+            match: {
+                id: 'c'
             },
-            {
-                match: {
-                    id: 'c'
-                },
-                id: 'dots'
+            id: 'dots'
+        },
+        {
+            match: {
+                id: 'go'
             },
-            {
-                match: {
-                    id: 'go'
-                },
-                id: 'dots'
+            id: 'dots'
+        },
+        {
+            match: {
+                id: 'python'
             },
-            {
-                match: {
-                    id: 'python'
-                },
-                id: 'dots'
+            id: 'dots'
+        },
+        {
+            match: {
+                id: 'scala'
             },
-            {
-                match: {
-                    id: 'scala'
-                },
-                id: 'lines'
+            id: 'lines'
+        },
+        {
+            match: {
+                id: 'lisp'
             },
-            {
-                match: {
-                    id: 'lisp'
-                },
-                id: 'lines'
+            id: 'lines'
+        },
+        {
+            match: {
+                id: 'elixir'
             },
-            {
-                match: {
-                    id: 'elixir'
-                },
-                id: 'lines'
+            id: 'lines'
+        },
+        {
+            match: {
+                id: 'javascript'
             },
-            {
-                match: {
-                    id: 'javascript'
-                },
-                id: 'lines'
-            }
-        ]}
-    />
+            id: 'lines'
+        }
+    ]}
+  />
 )
 
 const Dashboard = () => {
@@ -108,6 +108,7 @@ const Dashboard = () => {
   let [groupData, setGroupData] = useState([]);
   let [licenseData, setLicenseData] = useState([]);
   let [loading, setLoading] = useState(false);
+  let loaderTimeout = useRef(null);
 
   const fetchDeviceCount = async () => {
     try {
@@ -139,12 +140,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        setLoading(true);
+        loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
         await fetchDeviceCount();
         await fetchLicenseCount();
       } catch (error) {
         console.log(error);
       } finally {
+        clearTimeout(loaderTimeout.current);
         setLoading(false);
       }
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import NavigationBar from '../../components/NavigationBar'
 import API from '../../utils/API'
 import {FadeLoader} from 'react-spinners'
@@ -6,15 +6,17 @@ import {FadeLoader} from 'react-spinners'
 const Feedbacks = () => {
   const [feedbackData, setFeedbackData] = useState([]);
   const [loading, setLoading] = useState(false);
+  let loaderTimeout = useRef(null);
 
   const fetchFeedbacks = async () => {
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000)
       const response = await API.get('/support/get-feedback');
       setFeedbackData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }

@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { React, useEffect, useRef, useState } from 'react'
 import './manageConfig.css'
 import EditConfig from '../../../modals/EditConfig'
 import API from '../../../util/Api'
@@ -10,15 +10,17 @@ const ManageConfig = () => {
   let {groupId} = useParams();
   let [configData, setConfigData] = useState([]);
   let [loading, setLoading] = useState(false);
+  let loaderTimeout = useRef(null);
 
   const fetchConfigData = async () => {
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/config/get-config/${groupId}/`);
       setConfigData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }

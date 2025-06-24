@@ -49,15 +49,17 @@ const Support = () => {
 
   let fileInputRef = useRef();
   let [loading, setLoading] = useState(false);
+  let loaderTimeout = useRef();
 
   let fetchGroupName = async () => {
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
       let response = await API.get('/policy/get-group/');
       setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }
@@ -75,7 +77,7 @@ const Support = () => {
     setGroupID(selectedGroupId);
     
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/devices/get-devices/${selectedGroupId}`);
       setDeviceData(response.data.data);
     } catch (error) {
@@ -92,6 +94,7 @@ const Support = () => {
         transition: Bounce,
       })
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }
@@ -112,7 +115,8 @@ const Support = () => {
     formData.append("urgency", urgency);
 
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      
       let response = await API.post("/support/raise-ticket/", formData, {
         "Content-type": "multipart/form-data"
       });
@@ -149,6 +153,7 @@ const Support = () => {
         transition: Bounce
       });
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }

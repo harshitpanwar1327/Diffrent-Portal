@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import "./editConfig.css"
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
@@ -27,15 +27,17 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
   const [notepad, setNotepad] = useState(false);
   const [prevData, setPrevData] = useState([]);
   let [loading, setLoading] = useState(false);
+  let loaderTimeout = useRef(null);
 
   const fetchConfigData = async () => {
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/config/get-config/${groupId}/`);
       setPrevData([response.data.data[0]]);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
     }
   }
@@ -86,23 +88,23 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
 
     let processString = processArray.join(',');
 
-    let configData = {
-      groupId,
-      organization,
-      macAddress,
-      ipAddress,
-      date_enabled: date,
-      tagline_enabled: tagline,
-      layout,
-      qr_top_left: topLeft,
-      qr_top_right: topRight,
-      qr_bottom_left: bottomLeft,
-      qr_bottom_right: bottomRight,
-      whitelist_processes: processString
-    }
-
     try {
-      setLoading(true);
+      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+
+      let configData = {
+        groupId,
+        organization,
+        macAddress,
+        ipAddress,
+        date_enabled: date,
+        tagline_enabled: tagline,
+        layout,
+        qr_top_left: topLeft,
+        qr_top_right: topRight,
+        qr_bottom_left: bottomLeft,
+        qr_bottom_right: bottomRight,
+        whitelist_processes: processString
+      }
 
       let response = await API.put(`/config/edit-config/`, configData);
 
@@ -132,6 +134,7 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
         transition: Bounce
       });
     } finally {
+      clearTimeout(loaderTimeout.current);
       setLoading(false);
       setOpenModal(false);
     }
