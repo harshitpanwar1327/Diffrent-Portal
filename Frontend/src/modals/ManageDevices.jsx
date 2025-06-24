@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './manageDevices.css'
 import API from '../util/Api'
 import Pagination from '@mui/material/Pagination'
@@ -13,11 +13,12 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
   let itemsPerPage = 10;
   let [totalData, setTotalData] = useState(1);
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const fetchDevices = async () => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       let response = await API.post(`/devices/manage-group/`, {
         page: currentPage,
@@ -30,7 +31,7 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -52,8 +53,10 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
   }, [currentPage, search])
 
   const handleGroupAllocation = async (data) => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       let groupInfo = {
         macAddress: data.macAddress,
@@ -90,7 +93,7 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
         transition: Bounce,
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }

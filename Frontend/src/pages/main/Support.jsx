@@ -49,17 +49,18 @@ const Support = () => {
 
   let fileInputRef = useRef();
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef();
 
   let fetchGroupName = async () => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       let response = await API.get('/policy/get-group/');
       setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -75,9 +76,11 @@ const Support = () => {
   const handleGroupChange = async (e) => {
     let selectedGroupId = e.target.value;
     setGroupID(selectedGroupId);
+
+    let loaderTimeout;
     
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/devices/get-devices/${selectedGroupId}`);
       setDeviceData(response.data.data);
     } catch (error) {
@@ -94,7 +97,7 @@ const Support = () => {
         transition: Bounce,
       })
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -114,8 +117,10 @@ const Support = () => {
     formData.append("screenshot", screenshot);
     formData.append("urgency", urgency);
 
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       
       let response = await API.post("/support/raise-ticket/", formData, {
         "Content-type": "multipart/form-data"
@@ -153,7 +158,7 @@ const Support = () => {
         transition: Bounce
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }

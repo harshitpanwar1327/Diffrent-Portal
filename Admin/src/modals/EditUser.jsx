@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import {toast, Bounce} from 'react-toastify'
 import API from '../utils/API'
@@ -11,7 +11,6 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -31,8 +30,10 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
       return;
     }
 
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       
       const updatedData = {
         organization,
@@ -70,7 +71,7 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
         transition: Bounce,
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }

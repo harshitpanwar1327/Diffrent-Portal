@@ -1,4 +1,4 @@
-import {React , useEffect, useRef, useState}from 'react'
+import {React , useEffect, useState}from 'react'
 import './editGroup.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
@@ -7,17 +7,18 @@ import HashLoader from "react-spinners/HashLoader"
 const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
     let [groupName , setGroupName] = useState('');
     let [loading, setLoading] = useState(false);
-    let loaderTimeout = useRef(null);
 
     let fetchGroupDetails = async () => {
+        let loaderTimeout;
+
         try {
-            loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+            loaderTimeout = setTimeout(() => setLoading(true), 1000);
             let response = await API.get(`/policy/get-group/${groupId}`);
             setGroupName(response.data[0].groupName);
         } catch (error) {
             console.log(error.response.data.message || error);
         } finally {
-            clearTimeout(loaderTimeout.current);
+            clearTimeout(loaderTimeout);
             setLoading(false);
         }
     }
@@ -33,8 +34,10 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
     const handleEditGroup = async (e)=>{
         e.preventDefault();
 
+        let loaderTimeout;
+
         try {
-            loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+            loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
             let groupData = {
                 groupId,
@@ -72,7 +75,7 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
                 transition: Bounce
             });
         } finally {
-            clearTimeout(loaderTimeout.current);
+            clearTimeout(loaderTimeout);
             setLoading(false);
             setOpenModal(false);
         }

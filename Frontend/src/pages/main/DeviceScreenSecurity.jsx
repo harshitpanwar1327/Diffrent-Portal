@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './deviceScreenSecurity.css'
 import CreateGroup from '../../modals/CreateGroup'
 import EditGroup from '../../modals/EditGroup'
@@ -23,18 +23,19 @@ const DeviceScreenSecurity = () => {
   let itemsPerPage = 10;
   let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const getGroupData = async (currentPage, itemsPerPage, search) => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       const response = await API.get(`/policy/get-group?page=${currentPage}&limit=${itemsPerPage}&search=${search}`);
       setGroupData(response.data.data);
       setTotalPages(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   };
@@ -75,8 +76,9 @@ const DeviceScreenSecurity = () => {
       confirmButtonText: "Yes, delete it!"
     }).then(async (result) => {
       if (result.isConfirmed) {
+        let loaderTimeout;
         try {
-          loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+          loaderTimeout = setTimeout(() => setLoading(true), 1000);
           let response = await API.delete(`/policy/delete-group/${groupId}`);
           setGroupData(groupData.filter((prev) => prev.groupId !== groupId));
         } catch (error) {
@@ -93,7 +95,7 @@ const DeviceScreenSecurity = () => {
             transition: Bounce,
           });
         } finally {
-          clearTimeout(loaderTimeout.current);
+          clearTimeout(loaderTimeout);
           setLoading(false);
         }
         Swal.fire({

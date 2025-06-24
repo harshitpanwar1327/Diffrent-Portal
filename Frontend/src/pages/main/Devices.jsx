@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import './devices.css'
 import API from '../../util/Api'
 import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
@@ -17,7 +17,6 @@ const Devices = () => {
   let itemsPerPage = 10;
   let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const getDevices = async (currentPage, itemsPerPage, search) => {
     try {
@@ -40,14 +39,16 @@ const Devices = () => {
 
   useEffect(() => {
     const fetchDeviceData = async () => {
+      let loaderTimeout;
+
       try {
-        loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+        loaderTimeout = setTimeout(() => setLoading(true), 1000);
         await getDevices(currentPage, itemsPerPage, search);
         await getLicense();
       } catch (error) {
         console.log(error);
       } finally {
-        clearTimeout(loaderTimeout.current);
+        clearTimeout(loaderTimeout);
         setLoading(false);
       }
     }
@@ -94,8 +95,10 @@ const Devices = () => {
       return;
     }
 
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       let updateLicenseData = {
         licenseKey: licenseKey,
@@ -138,7 +141,7 @@ const Devices = () => {
         transition: Bounce
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -154,8 +157,9 @@ const Devices = () => {
       confirmButtonText: "Yes, delete it!"
     }).then(async (result) => {
       if (result.isConfirmed) {
+        let loaderTimeout;
         try {
-          loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+          loaderTimeout = setTimeout(() => setLoading(true), 1000);
           let response = await API.delete(`/devices/delete-device/${macAddress}`);
           setDevicesData(devicesData.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
@@ -172,7 +176,7 @@ const Devices = () => {
             transition: Bounce,
           });
         } finally {
-          clearTimeout(loaderTimeout.current);
+          clearTimeout(loaderTimeout);
           setLoading(false);
         }
         Swal.fire({

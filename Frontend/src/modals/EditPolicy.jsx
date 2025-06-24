@@ -1,4 +1,4 @@
-import {React, useState, useEffect, useRef} from 'react'
+import {React, useState, useEffect} from 'react'
 import './editPolicy.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
@@ -15,17 +15,18 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
 
   let [prevData, setPrevData] = useState([]);
   const [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const fetchPolicyDetails = async () => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/policy/get-policy/${groupId}`);
       setPrevData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false)
     }
   }
@@ -57,8 +58,10 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   const handlePolicy = async (e) => {
     e.preventDefault();
 
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       const policy = {
         groupId: groupId,
@@ -97,7 +100,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
         transition: Bounce
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
       setOpenModal(false);
     }

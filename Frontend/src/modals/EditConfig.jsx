@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import "./editConfig.css"
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
@@ -27,17 +27,18 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
   const [notepad, setNotepad] = useState(false);
   const [prevData, setPrevData] = useState([]);
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const fetchConfigData = async () => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/config/get-config/${groupId}/`);
       setPrevData([response.data.data[0]]);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -88,8 +89,10 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
 
     let processString = processArray.join(',');
 
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       let configData = {
         groupId,
@@ -134,7 +137,7 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
         transition: Bounce
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
       setOpenModal(false);
     }

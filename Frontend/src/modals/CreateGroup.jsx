@@ -1,20 +1,21 @@
-import {React , useRef, useState}from 'react'
+import {React, useState}from 'react'
 import './createGroup.css'
 import API from '../util/Api'
 import {toast, Bounce} from 'react-toastify'
 import HashLoader from "react-spinners/HashLoader"
 
-const CreateGroup = ({setOpenModal , setGroupData, getGroupData}) => {
+const CreateGroup = ({setOpenModal, getGroupData}) => {
   let userId = sessionStorage.getItem('userId');
   let [groupName , setGroupName] = useState('');
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const handleCreate = async (e)=>{
     e.preventDefault();
 
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       let groupData = {
         userId,
@@ -49,7 +50,7 @@ const CreateGroup = ({setOpenModal , setGroupData, getGroupData}) => {
         transition: Bounce
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
       setOpenModal(false);
     }

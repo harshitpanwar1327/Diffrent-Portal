@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './licenseManagement.css'
 import API from '../../util/Api'
 import {toast, Bounce} from 'react-toastify'
@@ -16,11 +16,10 @@ const LicenseManagement = () => {
   let [totalData, setTotalPages] = useState(1);
   let userId = sessionStorage.getItem('userId');
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   let getLicenseData = async (currentPage, itemsPerPage) => {
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/license/get-license?page=${currentPage}&limit=${itemsPerPage}`);
       setTotalPages(response.data.total);
       let licenseKey = response.data.data;
@@ -29,7 +28,7 @@ const LicenseManagement = () => {
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -43,8 +42,10 @@ const LicenseManagement = () => {
   }, []);
 
   const handleActivate = async () => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       let response = await API.post('/license/validate/', {
         licenseKey
@@ -84,7 +85,7 @@ const LicenseManagement = () => {
         transition: Bounce
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }

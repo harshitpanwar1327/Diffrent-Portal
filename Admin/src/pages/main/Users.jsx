@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import NavigationBar from '../../components/NavigationBar'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -17,17 +17,18 @@ const Users = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const fetchUsersData = async () => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       const response = await API.get('/users/get-users');
       setUsersData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -54,8 +55,10 @@ const Users = () => {
       return;
     }
 
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       const userData = {
         email,
@@ -97,7 +100,7 @@ const Users = () => {
         transition: Bounce,
       });
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
@@ -118,8 +121,9 @@ const Users = () => {
       confirmButtonText: "Yes, delete it!"
     }).then(async (result) => {
       if (result.isConfirmed) {
+        let loaderTimeout;
         try {
-          loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+          loaderTimeout = setTimeout(() => setLoading(true), 1000);
           const response = await API.delete(`/users/delete-user/${id}`);
           setUsersData(usersData.filter(data => data.id !== id));
         } catch (error) {
@@ -136,7 +140,7 @@ const Users = () => {
             transition: Bounce,
           });
         } finally {
-          clearTimeout(loaderTimeout.current);
+          clearTimeout(loaderTimeout);
           setLoading(false);
         }
         Swal.fire({

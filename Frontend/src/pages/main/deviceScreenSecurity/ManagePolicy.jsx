@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './managePolicy.css'
 import EditPolicy from '../../../modals/EditPolicy'
 import {useParams} from 'react-router-dom'
@@ -18,17 +18,18 @@ const ManagePolicy = () => {
   let {groupId} = useParams();
   let [policy, setPolicy] = useState([]);
   let [loading, setLoading] = useState(false);
-  let loaderTimeout = useRef(null);
 
   const fetchPolicyDetails = async () => {
+    let loaderTimeout;
+
     try {
-      loaderTimeout.current = setTimeout(() => setLoading(true), 1000);
+      loaderTimeout = setTimeout(() => setLoading(true), 1000);
       let response = await API.get(`/policy/get-policy/${groupId}`);
       setPolicy(response.data.data);
     } catch (error) {
       console.log(error);
     } finally {
-      clearTimeout(loaderTimeout.current);
+      clearTimeout(loaderTimeout);
       setLoading(false);
     }
   }
