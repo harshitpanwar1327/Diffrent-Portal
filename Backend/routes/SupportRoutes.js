@@ -17,7 +17,10 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage: storage })
 
+//Portal Routes
 router.post('/raise-ticket', upload.single('screenshot'), ticketDetails);
+
+//Admin Routes
 router.get('/get-feedback', getFeedbacks);
 
 export default router;

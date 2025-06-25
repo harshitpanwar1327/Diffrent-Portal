@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
-import { authMiddleware } from './middleware/AuthMiddleware.js';
+import { authMiddleware } from './middlewares/AuthMiddleware.js';
 import createAllTables from './utils/CreateTables.js';
 import { checkConnection } from './config/Database.js';
 import adminConnect from './config/Admin.js';
@@ -38,10 +38,6 @@ app.use("/api/users", UsersRoutes);
 
 app.use("/api/config", ApplicationRoutes);
 
-app.use("/api/license", LicensesRoutes);
-
-app.use("/api/support", SupportRoutes);
-
 app.use(authMiddleware);
 
 app.use("/api/policy", PolicyRoutes);
@@ -49,6 +45,10 @@ app.use("/api/policy", PolicyRoutes);
 app.use("/api/config", ConfigRoutes);
 
 app.use("/api/devices", DevicesRoutes);
+
+app.use("/api/license", LicensesRoutes);
+
+app.use("/api/support", SupportRoutes);
 
 app.use((req, res, next) => {
     res.status(404).json({message: "Route not exist"});

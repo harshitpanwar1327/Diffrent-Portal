@@ -4,7 +4,8 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import Users from './pages/main/Users'
-import License from './pages/main/License'
+import Generate from './pages/main/Generate'
+import Licenses from './pages/main/Licenses'
 import Feedbacks from './pages/main/Feedbacks'
 
 function App() {
@@ -23,7 +24,8 @@ function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
           <Route path='/users' element={<Users />}/>
-          <Route path='/license' element={<License />}/>
+          <Route path='/generate' element={<Generate />}/>
+          <Route path='/licenses' element={<Licenses />}/>
           <Route path='/feedbacks' element={<Feedbacks />}/>
         </Route>
 

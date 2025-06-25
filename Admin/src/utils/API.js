@@ -4,21 +4,21 @@ import Swal from 'sweetalert2'
 let isAlertShown = false;
 
 const API = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL
+  baseURL: import.meta.env.VITE_API_BASE_URL
 });
 
 // Request interceptor to attach token
 API.interceptors.request.use(
   (config) => {
-      const token = sessionStorage.getItem('AuthToken');
+    const token = sessionStorage.getItem('authToken');
       
-      if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`;
-      }
-      return config;
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
   },
   (error) => {
-      return Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 

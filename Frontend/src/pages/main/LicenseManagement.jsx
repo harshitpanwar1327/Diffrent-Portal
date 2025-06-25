@@ -18,9 +18,11 @@ const LicenseManagement = () => {
   let [loading, setLoading] = useState(false);
 
   let getLicenseData = async (currentPage, itemsPerPage) => {
+    let loaderTimeout;
+    
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
-      let response = await API.get(`/license/get-license?page=${currentPage}&limit=${itemsPerPage}`);
+      let response = await API.get(`/license/get-license?page=${currentPage}&limit=${itemsPerPage}&userId=${userId}`);
       setTotalPages(response.data.total);
       let licenseKey = response.data.data;
       let decodedData = licenseKey.map(decodeLicenseCodeWithToken);

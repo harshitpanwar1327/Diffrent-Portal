@@ -108,6 +108,7 @@ const Dashboard = () => {
   let [groupData, setGroupData] = useState([]);
   let [licenseData, setLicenseData] = useState([]);
   let [loading, setLoading] = useState(false);
+  let userId = sessionStorage.getItem('userId')
 
   const fetchDeviceCount = async () => {
     try {
@@ -124,7 +125,7 @@ const Dashboard = () => {
 
   const fetchLicenseCount = async () => {
     try {
-      let response = await API.get("/license/get-license/");
+      let response = await API.get(`/license/get-license?userId=${userId}`);
       let licenseKeys = response.data.data;
       setActiveLicense(licenseKeys.filter((data) => {
         let licenseData = decodeLicenseCodeWithToken({licenseKey: data.licenseKey});

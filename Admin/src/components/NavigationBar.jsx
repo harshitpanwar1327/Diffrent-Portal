@@ -47,14 +47,16 @@ const NavigationBar = ({heading}) => {
           transition={{type: 'spring', stiffness: 100, damping: 15, delay: 0.2}}
         >
           <NavLink to='/users' className="!text-white p-4 border-b border-white">Users</NavLink>
-          <NavLink to='/license' className="!text-white p-4 border-b border-white">License</NavLink>
+          <NavLink to='/generate' className="!text-white p-4 border-b border-white">Generate</NavLink>
+          <NavLink to='/licenses' className="!text-white p-4 border-b border-white">Licenses</NavLink>
           <NavLink to='/feedbacks' className="!text-white p-4 border-b border-white">Feedbacks</NavLink>
           <p className='text-white flex items-center gap-2 font-semibold p-4' onClick={handleLogout}>Logout <LogoutIcon sx={{fontSize: '20px'}}/></p>
         </motion.div>
       }
       <div className='hidden md:flex items-center gap-10'>
         <NavLink to='/users' className="!text-white transition duration-300 ease-in-out transform hover:scale-110">Users</NavLink>
-        <NavLink to='/license' className="!text-white transition duration-300 ease-in-out transform hover:scale-110">License</NavLink>
+        <NavLink to='/generate' className="!text-white transition duration-300 ease-in-out transform hover:scale-110">Generate</NavLink>
+        <NavLink to='/licenses' className="!text-white transition duration-300 ease-in-out transform hover:scale-110">Licenses</NavLink>
         <NavLink to='/feedbacks' className="!text-white transition duration-300 ease-in-out transform hover:scale-110">Feedbacks</NavLink>
         <p className='text-white hover:text-red-500 flex items-center gap-2 font-semibold cursor-pointer transition duration-300 ease-in-out transform hover:scale-110' onClick={handleLogout}>Logout <LogoutIcon sx={{fontSize: '20px'}}/></p>
       </div>

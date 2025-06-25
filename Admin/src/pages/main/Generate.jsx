@@ -4,7 +4,7 @@ import {toast, Bounce} from 'react-toastify'
 import API from '../../utils/API'
 import {FadeLoader} from 'react-spinners'
 
-const License = () => {
+const Generate = () => {
   const [organization, setOrganization] = useState('');
   const [totalDevices, setTotalDevices] = useState(0);
   const [purchaseDate, setPurchaseDate] = useState('');
@@ -132,4 +132,4 @@ const License = () => {
   )
 }
 
-export default License
+export default Generate

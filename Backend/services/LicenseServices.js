@@ -10,6 +10,30 @@ export const generateLicenseLogic = ({ organization, totalDevices, purchaseDate,
   return { licenseCode: encrypted };
 };
 
+export const getLicenseLogic = async () => {
+  try {
+    let [rows] = await pool.query(`SELECT * FROM license;`);
+
+    return { success: true, data: rows };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "License not found!" };
+  }
+};
+
+export const deleteLicenseLogic = async (id) => {
+  try {
+    let query = `DELETE FROM license WHERE licenseId = ?`;
+    let values = [id];
+    await pool.query(query, values);
+
+    return { success: true, message: "License deleted successfully" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Unable to delete license!" };
+  }
+}
+
 export const decodeLicenseCodeWithToken = (licenseKey) => {
   try {
     const bytes = CryptoJS.AES.decrypt(licenseKey, SECRET_KEY);
@@ -50,15 +74,15 @@ export const activateLicenseLogic = async (licenseData) => {
   }
 };
 
-export const getLicenseLogic = async (limit, offset) => {
+export const getLicenseByIdLogic = async (limit, offset, id) => {
   try {
-    let [rows] = await pool.query(`SELECT * FROM license LIMIT ? OFFSET ?;`, [limit, offset]);
-    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license;`);
+    let [rows] = await pool.query(`SELECT * FROM license WHERE userId = ? LIMIT ? OFFSET ?;`, [id, limit, offset]);
+    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license WHERE userId = ?;`, [id]);
     const total = countRows[0].total;
 
     return { success: true, data: rows, total };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Active license not found!" };
+    return { success: false, message: "License not found!" };
   }
 };

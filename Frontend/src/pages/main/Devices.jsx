@@ -17,6 +17,7 @@ const Devices = () => {
   let itemsPerPage = 10;
   let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
+  let userId = sessionStorage.getItem('userId');
 
   const getDevices = async (currentPage, itemsPerPage, search) => {
     try {
@@ -30,7 +31,7 @@ const Devices = () => {
 
   const getLicense = async () => {
     try {
-      let response = await API.get("/license/get-license/");
+      let response = await API.get(`/license/get-license?userId=${userId}`);
       setLicense(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);
