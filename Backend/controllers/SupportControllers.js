@@ -25,8 +25,12 @@ export const ticketDetails = async (req, res) => {
 }
 
 export const getFeedbacks = async (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    let offset = (page - 1) * limit;
+
     try {
-        let response = await getFeedbacksLogic();
+        let response = await getFeedbacksLogic(limit, offset);
         if (response.success) {
             return res.status(200).json(response);
         } else {

@@ -7,6 +7,7 @@ import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 import HashLoader from "react-spinners/HashLoader"
+import Swal from 'sweetalert2'
 
 const LicenseManagement = () => {
   let [licenseKey, setLicenseKey] = useState('');
@@ -92,6 +93,48 @@ const LicenseManagement = () => {
     }
   }
 
+  const handleDeleteLicense = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let loaderTimeout;
+        try {
+          loaderTimeout = setTimeout(() => setLoading(true), 1000);
+          let response = await API.delete(`/license/delete-license/${id}`);
+          setLicenseData(licenseData.filter(prev => prev.licenseId !== id));
+        } catch (error) {
+          console.log(error);
+          toast.error(error.response.data.message || 'License not deleted!', {
+            position: "top-center",
+            autoClose: 1800,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        } finally {
+          clearTimeout(loaderTimeout);
+          setLoading(false);
+        }
+        Swal.fire({
+          title: "Deleted!",
+          text: "License has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+  }
+
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   }
@@ -115,6 +158,7 @@ const LicenseManagement = () => {
               <th className='group-table-heading'>Purchase Date</th>
               <th className='group-table-heading'>Expiry Date</th>
               <th className='group-table-heading'>Status</th>
+              <th className='group-table-heading'>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -128,12 +172,13 @@ const LicenseManagement = () => {
                     <td className={`group-table-data ${new Date(data.expiryDate) > new Date(getCurrentDate()) ? 'active' : 'expired'}`}>
                       {new Date(data.expiryDate) > new Date(getCurrentDate()) ? 'Active' : 'Expired'}
                     </td>
+                    <td className='group-table-data'><i className="fa-solid fa-trash" onClick={() => handleDeleteLicense(data.licenseId)}></i></td>
                   </tr>
                 )
               )
             ) : (
               <tr>
-                <td colSpan={5} className='empty-data-table'>No license found.</td>
+                <td colSpan={6} className='empty-data-table'>No license found.</td>
               </tr>
             )}
           </tbody>

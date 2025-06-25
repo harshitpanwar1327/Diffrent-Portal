@@ -15,6 +15,8 @@ import DevicesRoutes from './routes/DevicesRoutes.js';
 import ApplicationRoutes from './routes/ApplicationRoutes.js';
 import UsersRoutes from './routes/UsersRoutes.js';
 import AdminRoutes from './routes/AdminRoutes.js';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -22,9 +24,18 @@ const PORT = process.env.PORT;
 
 const app = express();
 
+const fileName = fileURLToPath(import.meta.url);
+const dirName = dirname(fileName);
+
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(dirName, 'uploads'), {
+  setHeaders: (res, path) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  }
+}));
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000,

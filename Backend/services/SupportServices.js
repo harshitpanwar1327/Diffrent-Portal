@@ -23,11 +23,13 @@ export const ticketDetailsLogic = async (supportData) => {
     }
 };
 
-export const getFeedbacksLogic = async () => {
+export const getFeedbacksLogic = async (limit, offset) => {
     try {
-        let [rows] = await pool.query(`SELECT * FROM support;`);
+        let [rows] = await pool.query(`SELECT * FROM support LIMIT ? OFFSET ?;`, [limit, offset]);
+        let [columnRows] = await pool.query(`SELECT COUNT(*) AS total FROM support;`);
+        let total = columnRows[0].total;
 
-        return { success: true, message: "Feedbacks Fetched Successfully", data: rows };
+        return { success: true, message: "Feedbacks Fetched Successfully", data: rows, total };
     } catch (error) {
         console.error("Error:", error);
         return { success: false, message: "Feedbacks not fetched!" };

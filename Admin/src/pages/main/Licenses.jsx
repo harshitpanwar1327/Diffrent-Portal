@@ -5,18 +5,25 @@ import {FadeLoader} from 'react-spinners'
 import Swal from 'sweetalert2'
 import {toast, Bounce} from 'react-toastify'
 import DeleteIcon from '@mui/icons-material/Delete'
+import Pagination from '@mui/material/Pagination'
+import Stack from '@mui/material/Stack'
 
 const Licenses = () => {
+  const [search, setSearch] = useState('');
   const [licenseData, setLicenseData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [totalData, setTotalData] = useState(1);
 
   const fetchLicenses = async () => {
     let loaderTimeout;
 
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
-      const response = await API.get(`/license/get-licenses`);
+      const response = await API.get(`/license/get-licenses?page=${currentPage}&limit=${itemsPerPage}&search=${search}`);
       setLicenseData(response.data.data);
+      setTotalData(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
     } finally {
@@ -27,7 +34,7 @@ const Licenses = () => {
 
   useEffect(() => {
     fetchLicenses();
-  }, []);
+  }, [search, currentPage]);
 
   const handleDelete = async (id) => {
     Swal.fire({
@@ -71,6 +78,10 @@ const Licenses = () => {
     });
   }
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  }
+
   return (
     <div className='flex flex-col w-full h-full'>
       {loading && (
@@ -80,6 +91,7 @@ const Licenses = () => {
       )}
       <NavigationBar heading='Licenses' />
       <div className='grow p-2 overflow-auto'>
+        <input type="text" name='search' id='search' placeholder='&#128269; Search here...' value={search} onChange={(e) => {setSearch(e.target.value); setCurrentPage(1)}} className='p-2 border border-gray-300 rounded-full mb-2'/>
         <table className='w-full'>
           <thead>
             <tr className='bg-[#f5f3ff] border-b border-[#434343]'>
@@ -98,13 +110,16 @@ const Licenses = () => {
                 </tr>
               )) : (
                 <tr className='bg-[#f8f7ff] border-b border-[#848484]'>
-                  <td className='p-2' colSpan={3}>No data available</td>
+                  <td className='p-2 text-center' colSpan={3}>No data available</td>
                 </tr>
               )
             }
           </tbody>
         </table>
       </div>
+      <Stack spacing={2} className='my-2'>
+        <Pagination count={Math.ceil(totalData/itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary"/>
+      </Stack>
     </div>
   )
 }

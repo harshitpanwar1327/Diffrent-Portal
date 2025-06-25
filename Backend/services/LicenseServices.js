@@ -10,11 +10,15 @@ export const generateLicenseLogic = ({ organization, totalDevices, purchaseDate,
   return { licenseCode: encrypted };
 };
 
-export const getLicenseLogic = async () => {
-  try {
-    let [rows] = await pool.query(`SELECT * FROM license;`);
+export const getLicenseLogic = async (limit, offset, search) => {
+  let searchQuery = `%${search}%`;
 
-    return { success: true, data: rows };
+  try {
+    let [rows] = await pool.query(`SELECT * FROM license WHERE userId LIKE ? OR licenseKey LIKE ? LIMIT ? OFFSET ?;`, [searchQuery, searchQuery, limit, offset]);
+    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license WHERE userId LIKE ? OR licenseKey LIKE ?;`, [searchQuery, searchQuery]);
+    const total = countRows[0].total;
+
+    return { success: true, data: rows, total };
   } catch (error) {
     console.log(error);
     return { success: false, message: "License not found!" };

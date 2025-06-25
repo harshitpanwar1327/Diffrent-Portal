@@ -20,6 +20,7 @@ export const decodeLicenseCodeWithToken = (licenseData) => {
   
         return {
             licenseId: licenseData.licenseId,
+            userId: licenseData.userId,
             organization,
             totalDevices,
             purchaseDate,

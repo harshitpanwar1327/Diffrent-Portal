@@ -6,11 +6,11 @@ const router = express.Router();
 //Admin Routes
 router.post('/generate', generateLicense);
 router.get("/get-licenses", getLicense);
-router.delete("/delete-license/:id", deleteLicense);
 
 //Portal Routes
 router.post('/validate', validateLicense);
 router.post("/activate-license", activateLicense);
 router.get("/get-license", getLicenseById);
+router.delete("/delete-license/:id", deleteLicense);
 
 export default router;
