@@ -16,8 +16,6 @@ export const getDevicesLogic =  async (limit, offset, search) => {
 };
 
 export const getDevicesByGroupLogic = async (groupId) => {
-    console.log(groupId);
-    
     try {
         const [rows] = await pool.query(`SELECT * FROM Devices WHERE groupId = ?;`, [groupId]);
         return { success: true, data: rows };

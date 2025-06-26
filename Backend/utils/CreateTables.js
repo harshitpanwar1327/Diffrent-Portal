@@ -73,18 +73,19 @@ const licenseDetails = `CREATE TABLE IF NOT EXISTS license (
     licenseKey VARCHAR(255) NOT NULL,
     FOREIGN KEY (userId) REFERENCES users(id)
         ON DELETE CASCADE
-)`;
+);`;
 
 //SupportDetails Table
 const supportDetails = `CREATE TABLE IF NOT EXISTS support (
     userId INT NOT NULL,
     ticketId VARCHAR(36) PRIMARY KEY,
     groupId INT NOT NULL,
-    deviceName VARCHAR(50)  NOT NULL,
+    deviceId INT NOT NULL,
     issueType VARCHAR(100) NOT NULL,
     description LONGTEXT  NOT NULL,
     screenshot LONGTEXT,
     urgency VARCHAR(10),
+    status VARCHAR(10) DEFAULT 'pending',
     FOREIGN KEY (userId) REFERENCES users(id)
         ON DELETE CASCADE
 );`;

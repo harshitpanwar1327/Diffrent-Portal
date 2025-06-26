@@ -40,8 +40,8 @@ const Support = () => {
   let [deviceData, setDeviceData] = useState([]);
 
   let userId = sessionStorage.getItem('userId');
-  const [groupId, setGroupID] = useState("");
-  const [deviceName, setDeviceName] = useState("");
+  const [groupId, setGroupId] = useState("");
+  const [deviceId, setDeviceId] = useState("");
   const [issueType, setIssueType] = useState("");
   const [description, setDescription] = useState("");
   const [screenshot, setScreenshot] = useState({});
@@ -75,7 +75,7 @@ const Support = () => {
 
   const handleGroupChange = async (e) => {
     let selectedGroupId = e.target.value;
-    setGroupID(selectedGroupId);
+    setGroupId(selectedGroupId);
 
     let loaderTimeout;
     
@@ -111,7 +111,7 @@ const Support = () => {
     formData.append("userId", userId);
     formData.append("ticketId", ticketId);
     formData.append("groupId", groupId);
-    formData.append("deviceName", deviceName);
+    formData.append("deviceId", deviceId);
     formData.append("issueType", issueType);
     formData.append("description", description);
     formData.append("screenshot", screenshot);
@@ -126,8 +126,8 @@ const Support = () => {
         "Content-type": "multipart/form-data"
       });
 
-      setGroupID('');
-      setDeviceName('');
+      setGroupId('');
+      setDeviceId('');
       setIssueType('');
       setDescription('');
       setScreenshot({});
@@ -181,10 +181,10 @@ const Support = () => {
 
       <div className="support-row">
         <label htmlFor="deviceName" className="support-label">Device Name: </label>
-        <select name="deviceName" id="deviceName" value={deviceName} className="support-select" onChange={(e) => setDeviceName(e.target.value)} required>
+        <select name="deviceName" id="deviceName" value={deviceId} className="support-select" onChange={(e) => setDeviceId(e.target.value)} required>
           <option value="">Select</option>
           {deviceData.map((data, index) => (
-            <option key={index} value={data.deviceID}>{data.deviceName}</option>
+            <option key={index} value={data.deviceId}>{data.deviceName}</option>
           ))}
         </select>
       </div>

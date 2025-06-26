@@ -1,5 +1,5 @@
 import express from 'express';
-import {ticketDetails, getFeedbacks} from '../controllers/SupportControllers.js';
+import {ticketDetails, getFeedbacks, updateStatus} from '../controllers/SupportControllers.js';
 import multer from 'multer';
 import path from 'path';
 
@@ -22,5 +22,6 @@ router.post('/raise-ticket', upload.single('screenshot'), ticketDetails);
 
 //Admin Routes
 router.get('/get-feedback', getFeedbacks);
+router.put('/status', updateStatus);
 
 export default router;

@@ -3,7 +3,7 @@ export class SupportModels {
         this.userId = supportData.userId;
         this.ticketId = supportData.ticketId;
         this.groupId = supportData.groupId;
-        this.deviceName = supportData.deviceName;
+        this.deviceId = supportData.deviceId;
         this.issueType = supportData.issueType;
         this.description = supportData.description;
         this.screenshot = supportData.screenshot;

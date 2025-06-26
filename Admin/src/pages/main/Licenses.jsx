@@ -7,6 +7,7 @@ import {toast, Bounce} from 'react-toastify'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
+import {decodeLicenseCodeWithToken} from '../../utils/DecodeLicense'
 
 const Licenses = () => {
   const [search, setSearch] = useState('');
@@ -22,7 +23,9 @@ const Licenses = () => {
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
       const response = await API.get(`/license/get-licenses?page=${currentPage}&limit=${itemsPerPage}&search=${search}`);
-      setLicenseData(response.data.data);
+      const licenseKey = response.data.data;
+      const decode = licenseKey.map(decodeLicenseCodeWithToken);
+      setLicenseData(decode);
       setTotalData(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
@@ -91,12 +94,15 @@ const Licenses = () => {
       )}
       <NavigationBar heading='Licenses' />
       <div className='grow p-2 overflow-auto'>
-        <input type="text" name='search' id='search' placeholder='&#128269; Search here...' value={search} onChange={(e) => {setSearch(e.target.value); setCurrentPage(1)}} className='p-2 border border-gray-300 rounded-full mb-2'/>
+        <input type="text" name='search' id='search' placeholder='&#128269; Search by userId...' value={search} onChange={(e) => {setSearch(e.target.value); setCurrentPage(1)}} className='p-2 border border-gray-300 rounded-full mb-2'/>
         <table className='w-full'>
           <thead>
             <tr className='bg-[#f5f3ff] border-b border-[#434343]'>
               <th className='table-heading'>User ID</th>
-              <th className='table-heading'>License Key</th>
+              <th className='table-heading'>Organization</th>
+              <th className='table-heading'>Total Devices</th>
+              <th className='table-heading'>Purchase Date</th>
+              <th className='table-heading'>Expiry Date</th>
               <th className='table-heading'>Delete</th>
             </tr>
           </thead>
@@ -105,7 +111,10 @@ const Licenses = () => {
               licenseData.map((data) => (
                 <tr className='hover:bg-[#f8f7ff] border-b border-[#848484]' key={data.licenseId}>
                   <td className='p-2'>{data.userId}</td>
-                  <td className='p-2'>{data.licenseKey}</td>
+                  <td className='p-2'>{data.organization}</td>
+                  <td className='p-2'>{data.totalDevices}</td>
+                  <td className='p-2'>{data.purchaseDate}</td>
+                  <td className='p-2'>{data.expiryDate}</td>
                   <td className='p-2'><DeleteIcon className='text-red-500 hover:text-red-700 cursor-pointer' onClick={() => handleDelete(data.licenseId)}/></td>
                 </tr>
               )) : (
