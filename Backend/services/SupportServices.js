@@ -23,6 +23,19 @@ export const ticketDetailsLogic = async (supportData) => {
     }
 };
 
+export const getTicketsLogic = async (id, limit, offset) => {
+    try{
+        let [rows] = await pool.query(`SELECT * FROM support WHERE userId = ? LIMIT ? OFFSET ?;`, [id, limit, offset]);
+        let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM support WHERE userId = ?;`, [id]);
+        let total = countRows[0].total;
+
+        return { success: true, message: "Tickets fetched successfully", data: rows, total };
+    } catch(error) {
+        console.error("Error:", error);
+        return { success: false, message: "Tickets not fetched!" };
+    }
+}
+
 export const getFeedbacksLogic = async (limit, offset, search) => {
     let searchQuery = `%${search}%`;
 

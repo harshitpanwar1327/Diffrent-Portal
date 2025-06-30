@@ -5,6 +5,8 @@ import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
 import Chart from 'react-apexcharts'
 import CountUp from 'react-countup'
 import API from '../../util/Api'
+import Pagination from '@mui/material/Pagination'
+import Stack from '@mui/material/Stack'
 import { ResponsivePie } from '@nivo/pie'
 import One from '../../assets/dashboard/One.png'
 import Two from '../../assets/dashboard/two.png'
@@ -49,52 +51,52 @@ const MyPie = ({ data }) => (
     ]}
     fill={[
       {
-          match: {
-              id: 'ruby'
-          },
-          id: 'dots'
+        match: {
+          id: 'ruby'
+        },
+        id: 'dots'
       },
       {
-          match: {
-              id: 'c'
-          },
-          id: 'dots'
+        match: {
+          id: 'c'
+        },
+        id: 'dots'
       },
       {
-          match: {
-              id: 'go'
-          },
-          id: 'dots'
+        match: {
+          id: 'go'
+        },
+        id: 'dots'
       },
       {
-          match: {
-              id: 'python'
-          },
-          id: 'dots'
+        match: {
+          id: 'python'
+        },
+        id: 'dots'
       },
       {
-          match: {
-              id: 'scala'
-          },
-          id: 'lines'
+        match: {
+          id: 'scala'
+        },
+        id: 'lines'
       },
       {
-          match: {
-              id: 'lisp'
-          },
-          id: 'lines'
+        match: {
+          id: 'lisp'
+        },
+        id: 'lines'
       },
       {
-          match: {
-              id: 'elixir'
-          },
-          id: 'lines'
+        match: {
+          id: 'elixir'
+        },
+        id: 'lines'
       },
       {
-          match: {
-              id: 'javascript'
-          },
-          id: 'lines'
+        match: {
+          id: 'javascript'
+        },
+        id: 'lines'
       }
     ]}
   />
@@ -107,8 +109,12 @@ const Dashboard = () => {
   let [retiredDevices, setRetiredDevices] = useState(0);
   let [groupData, setGroupData] = useState([]);
   let [licenseData, setLicenseData] = useState([]);
+  let [ticketData, setTicketData] = useState([]);
+  let [totalTickets, setTotalTickets] = useState([]);
   let [loading, setLoading] = useState(false);
-  let userId = sessionStorage.getItem('userId')
+  let userId = sessionStorage.getItem('userId');
+  let [currentPage, setCurrentPage] = useState(1);
+  let itemsPerPage = 8;
 
   const fetchDeviceCount = async () => {
     try {
@@ -137,6 +143,20 @@ const Dashboard = () => {
     }
   }
 
+  const fetchTickets = async () => {
+    try {
+      let response = await API.post(`/support/get-tickets/`, {
+        id: userId,
+        page: currentPage,
+        limit: itemsPerPage
+      });
+      setTicketData(response.data.data);
+      setTotalTickets(response.data.total);
+    } catch (error) {
+      console.log(error.response.data.message || error);
+    }
+  }
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       let loaderTimeout;
@@ -145,6 +165,7 @@ const Dashboard = () => {
         loaderTimeout = setTimeout(() => setLoading(true), 1000);
         await fetchDeviceCount();
         await fetchLicenseCount();
+        await fetchTickets();
       } catch (error) {
         console.log(error);
       } finally {
@@ -154,7 +175,11 @@ const Dashboard = () => {
     }
 
     fetchDashboardData();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    fetchTickets();
+  }, [currentPage]);
 
   //Bar chart
   const bar = {
@@ -186,6 +211,9 @@ const Dashboard = () => {
       
       xaxis: {
         categories: groupData.map(data => data.groupName || 'null'),
+        labels: {
+          show: false
+        },
         position: 'bottom',
         axisBorder: {
           show: false
@@ -221,6 +249,10 @@ const Dashboard = () => {
         }
       },
     },
+  }
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   }
 
   return (
@@ -282,6 +314,38 @@ const Dashboard = () => {
               <p>No data available</p>
             </div>
           )}
+        </div>
+
+        <div className='tickets-table'>
+          <table className="group-table">
+            <thead>
+              <tr>
+                <th className="group-table-heading">Ticket ID</th>
+                <th className="group-table-heading">Urgency</th>
+                <th className="group-table-heading">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ticketData.length > 0 ? 
+                ticketData.map((data) => (
+                  <tr key={data.ticketId}>
+                    <td className="group-table-data">{data.ticketId}</td>
+                    <td className="group-table-data">{data.urgency}</td>
+                    <td className={`group-table-data ${data.status==='resolved'? 'active': 'expired'}`}>{data.status}</td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan={3} className='empty-data-table'>No ticket found.</td>
+                  </tr>
+                )
+              }
+            </tbody>
+          </table>
+          <div className="pagination">
+            <Stack spacing={2}>
+              <Pagination count={Math.ceil(totalTickets/itemsPerPage)} page={currentPage} onChange={handlePageChange} color="primary" />
+            </Stack>
+          </div>
         </div>
       </div>
     </div>

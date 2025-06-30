@@ -1,5 +1,5 @@
 import { SupportModels } from '../models/SupportModels.js';
-import { ticketDetailsLogic, getFeedbacksLogic, updateStatusLogic } from "../services/SupportServices.js";
+import { ticketDetailsLogic, getTicketsLogic, getFeedbacksLogic, updateStatusLogic } from "../services/SupportServices.js";
 
 export const ticketDetails = async (req, res) => {
     let {userId, ticketId, groupId, deviceId, issueType, description, urgency} = req.body;
@@ -13,6 +13,25 @@ export const ticketDetails = async (req, res) => {
 
     try {
         let response = await ticketDetailsLogic(supportData);
+        if (response.success) {
+            return res.status(200).json(response);
+        } else {
+            return res.status(400).json(response);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+export const getTickets = async (req, res) => {
+    let id = req.body.id;
+    let page = req.body.page || 1;
+    let limit = req.body.limit || 10;
+    let offset = (page - 1) * limit;
+
+    try {
+        let response = await getTicketsLogic(id, limit, offset);
         if (response.success) {
             return res.status(200).json(response);
         } else {

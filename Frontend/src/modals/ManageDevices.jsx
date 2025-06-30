@@ -20,7 +20,7 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
-      let response = await API.post(`/devices/manage-group/`, {
+      let response = await API.post(`/devices/manage-group`, {
         page: currentPage,
         limit: itemsPerPage,
         search,
@@ -76,7 +76,7 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     } catch (error) {
@@ -89,7 +89,7 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     } finally {

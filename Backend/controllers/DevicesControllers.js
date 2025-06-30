@@ -1,5 +1,5 @@
 import { DevicesModels } from "../models/DevicesModels.js";
-import {getDevicesLogic, getDevicesByGroupLogic, manageDeviceGroupLogic, deviceCountLogic, updateDeviceGroupLogic, updateDeviceLicenseLogic, deallocateLicenseLogic, deleteDeviceLogic} from "../services/DevicesServices.js";
+import {getDevicesLogic, getDevicesByGroupLogic, getDevicesByHealthLogic, deviceCountLogic, manageDeviceGroupLogic, updateDeviceGroupLogic, updateDeviceLicenseLogic, deallocateLicenseLogic, deleteDeviceLogic} from "../services/DevicesServices.js";
 
 export const getDevices = async (req, res) => {
     let page = parseInt(req.query.page) || 1;
@@ -40,6 +40,22 @@ export const getDevicesByGroup = async (req, res) => {
     }
 }
 
+export const getDevicesByHealth = async (req, res) => {
+    let {health} = req.params;
+
+    try {
+        let response = await getDevicesByHealthLogic(health);
+        if(response.success) {
+            return res.status(200).json(response);
+        } else {
+            return res.status(400).json(response);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
+    }
+}
+
 export const deviceCount = async (req, res) => {
     try {
         let response = await deviceCountLogic();
@@ -57,6 +73,7 @@ export const deviceCount = async (req, res) => {
 export const manageDeviceGroup = async (req, res) => {
     let page = req.body.page || 1;
     let limit = req.body.limit || 10;
+    let offset = (page - 1) * limit;
     let search = req.body.search || '';
     let groupId = req.body.groupId;
 
@@ -65,7 +82,7 @@ export const manageDeviceGroup = async (req, res) => {
     }
 
     try {
-        let response = await manageDeviceGroupLogic(page, limit, search, groupId);
+        let response = await manageDeviceGroupLogic(limit, offset, search, groupId);
         if(response.success) {
             return res.status(200).json(response);
         } else {

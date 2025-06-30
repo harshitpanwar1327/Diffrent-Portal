@@ -7,6 +7,7 @@ import { authMiddleware } from './middlewares/AuthMiddleware.js';
 import createAllTables from './utils/CreateTables.js';
 import { checkConnection } from './config/Database.js';
 import adminConnect from './config/Admin.js';
+import GroupRoutes from './routes/GroupRoutes.js';
 import PolicyRoutes from './routes/PolicyRoutes.js';
 import SupportRoutes from './routes/SupportRoutes.js';
 import LicensesRoutes from './routes/LicensesRoutes.js';
@@ -50,6 +51,8 @@ app.use("/api/users", UsersRoutes);
 app.use("/api/config", ApplicationRoutes);
 
 app.use(authMiddleware);
+
+app.use("/api/group", GroupRoutes);
 
 app.use("/api/policy", PolicyRoutes);
 

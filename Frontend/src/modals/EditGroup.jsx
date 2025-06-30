@@ -13,7 +13,7 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
 
         try {
             loaderTimeout = setTimeout(() => setLoading(true), 1000);
-            let response = await API.get(`/policy/get-group/${groupId}`);
+            let response = await API.get(`/group/get-group/${groupId}`);
             setGroupName(response.data[0].groupName);
         } catch (error) {
             console.log(error.response.data.message || error);
@@ -44,7 +44,7 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
                 groupName
             };
 
-            let response = await API.put("/policy/update-group/", groupData);
+            let response = await API.put("/group/update-group/", groupData);
             
             setGroupData(prev => {
                 let rem = prev.filter(data => data.groupId!==groupData.groupId);

@@ -25,6 +25,15 @@ export const getDevicesByGroupLogic = async (groupId) => {
     }
 }
 
+export const getDevicesByHealthLogic = async (health) => {
+    try {
+        
+    } catch (error) {
+        console.log("Error fetching group data:", error);
+        return { success: false, message: "Could not retrieve device data by health." };
+    }
+}
+
 export const deviceCountLogic = async () => {
     try {
         let [totalDevices] = await pool.query(`SELECT COUNT(*) AS count FROM devices;`);
@@ -46,12 +55,12 @@ export const deviceCountLogic = async () => {
     }
 }
 
-export const manageDeviceGroupLogic = async (page, limit, search, groupId) => {
+export const manageDeviceGroupLogic = async (limit, offset, search, groupId) => {
     try {
         let searchQuery = `%${search}%`;
 
-        const [rows] = await pool.query(`SELECT * FROM devices WHERE (deviceName LIKE ? OR ipAddress LIKE ? OR macAddress LIKE ?) AND (groupId = ? OR groupId IS NULL);`, [searchQuery, searchQuery, searchQuery,groupId]);
-        const [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM devices WHERE (deviceName LIKE ? OR ipAddress LIKE ? OR macAddress LIKE ?) AND (groupId = ? OR groupId IS NULL)`, [searchQuery, searchQuery, searchQuery,groupId]);
+        const [rows] = await pool.query(`SELECT * FROM devices WHERE (deviceName LIKE ? OR ipAddress LIKE ? OR macAddress LIKE ?) AND (groupId = ? OR groupId IS NULL) LIMIT ? OFFSET ?;`, [searchQuery, searchQuery, searchQuery, groupId, limit, offset]);
+        const [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM devices WHERE (deviceName LIKE ? OR ipAddress LIKE ? OR macAddress LIKE ?) AND (groupId = ? OR groupId IS NULL)`, [searchQuery, searchQuery, searchQuery, groupId]);
         const total = countRows[0].total;
 
         return { success: true, data: rows, total };

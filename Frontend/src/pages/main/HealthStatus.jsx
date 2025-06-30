@@ -17,14 +17,13 @@ const HealthStatus = () => {
   let [currentTab, setCurrentTab] = useState(0);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
-  let [totalData, setTotalPages] = useState(1);
   let [loading, setLoading] = useState(false);
+  let userId = sessionStorage.getItem('userId');
 
-  const fetchGroupName = async (currentPage, itemsPerPage) => {
+  const fetchGroupName = async () => {
     try {
-      let response = await API.get(`/policy/get-group?page=${currentPage}&limit=${itemsPerPage}`);
+      let response = await API.get(`/group/all-group/${userId}`);
       setGroupData(response.data.data);
-      setTotalPages(response.data.total);
     } catch (error) {
       console.log(error.response.data.message || error);
     }
@@ -160,7 +159,7 @@ const HealthStatus = () => {
         let loaderTimeout;
         try {
           loaderTimeout = setTimeout(() => setLoading(true), 1000);
-          let response = await API.delete(`/policy/delete-device/${macAddress}`);
+          let response = await API.delete(`/devices/delete-device/${macAddress}`);
           setRetired(retired.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
           console.log(error);

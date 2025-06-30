@@ -31,7 +31,7 @@ const Devices = () => {
 
   const getLicense = async () => {
     try {
-      let response = await API.get(`/license/get-license?userId=${userId}`);
+      let response = await API.get(`/license/all-license/${userId}`);
       setLicense(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);

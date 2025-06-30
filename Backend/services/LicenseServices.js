@@ -25,19 +25,6 @@ export const getLicenseLogic = async (limit, offset, search) => {
   }
 };
 
-export const deleteLicenseLogic = async (id) => {
-  try {
-    let query = `DELETE FROM license WHERE licenseId = ?`;
-    let values = [id];
-    await pool.query(query, values);
-
-    return { success: true, message: "License deleted successfully" };
-  } catch (error) {
-    console.log(error);
-    return { success: false, message: "Unable to delete license!" };
-  }
-}
-
 export const decodeLicenseCodeWithToken = (licenseKey) => {
   try {
     const bytes = CryptoJS.AES.decrypt(licenseKey, SECRET_KEY);
@@ -90,3 +77,27 @@ export const getLicenseByIdLogic = async (limit, offset, id) => {
     return { success: false, message: "License not found!" };
   }
 };
+
+export const getAllLicenseLogic = async (id) => {
+  try {
+    let [rows] = await pool.query(`SELECT * FROM license;`, [id]);
+
+    return { success: true, data: rows };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "License not found!" };
+  }
+}
+
+export const deleteLicenseLogic = async (id) => {
+  try {
+    let query = `DELETE FROM license WHERE licenseId = ?`;
+    let values = [id];
+    await pool.query(query, values);
+
+    return { success: true, message: "License deleted successfully" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Unable to delete license!" };
+  }
+}

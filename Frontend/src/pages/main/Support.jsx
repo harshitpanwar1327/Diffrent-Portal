@@ -55,7 +55,7 @@ const Support = () => {
 
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
-      let response = await API.get('/policy/get-group/');
+      let response = await API.get('/group/get-group/');
       setGroupData(response.data.data);
     } catch (error) {
       console.log(error.response.data.message || error);

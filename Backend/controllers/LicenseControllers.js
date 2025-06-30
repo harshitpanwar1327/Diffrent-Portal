@@ -1,5 +1,5 @@
 import {LicenseModels} from '../models/LicenseModels.js';
-import {generateLicenseLogic, getLicenseLogic, deleteLicenseLogic, decodeLicenseCodeWithToken, activateLicenseLogic, getLicenseByIdLogic} from '../services/LicenseServices.js';
+import {generateLicenseLogic, getLicenseLogic, decodeLicenseCodeWithToken, activateLicenseLogic, getLicenseByIdLogic, getAllLicenseLogic, deleteLicenseLogic} from '../services/LicenseServices.js';
 
 export const generateLicense = (req, res) => {
   try {
@@ -31,26 +31,6 @@ export const getLicense = async (req, res) => {
   
   try {
     let response = await getLicenseLogic(limit, offset, search);
-    if(response.success) {
-      return res.status(200).json(response);
-    } else {
-      return res.status(400).json(response);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).json({ success: false, message: "Internal Server Error!" });
-  }
-}
-
-export const deleteLicense = async (req, res) => {
-  let {id} = req.params;
-
-  if(!id) {
-    return res.status(400).json({success: false, message: "User Id not found!"})
-  }
-
-  try {
-    let response = await deleteLicenseLogic(id);
     if(response.success) {
       return res.status(200).json(response);
     } else {
@@ -120,5 +100,45 @@ export const getLicenseById = async (req, res) => {
   } catch (error) {
       console.error("Error:", error);
       return res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+}
+
+export const getAllLicense = async (req, res) => {
+  let {id} = req.params;
+
+  if(!id) {
+    return res.status(400).json({success: false, message: "User Id not found!"})
+  }
+
+  try {
+      let response = await getAllLicenseLogic(id);
+      if(response.success) {
+          return res.status(200).json(response);
+      } else {
+          return res.status(400).json(response);
+      }
+  } catch (error) {
+      console.error("Error:", error);
+      return res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+}
+
+export const deleteLicense = async (req, res) => {
+  let {id} = req.params;
+
+  if(!id) {
+    return res.status(400).json({success: false, message: "User Id not found!"})
+  }
+
+  try {
+    let response = await deleteLicenseLogic(id);
+    if(response.success) {
+      return res.status(200).json(response);
+    } else {
+      return res.status(400).json(response);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 }

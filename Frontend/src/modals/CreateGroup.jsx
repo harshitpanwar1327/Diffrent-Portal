@@ -22,9 +22,9 @@ const CreateGroup = ({setOpenModal, getGroupData}) => {
         groupName
       }
 
-      let response = await API.post("/policy/add-group/", groupData);
+      let response = await API.post("/group/add-group/", groupData);
       
-      getGroupData();
+      await getGroupData(1, 10, '');
 
       toast.success('Group Saved Successfully', {
         position: "top-center",
