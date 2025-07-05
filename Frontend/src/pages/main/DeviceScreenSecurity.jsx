@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 import API from '../../util/Api'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import HashLoader from "react-spinners/HashLoader"
 
 const DeviceScreenSecurity = () => {
@@ -81,17 +81,7 @@ const DeviceScreenSecurity = () => {
           setGroupData(groupData.filter((prev) => prev.groupId !== groupId));
         } catch (error) {
           console.log(error);
-          toast.error(error.response.data.message || 'Group not deleted!', {
-            position: "top-center",
-            autoClose: 1800,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          toast.error(error.response.data.message || 'Group not deleted!');
         } finally {
           clearTimeout(loaderTimeout);
           setLoading(false);

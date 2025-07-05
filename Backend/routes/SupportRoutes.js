@@ -1,5 +1,5 @@
 import express from 'express';
-import {ticketDetails, getTickets, getFeedbacks, updateStatus} from '../controllers/SupportControllers.js';
+import {ticketDetails, getFeedbacks, updateStatus} from '../controllers/SupportControllers.js';
 import multer from 'multer';
 import path from 'path';
 
@@ -19,10 +19,11 @@ const upload = multer({ storage: storage })
 
 //Portal Routes
 router.post('/raise-ticket', upload.single('screenshot'), ticketDetails);
-router.post('/get-tickets', getTickets);
 
 //Admin Routes
-router.get('/get-feedback', getFeedbacks);
 router.put('/status', updateStatus);
+
+//Common Routes
+router.get('/get-feedback', getFeedbacks);
 
 export default router;

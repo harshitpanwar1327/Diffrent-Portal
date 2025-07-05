@@ -111,8 +111,8 @@ export const insertDeviceLogic = async (deviceData) => {
             return { success: true, data: iniContent };
         } else {
             let current = new Date();
-            const insertQuery = `INSERT INTO devices(userId, deviceName, os, macAddress, ipAddress, lastActive) VALUES (?,?,?,?,?,?)`;
-            const values = [deviceData.userId, deviceData.deviceName, deviceData.os, deviceData.macAddress, deviceData.ipAddress, current];
+            const insertQuery = `INSERT INTO devices(deviceName, os, macAddress, ipAddress, lastActive) VALUES (?,?,?,?,?)`;
+            const values = [deviceData.deviceName, deviceData.os, deviceData.macAddress, deviceData.ipAddress, current];
             await pool.query(insertQuery, values);
 
             const newINI = `

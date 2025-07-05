@@ -1,6 +1,5 @@
 export class SupportModels {
     constructor(supportData){
-        this.userId = supportData.userId;
         this.ticketId = supportData.ticketId;
         this.groupId = supportData.groupId;
         this.deviceId = supportData.deviceId;

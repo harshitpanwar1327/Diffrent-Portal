@@ -1,5 +1,5 @@
 import {LicenseModels} from '../models/LicenseModels.js';
-import {generateLicenseLogic, getLicenseLogic, decodeLicenseCodeWithToken, activateLicenseLogic, getLicenseByIdLogic, getAllLicenseLogic, deleteLicenseLogic} from '../services/LicenseServices.js';
+import {generateLicenseLogic, getLicenseLogic, decodeLicenseCodeWithToken, activateLicenseLogic, getAllLicenseLogic, deleteLicenseLogic} from '../services/LicenseServices.js';
 
 export const generateLicense = (req, res) => {
   try {
@@ -23,25 +23,6 @@ export const generateLicense = (req, res) => {
   }
 };
 
-export const getLicense = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
-  const search = req.query.search || '';
-  
-  try {
-    let response = await getLicenseLogic(limit, offset, search);
-    if(response.success) {
-      return res.status(200).json(response);
-    } else {
-      return res.status(400).json(response);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).json({ success: false, message: "Internal Server Error!" });
-  }
-}
-
 export const validateLicense = (req, res) => {
   try {
     const { licenseKey } = req.body;
@@ -59,39 +40,16 @@ export const validateLicense = (req, res) => {
 };
 
 export const activateLicense = async (req, res) => {
-  let {userId, licenseKey} = req.body;
+  let {licenseKey} = req.body;
 
-  if(!userId || !licenseKey) {
+  if(!licenseKey) {
       res.status(400).json({success: false, message: "Fill all the required fields!"});
   }
 
-  const licenseData = new LicenseModels({userId, licenseKey});
+  const licenseData = new LicenseModels({licenseKey});
 
   try {
       let response = await activateLicenseLogic(licenseData);
-      if(response.success) {
-          return res.status(200).json(response);
-      } else {
-          return res.status(400).json(response);
-      }
-  } catch (error) {
-      console.error("Error:", error);
-      return res.status(500).json({ success: false, message: "Internal Server Error!" });
-  }
-}
-
-export const getLicenseById = async (req, res) => {
-  let id = req.query.userId;
-  let page = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 10;
-  let offset = (page - 1) * limit;
-
-  if(!id) {
-    return res.status(400).json({success: false, message: "User Id not found!"})
-  }
-
-  try {
-      let response = await getLicenseByIdLogic(limit, offset, id);
       if(response.success) {
           return res.status(200).json(response);
       } else {
@@ -132,6 +90,25 @@ export const deleteLicense = async (req, res) => {
 
   try {
     let response = await deleteLicenseLogic(id);
+    if(response.success) {
+      return res.status(200).json(response);
+    } else {
+      return res.status(400).json(response);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+}
+
+export const getLicense = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+  const search = req.query.search || '';
+  
+  try {
+    let response = await getLicenseLogic(limit, offset, search);
     if(response.success) {
       return res.status(200).json(response);
     } else {

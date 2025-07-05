@@ -98,7 +98,6 @@ const Licenses = () => {
         <table className='w-full'>
           <thead>
             <tr className='bg-[#f5f3ff] border-b border-[#434343]'>
-              <th className='table-heading'>User ID</th>
               <th className='table-heading'>Organization</th>
               <th className='table-heading'>Total Devices</th>
               <th className='table-heading'>Purchase Date</th>
@@ -110,7 +109,6 @@ const Licenses = () => {
             {licenseData.length > 0 ?
               licenseData.map((data) => (
                 <tr className='hover:bg-[#f8f7ff] border-b border-[#848484]' key={data.licenseId}>
-                  <td className='p-2'>{data.userId}</td>
                   <td className='p-2'>{data.organization}</td>
                   <td className='p-2'>{data.totalDevices}</td>
                   <td className='p-2'>{data.purchaseDate}</td>
@@ -119,7 +117,7 @@ const Licenses = () => {
                 </tr>
               )) : (
                 <tr className='bg-[#f8f7ff] border-b border-[#848484]'>
-                  <td className='p-2 text-center' colSpan={3}>No data available</td>
+                  <td className='p-2 text-center' colSpan={5}>No data available</td>
                 </tr>
               )
             }

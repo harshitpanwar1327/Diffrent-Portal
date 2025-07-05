@@ -13,6 +13,7 @@ import SupportRoutes from './routes/SupportRoutes.js';
 import LicensesRoutes from './routes/LicensesRoutes.js';
 import ConfigRoutes from './routes/ConfigRoutes.js';
 import DevicesRoutes from './routes/DevicesRoutes.js';
+import HealthRoutes from './routes/HealthRoutes.js';
 import ApplicationRoutes from './routes/ApplicationRoutes.js';
 import UsersRoutes from './routes/UsersRoutes.js';
 import AdminRoutes from './routes/AdminRoutes.js';
@@ -59,6 +60,8 @@ app.use("/api/policy", PolicyRoutes);
 app.use("/api/config", ConfigRoutes);
 
 app.use("/api/devices", DevicesRoutes);
+
+app.use("/api/health", HealthRoutes);
 
 app.use("/api/license", LicensesRoutes);
 

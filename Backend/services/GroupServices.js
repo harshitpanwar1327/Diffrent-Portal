@@ -2,10 +2,9 @@ import { pool } from '../config/Database.js';
 
 export const addGroupLogic = async (groupData) => {
     try {
-        const query = `INSERT INTO groupDetails( userId, groupName )
-        VALUES (?, ?)`;
+        const query = `INSERT INTO groupDetails( groupName )
+        VALUES (?)`;
         const value = [
-            groupData.userId,
             groupData.groupName
         ];
 
@@ -38,9 +37,9 @@ export const getGroupLogic =  async (limit, offset, search) => {
     }
 };
 
-export const getAllGroupLogic = async (userId) => {
+export const getAllGroupLogic = async () => {
     try {
-        let [rows] = await pool.query(`SELECT * FROM groupDetails WHERE userId = ?`, [userId]);
+        let [rows] = await pool.query(`SELECT * FROM groupDetails;`);
 
         return { success: true, data: rows };
     } catch (error) {

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import "./editConfig.css"
 import API from '../util/Api'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import {useParams} from 'react-router-dom'
 import HashLoader from "react-spinners/HashLoader"
 
@@ -113,29 +113,9 @@ const EditConfig = ({setOpenModal, setConfigData}) => {
 
       setConfigData([configData]);
 
-      toast.success('Configuration Saved Successfully!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.success('Configuration Saved Successfully!');
     } catch (error) {
-      toast.error(error.response.data.message || 'Configuration not saved!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.error(error.response.data.message || 'Configuration not saved!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);

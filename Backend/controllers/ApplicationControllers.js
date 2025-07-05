@@ -2,7 +2,7 @@ import { ApplicationModels } from "../models/ApplicationModels.js";
 import { insertDeviceLogic } from "../services/ApplicationServices.js";
 
 export const insertDevice = async (req, res) => {
-    let {userId, deviceName, os, macAddress, ipAddress} = req.body;
+    let {deviceName, os, macAddress, ipAddress} = req.body;
 
     if (!macAddress) {
         const iniError = `
@@ -35,7 +35,7 @@ export const insertDevice = async (req, res) => {
         return res.status(400).send(iniError);
     }
 
-    let deviceData = new ApplicationModels({userId, deviceName, os, macAddress, ipAddress});
+    let deviceData = new ApplicationModels({deviceName, os, macAddress, ipAddress});
 
     try {
         let response = await insertDeviceLogic(deviceData);

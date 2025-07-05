@@ -1,7 +1,7 @@
 import React ,{ useState }from 'react'
 import './login.css'
 import { useNavigate } from 'react-router-dom'
-import { Bounce, toast } from 'react-toastify'
+import {toast} from 'react-toastify'
 import HashLoader from "react-spinners/HashLoader"
 import API from '../../util/Api.js'
 import AuthImage from '../../assets/AuthImage.png'
@@ -32,31 +32,11 @@ const Login = () => {
       sessionStorage.setItem("AuthToken", token);
       sessionStorage.setItem("isAuthenticated", true);
 
-      toast.success('Login Successfully', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.success('Login Successfully');
       navigate("/dashboard");
     }catch(error){
       console.log(error);
-      toast.error(error.response.data.message || 'Unable to login!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'Unable to login!');
     }finally{
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 import {React, useState, useEffect} from 'react'
 import './editPolicy.css'
 import API from '../util/Api'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import {useParams} from 'react-router-dom'
 import HashLoader from "react-spinners/HashLoader"
 
@@ -76,29 +76,9 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
 
       setPolicy([policy]);
 
-      toast.success('Policy Saved Successfully!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.success('Policy Saved Successfully!');
     } catch (error) {
-      toast.error(error.response.data.message || 'Policy not saved!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.error(error.response.data.message || 'Policy not saved!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);

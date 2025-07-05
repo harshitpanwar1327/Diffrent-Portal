@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './licenseManagement.css'
 import API from '../../util/Api'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import {getCurrentDate} from '../../util/DateUtil'
 import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
 import Pagination from '@mui/material/Pagination'
@@ -23,7 +23,7 @@ const LicenseManagement = () => {
     
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
-      let response = await API.get(`/license/get-license?page=${currentPage}&limit=${itemsPerPage}&userId=${userId}`);
+      let response = await API.get(`/license/get-licenses?page=${currentPage}&limit=${itemsPerPage}&userId=${userId}`);
       setTotalPages(response.data.total);
       let licenseKey = response.data.data;
       let decodedData = licenseKey.map(decodeLicenseCodeWithToken);
@@ -64,29 +64,9 @@ const LicenseManagement = () => {
       setLicenseData([...licenseData, decodeLicenseCodeWithToken(license)]);
       setLicenseKey('');
 
-      toast.success('License Added Successfully', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.success('License Added Successfully');
     } catch (error) {
-      toast.error(error.response.data.message || 'License not activated!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.error(error.response.data.message || 'License not activated!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);
@@ -111,17 +91,7 @@ const LicenseManagement = () => {
           setLicenseData(licenseData.filter(prev => prev.licenseId !== id));
         } catch (error) {
           console.log(error);
-          toast.error(error.response.data.message || 'License not deleted!', {
-            position: "top-center",
-            autoClose: 1800,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          toast.error(error.response.data.message || 'License not deleted!');
         } finally {
           clearTimeout(loaderTimeout);
           setLoading(false);

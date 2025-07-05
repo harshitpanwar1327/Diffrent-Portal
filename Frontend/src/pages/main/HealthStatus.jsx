@@ -31,37 +31,10 @@ const HealthStatus = () => {
 
   const fetchAllDevices = async () => {
     try {
-      let response = await API.get("/devices/get-devices/");
-      let healthData = response.data.data;
-      
-      const now = new Date();
-    
-      setHealthy(
-        healthData.filter((data) => {
-          if (!data.lastActive) return false;
-          const lastActive = new Date(data.lastActive);
-          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-          return hoursDiff <= 72;
-        })
-      );
-  
-      setUnknown(
-        healthData.filter((data) => {
-          if (!data.lastActive) return false;
-          const lastActive = new Date(data.lastActive);
-          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-          return hoursDiff > 72 && hoursDiff <= 720;
-        })
-      );
-  
-      setRetired(
-        healthData.filter((data) => {
-          if (!data.lastActive) return false;
-          const lastActive = new Date(data.lastActive);
-          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-          return hoursDiff > 720;
-        })
-      );
+      let response = await API.get("/health/devices");
+      setHealthy(response.data.data.healthy);
+      setUnknown(response.data.data.unknown);
+      setRetired(response.data.data.retired);
     } catch (error) {
       console.log(error.response.data.message || error);
     }
@@ -128,17 +101,7 @@ const HealthStatus = () => {
       );
     } catch(error) {
       console.log(error);
-      toast.error(error.response.data.message || 'Group not selected!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'Group not selected!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);
@@ -163,17 +126,7 @@ const HealthStatus = () => {
           setRetired(retired.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
           console.log(error);
-          toast.error(error.response.data.message || 'Device not deleted!', {
-            position: "top-center",
-            autoClose: 1800,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          toast.error(error.response.data.message || 'Device not deleted!');
         } finally {
           clearTimeout(loaderTimeout);
           setLoading(false);

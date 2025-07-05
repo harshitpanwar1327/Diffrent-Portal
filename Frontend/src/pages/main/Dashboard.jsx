@@ -112,7 +112,6 @@ const Dashboard = () => {
   let [ticketData, setTicketData] = useState([]);
   let [totalTickets, setTotalTickets] = useState([]);
   let [loading, setLoading] = useState(false);
-  let userId = sessionStorage.getItem('userId');
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 8;
 
@@ -131,7 +130,7 @@ const Dashboard = () => {
 
   const fetchLicenseCount = async () => {
     try {
-      let response = await API.get(`/license/get-license?userId=${userId}`);
+      let response = await API.get(`/license/get-licenses`);
       let licenseKeys = response.data.data;
       setActiveLicense(licenseKeys.filter((data) => {
         let licenseData = decodeLicenseCodeWithToken({licenseKey: data.licenseKey});
@@ -145,11 +144,7 @@ const Dashboard = () => {
 
   const fetchTickets = async () => {
     try {
-      let response = await API.post(`/support/get-tickets/`, {
-        id: userId,
-        page: currentPage,
-        limit: itemsPerPage
-      });
+      let response = await API.get(`/support/get-feedback?page=${currentPage}&limit=${itemsPerPage}`);
       setTicketData(response.data.data);
       setTotalTickets(response.data.total);
     } catch (error) {

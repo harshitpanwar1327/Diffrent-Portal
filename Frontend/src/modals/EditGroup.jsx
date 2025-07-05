@@ -1,7 +1,7 @@
 import {React , useEffect, useState}from 'react'
 import './editGroup.css'
 import API from '../util/Api'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import HashLoader from "react-spinners/HashLoader"
 
 const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
@@ -51,29 +51,9 @@ const EditGroup = ({setOpenModal, groupId, setGroupData}) => {
                 return [...rem, groupData];
             });
 
-            toast.success('Group Edited Successfully', {
-                position: "top-center",
-                autoClose: 1800,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce
-            });
+            toast.success('Group Edited Successfully');
         } catch (error) {
-            toast.error(error.response.data.message || 'Group not edited!', {
-                position: "top-center",
-                autoClose: 1800,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce
-            });
+            toast.error(error.response.data.message || 'Group not edited!');
         } finally {
             clearTimeout(loaderTimeout);
             setLoading(false);

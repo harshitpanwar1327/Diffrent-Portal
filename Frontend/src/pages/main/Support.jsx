@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from "react"
 import "./support.css"
 import API from '../../util/Api'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import {v4 as uuidv4} from 'uuid'
 import HashLoader from "react-spinners/HashLoader"
 
@@ -39,7 +39,6 @@ const Support = () => {
   let [groupData, setGroupData] = useState([]);
   let [deviceData, setDeviceData] = useState([]);
 
-  let userId = sessionStorage.getItem('userId');
   const [groupId, setGroupId] = useState("");
   const [deviceId, setDeviceId] = useState("");
   const [issueType, setIssueType] = useState("");
@@ -85,17 +84,7 @@ const Support = () => {
       setDeviceData(response.data.data);
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'Group not selected!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      })
+      toast.error(error.response.data.message || 'Group not selected!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);
@@ -108,7 +97,6 @@ const Support = () => {
     let formData = new FormData();
     let ticketId = uuidv4();
 
-    formData.append("userId", userId);
     formData.append("ticketId", ticketId);
     formData.append("groupId", groupId);
     formData.append("deviceId", deviceId);
@@ -134,29 +122,9 @@ const Support = () => {
       setUrgency('');
       fileInputRef.current.value = "";
 
-      toast.success(`Ticket raised with ticketID ${ticketId}.`, {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.success(`Ticket raised with ticketID ${ticketId}.`);
     } catch (error) {
-      toast.error(error.response.data.message || 'Ticket not raised!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.error(error.response.data.message || 'Ticket not raised!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);

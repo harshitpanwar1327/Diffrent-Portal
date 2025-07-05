@@ -5,7 +5,7 @@ import {decodeLicenseCodeWithToken} from '../../util/DecodeLicense'
 import Swal from 'sweetalert2'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import HashLoader from "react-spinners/HashLoader"
 
 const Devices = () => {
@@ -81,18 +81,7 @@ const Devices = () => {
         )
       )))
 
-      toast.success('License deallocated successfully.', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
-
+      toast.success('License deallocated successfully.');
       return;
     }
 
@@ -117,30 +106,10 @@ const Devices = () => {
         )
       )))
 
-      toast.success('License Allocated Successfully!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.success('License Allocated Successfully!');
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'License not activated!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.error(error.response.data.message || 'License not activated!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);
@@ -165,17 +134,7 @@ const Devices = () => {
           setDevicesData(devicesData.filter(prev => prev.macAddress!==macAddress));
         } catch (error) {
           console.log(error);
-          toast.error(error.response.data.message || 'Device not deleted!', {
-            position: "top-center",
-            autoClose: 1800,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          toast.error(error.response.data.message || 'Device not deleted!');
         } finally {
           clearTimeout(loaderTimeout);
           setLoading(false);

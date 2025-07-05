@@ -4,7 +4,7 @@ import API from '../util/Api'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 import HashLoader from "react-spinners/HashLoader"
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 
 const ManageDevices = ({setOpenModal, groupId, groupName}) => {
   let [search, setSearch] = useState('');
@@ -68,30 +68,10 @@ const ManageDevices = ({setOpenModal, groupId, groupName}) => {
 
       fetchDevices();
 
-      toast.success('Device status updated', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.success('Device status updated');
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'Group not allocated!', {
-        position: "top-center",
-        autoClose: 1800,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'Group not allocated!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);

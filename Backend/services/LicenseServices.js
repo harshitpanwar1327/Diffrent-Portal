@@ -10,21 +10,6 @@ export const generateLicenseLogic = ({ organization, totalDevices, purchaseDate,
   return { licenseCode: encrypted };
 };
 
-export const getLicenseLogic = async (limit, offset, search) => {
-  let searchQuery = `%${search}%`;
-
-  try {
-    let [rows] = await pool.query(`SELECT * FROM license WHERE userId LIKE ? OR licenseKey LIKE ? LIMIT ? OFFSET ?;`, [searchQuery, searchQuery, limit, offset]);
-    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license WHERE userId LIKE ? OR licenseKey LIKE ?;`, [searchQuery, searchQuery]);
-    const total = countRows[0].total;
-
-    return { success: true, data: rows, total };
-  } catch (error) {
-    console.log(error);
-    return { success: false, message: "License not found!" };
-  }
-};
-
 export const decodeLicenseCodeWithToken = (licenseKey) => {
   try {
     const bytes = CryptoJS.AES.decrypt(licenseKey, SECRET_KEY);
@@ -54,27 +39,14 @@ export const decodeLicenseCodeWithToken = (licenseKey) => {
 
 export const activateLicenseLogic = async (licenseData) => {
   try {
-    let query = `INSERT INTO license(userId, licenseKey) VALUES (?, ?);`;
-    let values = [licenseData.userId, licenseData.licenseKey];
+    let query = `INSERT INTO license(licenseKey) VALUES (?);`;
+    let values = [licenseData.licenseKey];
 
     await pool.query(query, values);
     return { success: true, message: "License activated successfully" };
   } catch (error) {
     console.log(error);
     return { success: false, message: "License not activated!" };
-  }
-};
-
-export const getLicenseByIdLogic = async (limit, offset, id) => {
-  try {
-    let [rows] = await pool.query(`SELECT * FROM license WHERE userId = ? LIMIT ? OFFSET ?;`, [id, limit, offset]);
-    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license WHERE userId = ?;`, [id]);
-    const total = countRows[0].total;
-
-    return { success: true, data: rows, total };
-  } catch (error) {
-    console.log(error);
-    return { success: false, message: "License not found!" };
   }
 };
 
@@ -101,3 +73,18 @@ export const deleteLicenseLogic = async (id) => {
     return { success: false, message: "Unable to delete license!" };
   }
 }
+
+export const getLicenseLogic = async (limit, offset, search) => {
+  let searchQuery = `%${search}%`;
+
+  try {
+    let [rows] = await pool.query(`SELECT * FROM license WHERE licenseKey LIKE ? LIMIT ? OFFSET ?;`, [searchQuery, limit, offset]);
+    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license WHERE licenseKey LIKE ?;`, [searchQuery]);
+    const total = countRows[0].total;
+
+    return { success: true, data: rows, total };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "License not found!" };
+  }
+};

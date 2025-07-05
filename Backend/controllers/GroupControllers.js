@@ -2,13 +2,13 @@ import { GroupDetails } from "../models/GroupModels.js";
 import { addGroupLogic, getGroupLogic, getAllGroupLogic, getGroupByIdLogic, updateGroupLogic, deleteGroupLogic } from "../services/GroupServices.js";
 
 export const addGroup = async (req, res) => {
-    const { userId, groupName } = req.body;
+    const { groupName } = req.body;
 
-    if (!userId || !groupName) {
+    if (!groupName) {
         return res.status(400).json({ success: false, message: "Fill all the required fields!" });
     }
 
-    const groupData = new GroupDetails({ userId, groupName });
+    const groupData = new GroupDetails({ groupName });
 
     try {
         const response = await addGroupLogic(groupData);
@@ -43,14 +43,8 @@ export const getGroup = async (req, res) => {
 }
 
 export const getAllGroup = async (req, res) => {
-    let {userId} = req.params;
-
-    if(!userId) {
-        return res.send(400).json({success: false, message: "User Id not found"});
-    }
-
     try {
-        const response = await getAllGroupLogic(userId);
+        const response = await getAllGroupLogic();
         if (response.success) {
             res.status(200).json(response);
         } else {

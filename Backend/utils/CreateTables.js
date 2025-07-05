@@ -12,16 +12,12 @@ const users = `CREATE TABLE IF NOT EXISTS users (
 //groupDetails Table
 const groupDetails = `CREATE TABLE IF NOT EXISTS groupDetails (
     groupId INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT NOT NULL,
-    groupName VARCHAR(50) NOT NULL,
-    FOREIGN KEY (userID) REFERENCES users(id)
-        ON DELETE CASCADE
+    groupName VARCHAR(50) NOT NULL
 );`;
 
 //Devices Table
 const devices = `CREATE TABLE IF NOT EXISTS devices (
     deviceId INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT NOT NULL,
     groupId INT,
     groupName VARCHAR(50),
     deviceName VARCHAR(50),
@@ -29,9 +25,7 @@ const devices = `CREATE TABLE IF NOT EXISTS devices (
     macAddress VARCHAR(30) UNIQUE NOT NULL,
     ipAddress VARCHAR(45),
     licenseKey VARCHAR(255),
-    lastActive DATETIME,
-    FOREIGN KEY (userId) REFERENCES users(id)
-        ON DELETE CASCADE
+    lastActive DATETIME
 );`;
 
 //Policy Table
@@ -69,15 +63,11 @@ const configDetails = `CREATE TABLE IF NOT EXISTS config(
 //License Table
 const licenseDetails = `CREATE TABLE IF NOT EXISTS license (
     licenseId INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT NOT NULL,
-    licenseKey VARCHAR(255) NOT NULL,
-    FOREIGN KEY (userId) REFERENCES users(id)
-        ON DELETE CASCADE
+    licenseKey VARCHAR(255) NOT NULL
 );`;
 
 //SupportDetails Table
 const supportDetails = `CREATE TABLE IF NOT EXISTS support (
-    userId INT NOT NULL,
     ticketId VARCHAR(36) PRIMARY KEY,
     groupId INT NOT NULL,
     deviceId INT NOT NULL,
@@ -85,9 +75,7 @@ const supportDetails = `CREATE TABLE IF NOT EXISTS support (
     description LONGTEXT  NOT NULL,
     screenshot LONGTEXT,
     urgency VARCHAR(10),
-    status VARCHAR(10) DEFAULT 'pending',
-    FOREIGN KEY (userId) REFERENCES users(id)
-        ON DELETE CASCADE
+    status VARCHAR(10) DEFAULT 'pending'
 );`;
 
 const createTable = async (tableName, query) => {
