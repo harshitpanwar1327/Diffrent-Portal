@@ -7,16 +7,20 @@ import Swal from 'sweetalert2'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 import HashLoader from "react-spinners/HashLoader"
+import {toast} from 'react-toastify'
 
 const HealthStatus = () => {
   let [groupData, setGroupData] = useState([]);
-  let [groupID, setGroupID] = useState('');
+  let [groupId, setGroupId] = useState('');
   let [healthy, setHealthy] = useState([]);
   let [unknown, setUnknown] = useState([]);
   let [retired, setRetired] = useState([]);
   let [currentTab, setCurrentTab] = useState(0);
   let [currentPage, setCurrentPage] = useState(1);
   let itemsPerPage = 10;
+  let [totalHealthy, setTotalHealthy] = useState(1);
+  let [totalUnknown, setTotalUnknown] = useState(1);
+  let [totalRetired, setTotalRetired] = useState(1);
   let [loading, setLoading] = useState(false);
   let userId = sessionStorage.getItem('userId');
 
@@ -25,18 +29,42 @@ const HealthStatus = () => {
       let response = await API.get(`/group/all-group/${userId}`);
       setGroupData(response.data.data);
     } catch (error) {
-      console.log(error.response.data.message || error);
+      console.log(error.response?.data?.message || error);
     }
   }
 
   const fetchAllDevices = async () => {
     try {
-      let response = await API.get("/health/devices");
-      setHealthy(response.data.data.healthy);
-      setUnknown(response.data.data.unknown);
-      setRetired(response.data.data.retired);
+      let response = await API.get(`/health/devices?page=${currentPage}&limit=${itemsPerPage}`);
+      setHealthy(response.data.data.healthy || []);
+      setUnknown(response.data.data.unknown || []);
+      setRetired(response.data.data.retired || []);
+
+      setTotalHealthy(response.data.total.totalHealthy);
+      setTotalUnknown(response.data.total.totalUnknown);
+      setTotalRetired(response.data.total.totalRetired);
     } catch (error) {
-      console.log(error.response.data.message || error);
+      console.log(error.response?.data?.message || error);
+    }
+  }
+
+  const fetchGroupDevices = async () => {
+    try {
+      let response = await API.post(`/health/devices`, {
+        page: currentPage,
+        limit: itemsPerPage,
+        id: groupId
+      });
+      
+      setHealthy(response.data.data.healthy || []);
+      setUnknown(response.data.data.unknown || []);
+      setRetired(response.data.data.retired || []);
+
+      setTotalHealthy(response.data.total.totalHealthy);
+      setTotalUnknown(response.data.total.totalUnknown);
+      setTotalRetired(response.data.total.totalRetired);
+    } catch (error) {
+      console.log(error.response?.data?.message || error);
     }
   }
 
@@ -47,7 +75,11 @@ const HealthStatus = () => {
       try {
         loaderTimeout = setTimeout(() => setLoading(true), 1000);
         await fetchGroupName();
-        await fetchAllDevices();
+        if(!groupId) {
+          await fetchAllDevices();
+        } else {
+          await fetchGroupDevices();
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -57,55 +89,11 @@ const HealthStatus = () => {
     }
 
     fetchHealthData();
-  }, []);
+  }, [currentPage, currentTab, groupId]);
 
   const handleGroupChange = async (e) => {
-    setGroupID(e.target.value);
-
-    let loaderTimeout;
-    
-    try {
-      loaderTimeout = setTimeout(() => setLoading(true), 1000);
-      let response = await API.get(`/devices/get-devices/${e.target.value}`);
-      let healthData = response.data.data;
-      
-      setCurrentPage(1);
-
-      const now = new Date();
-      
-      setHealthy(
-        healthData.filter((data) => {
-          if (!data.lastActive) return false;
-          const lastActive = new Date(data.lastActive);
-          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-          return hoursDiff <= 72;
-        })
-      );
-  
-      setUnknown(
-        healthData.filter((data) => {
-          if (!data.lastActive) return false;
-          const lastActive = new Date(data.lastActive);
-          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-          return hoursDiff > 72 && hoursDiff <= 720;
-        })
-      );
-  
-      setRetired(
-        healthData.filter((data) => {
-          if (!data.lastActive) return false;
-          const lastActive = new Date(data.lastActive);
-          const hoursDiff = (now - lastActive) / (1000 * 60 * 60);
-          return hoursDiff > 720;
-        })
-      );
-    } catch(error) {
-      console.log(error);
-      toast.error(error.response.data.message || 'Group not selected!');
-    } finally {
-      clearTimeout(loaderTimeout);
-      setLoading(false);
-    }
+    setGroupId(e.target.value);
+    setCurrentPage(1);
   }
 
   const handleDelete = (macAddress) => {
@@ -149,15 +137,8 @@ const HealthStatus = () => {
     setCurrentPage(1);
   }
 
-  const getPaginatedData = (data) => {
-    return data.slice(
-      (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
-    );
-  }
-
-  let tabData = [healthy, unknown, retired];
-  let currentPageData = tabData[currentTab];
-  let pageCount = Math.ceil(currentPageData.length / itemsPerPage);
+  let totalItems = [totalHealthy, totalUnknown, totalRetired][currentTab];
+  let pageCount = Math.ceil(totalItems / itemsPerPage);
   
   return (
     <div className='main-page'>
@@ -165,10 +146,10 @@ const HealthStatus = () => {
         <HashLoader color="#6F5FE7"/>
       </div>}
       <div className="main-page-header">
-        <select name="group" id="group" className='select-dropdown' value={groupID} onChange={handleGroupChange} required>
+        <select name="group" id="group" className='select-dropdown' value={groupId} onChange={handleGroupChange} required>
           <option value="">Select Group</option>
           {groupData?.map((data, index) => (
-            <option key={index} value={data.groupID}>{data.groupName}</option>
+            <option key={index} value={data.groupId}>{data.groupName}</option>
           ))}
         </select>
       </div>
@@ -190,8 +171,8 @@ const HealthStatus = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getPaginatedData(healthy).length > 0 ? (
-                    getPaginatedData(healthy).map((data, index) => (
+                  {healthy.length > 0 ? (
+                    healthy.map((data, index) => (
                       <tr key={index}>
                         <td className='group-table-data'>{data.macAddress}</td>
                         <td className='group-table-data'><i className="fa-solid fa-battery-full"></i></td>
@@ -216,8 +197,8 @@ const HealthStatus = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getPaginatedData(unknown).length > 0 ? (
-                    getPaginatedData(unknown).map((data, index) => (
+                  {unknown.length > 0 ? (
+                    unknown.map((data, index) => (
                       <tr key={index}>
                         <td className='group-table-data'>{data.macAddress}</td>
                         <td className='group-table-data'><i className="fa-solid fa-battery-half"></i></td>
@@ -243,8 +224,8 @@ const HealthStatus = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getPaginatedData(retired).length > 0 ? (
-                    getPaginatedData(retired).map((data, index) => (
+                  {retired.length > 0 ? (
+                    retired.map((data, index) => (
                       <tr key={index}>
                         <td className='group-table-data'>{data.macAddress}</td>
                         <td className='group-table-data'><i className="fa-solid fa-battery-empty"></i></td>
