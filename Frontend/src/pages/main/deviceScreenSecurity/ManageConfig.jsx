@@ -60,7 +60,7 @@ const ManageConfig = () => {
           <table className="group-table">
             <thead>
               <tr>
-                <td colSpan={2} className="group-table-heading">Stamp Info</td>
+                <th colSpan={2} className="group-table-heading">Stamp Info</th>
               </tr>
             </thead>
             <tbody>
@@ -96,7 +96,7 @@ const ManageConfig = () => {
           <table className="group-table">
             <thead>
               <tr>
-                <td colSpan={2} className="group-table-heading">QR Position</td>
+                <th colSpan={2} className="group-table-heading">QR Position</th>
               </tr>
             </thead>
             <tbody>
@@ -124,7 +124,7 @@ const ManageConfig = () => {
           <table className="group-table">
             <thead>
               <tr>
-                <td colSpan={2} className="group-table-heading">Whitelisted Applications</td>
+                <th className="group-table-heading">Whitelisted Applications</th>
               </tr>
             </thead>
             <tbody>
@@ -136,7 +136,7 @@ const ManageConfig = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={2} className='empty-data-table'>No application found.</td>
+                  <td className='empty-data-table'>No application found.</td>
                 </tr>
               )}
             </tbody>

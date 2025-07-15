@@ -118,8 +118,8 @@ const DeviceScreenSecurity = () => {
               <th className="group-table-heading">Group ID</th>
               <th className="group-table-heading">Group Name</th>
               <th className="group-table-heading">Devices</th>
-              <th className='group-table-heading'>Policy</th>
-              <th className="group-table-heading">Config</th>
+              <th className='group-table-heading'>DBS Policy</th>
+              <th className="group-table-heading">PMark Config</th>
               <th className="group-table-heading">Edit</th>
               <th className="group-table-heading">Delete</th>
             </tr>

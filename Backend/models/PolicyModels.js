@@ -6,5 +6,7 @@ export class PolicyDetails {
         this.printing = policyData.printing;
         this.browserUpload = policyData.browserUpload;
         this.bluetooth = policyData.bluetooth;
+        this.clipboard = policyData.clipboard;
+        this.blockedApps = policyData.blockedApps;
     }
 }

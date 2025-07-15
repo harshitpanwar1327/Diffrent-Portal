@@ -2,8 +2,7 @@ import { pool } from '../config/Database.js';
 
 export const addGroupLogic = async (groupData) => {
     try {
-        const query = `INSERT INTO groupDetails( groupName )
-        VALUES (?)`;
+        const query = `INSERT INTO groupDetails(groupName) VALUES (?)`;
         const value = [
             groupData.groupName
         ];

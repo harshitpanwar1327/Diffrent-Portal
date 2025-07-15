@@ -4,13 +4,13 @@ import {decodeLicenseCodeWithToken} from '../services/LicenseServices.js';
 export const insertDeviceLogic = async (deviceData) => {
     try {
         const [existingDevice] = await pool.query(`SELECT * FROM devices WHERE macAddress = ?`, [deviceData.macAddress]);
-
+        
         if (existingDevice.length > 0) {
             let current = new Date();
             await pool.query(`UPDATE devices SET lastActive = ? WHERE macAddress = ?`, [current, deviceData.macAddress]);
 
-            const groupID = existingDevice[0].groupID;
-            const [configRow] = await pool.query(`SELECT * FROM config WHERE groupID = ?`, [groupID]);
+            const groupId = existingDevice[0].groupId;
+            const [configRow] = await pool.query(`SELECT * FROM config WHERE groupID = ?`, [groupId]);
 
             if (configRow.length === 0) {
                 const newINI = `
@@ -31,12 +31,14 @@ export const insertDeviceLogic = async (deviceData) => {
                     QRBottomRight=true
                     [WhiteLists]
                     processes=
-                    [DATABLOCK]
-                    BLUETOOTH=true
-                    USB=true
-                    PRINT=true
-                    MTP=true
-                    UPLOAD=true
+                    [DataBlockSolution]
+                    BlockUSB=true
+                    BlockMTP=true
+                    BlockBluetooth=true
+                    BlockFileUpload=true
+                    BlockClipboard=true
+                    BlockPrint=true
+                    BlockedApps=
                 `.trim();
 
                 return { success: true, data: newINI, message: "Device registered successfully."};
@@ -44,7 +46,7 @@ export const insertDeviceLogic = async (deviceData) => {
 
             const config = configRow[0];
 
-            const [policyRow] = await pool.query(`SELECT * FROM policy WHERE groupID = ?`, [groupID]);
+            const [policyRow] = await pool.query(`SELECT * FROM policy WHERE groupID = ?`, [groupId]);
 
             if (policyRow.length === 0) {
                 const newINI = `
@@ -65,12 +67,14 @@ export const insertDeviceLogic = async (deviceData) => {
                     QRBottomRight=true
                     [WhiteLists]
                     processes=
-                    [DATABLOCK]
-                    BLUETOOTH=true
-                    USB=true
-                    PRINT=true
-                    MTP=true
-                    UPLOAD=true
+                    [DataBlockSolution]
+                    BlockUSB=true
+                    BlockMTP=true
+                    BlockBluetooth=true
+                    BlockFileUpload=true
+                    BlockClipboard=true
+                    BlockPrint=true
+                    BlockedApps=
                 `.trim();
 
                 return { success: true, data: newINI, message: "Device registered successfully."};
@@ -100,12 +104,14 @@ export const insertDeviceLogic = async (deviceData) => {
                 QRBottomRight=${config.qr_bottom_right ? 'true' : 'false'}
                 [WhiteLists]
                 processes=${config.whitelist_processes || ''}
-                [DATABLOCK]
-                BLUETOOTH=${policy.bluetooth ? 'true' : 'false'}
-                USB=${policy.usb ? 'true' : 'false'}
-                PRINT=${policy.printing ? 'true' : 'false'}
-                MTP=${policy.mtp ? 'true' : 'false'}
-                UPLOAD=${policy.browserUpload ? 'true' : 'false'}
+                [DataBlockSolution]
+                BlockUSB=${policy.usb ? 'true' : 'false'}
+                BlockMTP=${policy.mtp ? 'true' : 'false'}
+                BlockBluetooth=${policy.bluetooth ? 'true' : 'false'}
+                BlockFileUpload=${policy.browserUpload ? 'true' : 'false'}
+                BlockClipboard=${policy.clipboard ? 'true' : 'false'}
+                BlockPrint=${policy.printing ? 'true' : 'false'}
+                BlockedApps=${policy.blockedApps || ''}
             `.trim();
 
             return { success: true, data: iniContent };
@@ -133,12 +139,14 @@ export const insertDeviceLogic = async (deviceData) => {
                 QRBottomRight=true
                 [WhiteLists]
                 processes=
-                [DATABLOCK]
-                BLUETOOTH=true
-                USB=true
-                PRINT=true
-                MTP=true
-                UPLOAD=true
+                [DataBlockSolution]
+                BlockUSB=true
+                BlockMTP=true
+                BlockBluetooth=true
+                BlockFileUpload=true
+                BlockClipboard=true
+                BlockPrint=true
+                BlockedApps=
             `.trim();
 
             return { success: true, data: newINI, message: "Device registered successfully."};
@@ -164,12 +172,14 @@ export const insertDeviceLogic = async (deviceData) => {
             QRBottomRight=true
             [WhiteLists]
             processes=
-            [DATABLOCK]
-            BLUETOOTH=true
-            USB=true
-            PRINT=true
-            MTP=true
-            UPLOAD=true
+            [DataBlockSolution]
+            BlockUSB=true
+            BlockMTP=true
+            BlockBluetooth=true
+            BlockFileUpload=true
+            BlockClipboard=true
+            BlockPrint=true
+            BlockedApps=
         `.trim();
 
         return { success: false, data: errorINI, message: "Operation failed." };

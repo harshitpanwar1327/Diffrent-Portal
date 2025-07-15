@@ -2,9 +2,9 @@ import { PolicyDetails } from "../models/PolicyModels.js";
 import { updatePolicyLogic, getPolicyLogic } from "../services/PolicyServices.js";
 
 export const updatePolicy = async (req,res) => {
-    const {groupId, usb, mtp, printing, browserUpload, bluetooth} = req.body;
+    const {groupId, usb, mtp, printing, browserUpload, bluetooth, clipboard, blockedApps} = req.body;
 
-    const policyData = new PolicyDetails({groupId, usb, mtp, printing, browserUpload, bluetooth});
+    const policyData = new PolicyDetails({groupId, usb, mtp, printing, browserUpload, bluetooth, clipboard, blockedApps});
 
     try {
         const response = await updatePolicyLogic(policyData);
@@ -15,7 +15,7 @@ export const updatePolicy = async (req,res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 };
 
@@ -35,6 +35,6 @@ export const getPolicy = async (req, res) => {
         }
     } catch (error) {
         console.error("Error saving configuration:", error);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+        return res.status(500).json({ success: false, message: "Internal Server Error!" });
     }
 }

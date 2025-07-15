@@ -11,6 +11,7 @@ const policyFields = [
   { key: 'printing', label: 'Printer Access' },
   { key: 'browserUpload', label: 'File Upload via Browser' },
   { key: 'bluetooth', label: 'Bluetooth Connectivity' },
+  { key: 'clipboard', label: 'Clipboard' }
 ];
 
 const ManagePolicy = () => {
@@ -63,22 +64,47 @@ const ManagePolicy = () => {
         {openModal && <EditPolicy setOpenModal={setOpenModal} setPolicy={setPolicy}/>}
       </div>
 
-      <div className="group-table-container">
-        <table className="group-table">
-          <thead>
-            <tr>
-              <td colSpan={2} className="group-table-heading">Restricted System Features</td>
-            </tr>
-          </thead>
-          <tbody>
-            {policyFields.map(({key, label}, index) => (
-              <tr key={index}>
-                <td className="group-table-data">{label} :</td>
-                <td className={`group-table-data ${policy[0]?.[key] ? 'active' : 'expired'}`}>{interpretPolicy(policy[0]?.[key])}</td>
+      <div className="policy-body">
+        <div className="policy-details">
+          <table className="group-table">
+            <thead>
+              <tr>
+                <th colSpan={2} className="group-table-heading">Restricted System Features</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {policyFields.map(({key, label}, index) => (
+                <tr key={index}>
+                  <td className="group-table-data">{label} :</td>
+                  <td className={`group-table-data ${policy[0]?.[key] ? 'active' : 'expired'}`}>{interpretPolicy(policy[0]?.[key])}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="blacklisted-applications">
+          <table className="group-table">
+            <thead>
+              <tr>
+                <th className="group-table-heading">Blacklisted Applications</th>
+              </tr>
+            </thead>
+            <tbody>
+              {policy.length > 0 && policy[0].blockedApps ? (
+                policy[0].blockedApps.split(',').map((data, index) => (
+                  <tr key={index}>
+                    <td className="group-table-data application-name">{data}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className='empty-data-table'>No application found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )

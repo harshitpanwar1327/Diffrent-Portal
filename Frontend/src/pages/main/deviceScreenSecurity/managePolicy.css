@@ -11,8 +11,30 @@
     margin: 0%;
 }
 
+.policy-body {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0.5rem 1rem;
+    overflow-y: hidden;
+}
+
+.policy-details,
+.blacklisted-applications {
+    background-color: white;
+    border-radius: 10px;
+    padding: 0.5rem;
+    overflow-y: auto;
+}
+
 @media (min-width: 320px) and (max-width: 767px) {
     .policy-header {
         flex-direction: column;
+    }
+
+    .policy-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 1fr);
     }
 }

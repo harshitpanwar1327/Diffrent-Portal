@@ -4,6 +4,7 @@ import API from '../util/Api'
 import {toast} from 'react-toastify'
 import {useParams} from 'react-router-dom'
 import HashLoader from "react-spinners/HashLoader"
+import CancelIcon from '@mui/icons-material/Cancel'
 
 const EditPolicy = ({setOpenModal, setPolicy}) => {
   let [usb, setUsb] = useState(false);
@@ -11,6 +12,9 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   let [printing, setPrinting] = useState(false);
   let [browserUpload, setBrowserUpload] = useState(false);
   let [bluetooth, setBluetooth] = useState(false);
+  let [clipboard, setClipboard] = useState(false);
+  let [appName, setAppName] = useState('');
+  let [blockedApps, setBlockedApps] = useState([]);
   let {groupId} = useParams();
 
   let [prevData, setPrevData] = useState([]);
@@ -45,6 +49,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
     setPrinting(prevData[0]?.printing  || false);
     setBrowserUpload(prevData[0]?.browserUpload  || false);
     setBluetooth(prevData[0]?.bluetooth || false);
+    setClipboard(prevData[0]?.clipboard || false);
   }
 
   useEffect(() => {
@@ -55,6 +60,11 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
     }
   }, [prevData]);
 
+  const handleBlockButton = () => {
+    blockedApps.push(appName);
+    setAppName('');
+  }
+
   const handlePolicy = async (e) => {
     e.preventDefault();
 
@@ -64,12 +74,13 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
 
       const policy = {
-        groupId: groupId,
-        usb: usb,
-        mtp: mtp,
-        printing: printing,
-        browserUpload: browserUpload,
-        bluetooth: bluetooth
+        groupId,
+        usb,
+        mtp,
+        printing,
+        browserUpload,
+        bluetooth,
+        clipboard
       }
       
       let response = await API.post("/policy/update-policy/", policy);
@@ -93,27 +104,52 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
       </div>}
       <div className='add-policy-popup' onClick={(e)=>e.stopPropagation()}>
         <i className="fa-solid fa-xmark" onClick={()=>setOpenModal(false)}></i>
+        <h3 className='policy-heading'>Restrict System Features</h3>
         <form className="policy-form" onSubmit={handlePolicy}>
-          <h3 className='policy-heading'>Restrict System Features</h3>
-          <div className="policy-checkbox">
-            <input type="checkbox" name="usb" id="usb" checked={usb} onChange={(e)=>setUsb(!usb)} />
-            <label htmlFor="usb">USB Data Transfer</label>
+          <div className="core-policy">
+            <div className="policy-checkbox">
+              <input type="checkbox" name="usb" id="usb" checked={usb} onChange={(e)=>setUsb(!usb)} />
+              <label htmlFor="usb">USB Data Transfer</label>
+            </div>
+            <div className="policy-checkbox">
+              <input type="checkbox" name="mtp" id="mtp" checked={mtp} onChange={(e)=>setMtp(!mtp)} />
+              <label htmlFor="mtp">MTP Service</label>
+            </div>
+            <div className="policy-checkbox">
+              <input type="checkbox" name="printing" id="printing" checked={printing} onChange={(e)=>setPrinting(!printing)} />
+              <label htmlFor="printing">Printing</label>
+            </div>
+            <div className="policy-checkbox">
+              <input type="checkbox" name="browserUpload" id="browserUpload" checked={browserUpload} onChange={()=>setBrowserUpload(!browserUpload)}/>
+              <label htmlFor="browserUpload">Browser Upload</label>
+            </div>
+            <div className="policy-checkbox">
+              <input type="checkbox" name="bluetooth" id="bluetooth" checked={bluetooth} onChange={(e)=>setBluetooth(!bluetooth)}/>
+              <label htmlFor="bluetooth">Bluetooth Data Transfer</label>
+            </div>
+            <div className="policy-checkbox">
+              <input type="checkbox" name="clipboard" id="clipboard" checked={clipboard} onChange={(e)=>setClipboard(!clipboard)}/>
+              <label htmlFor="clipboard">Clipboard</label>
+            </div>
           </div>
-          <div className="policy-checkbox">
-            <input type="checkbox" name="mtp" id="mtp" checked={mtp} onChange={(e)=>setMtp(!mtp)} />
-            <label htmlFor="mtp">MTP Service</label>
-          </div>
-          <div className="policy-checkbox">
-            <input type="checkbox" name="printing" id="printing" checked={printing} onChange={(e)=>setPrinting(!printing)} />
-            <label htmlFor="printing">Printing</label>
-          </div>
-          <div className="policy-checkbox">
-            <input type="checkbox" name="browserUpload" id="browserUpload" checked={browserUpload} onChange={()=>setBrowserUpload(!browserUpload)}/>
-            <label htmlFor="browserUpload">Browser Upload</label>
-          </div>
-          <div className="policy-checkbox">
-            <input type="checkbox" name="bluetooth" id="bluetooth" checked={bluetooth} onChange={(e)=>setBluetooth(!bluetooth)}/>
-            <label htmlFor="bluetooth">Bluetooth Data Transfer</label>
+
+          <div className="blockedApps">
+            <div className="addApps">
+              <input type="text" placeholder='Application name' className='addApps-input' value={appName} onChange={(e)=>setAppName(e.target.value)}/>
+              <button className='create-group-button' type='button' onClick={handleBlockButton}>Block</button>
+            </div>
+            <ul className='blockedApps-list'>
+              {blockedApps.length>0 ? (
+                blockedApps.map((data, index) => (
+                  <li key={index}>
+                    {data}
+                    <CancelIcon className='removeApp-button'/>
+                  </li>
+                ))
+              ) : (
+                <p style={{textAlign: 'center', margin: '0'}}>No application blocked</p>
+              )}
+            </ul>
           </div>
           <button className="create-group-button" type="submit">Save</button>
         </form>

@@ -1,6 +1,5 @@
 import { pool } from '../config/Database.js';
 
-//users Table
 const users = `CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(50) UNIQUE NOT NULL,
@@ -9,13 +8,11 @@ const users = `CREATE TABLE IF NOT EXISTS users (
     created_At DATETIME DEFAULT CURRENT_TIMESTAMP
 );`;
 
-//groupDetails Table
 const groupDetails = `CREATE TABLE IF NOT EXISTS groupDetails (
     groupId INT AUTO_INCREMENT PRIMARY KEY,
     groupName VARCHAR(50) NOT NULL
 );`;
 
-//Devices Table
 const devices = `CREATE TABLE IF NOT EXISTS devices (
     deviceId INT AUTO_INCREMENT PRIMARY KEY,
     groupId INT,
@@ -28,7 +25,6 @@ const devices = `CREATE TABLE IF NOT EXISTS devices (
     lastActive DATETIME
 );`;
 
-//Policy Table
 const policyDetails = `CREATE TABLE IF NOT EXISTS policy (
     policyId INT AUTO_INCREMENT PRIMARY KEY,
     groupId INT NOT NULL,
@@ -37,11 +33,12 @@ const policyDetails = `CREATE TABLE IF NOT EXISTS policy (
     printing BOOLEAN NOT NULL,
     browserUpload BOOLEAN NOT NULL,
     bluetooth BOOLEAN NOT NULL,
+    clipboard BOOLEAN NOT NULL,
+    blockedApps TEXT,
     FOREIGN KEY (groupId) REFERENCES groupDetails(groupId)
         ON DELETE CASCADE
 );`;
 
-//Config Table
 const configDetails = `CREATE TABLE IF NOT EXISTS config(
     configId INT AUTO_INCREMENT PRIMARY KEY,
     groupId INT NOT NULL,
@@ -60,13 +57,11 @@ const configDetails = `CREATE TABLE IF NOT EXISTS config(
         ON DELETE CASCADE
 );`;
 
-//License Table
 const licenseDetails = `CREATE TABLE IF NOT EXISTS license (
     licenseId INT AUTO_INCREMENT PRIMARY KEY,
     licenseKey VARCHAR(255) NOT NULL
 );`;
 
-//SupportDetails Table
 const supportDetails = `CREATE TABLE IF NOT EXISTS support (
     ticketId VARCHAR(36) PRIMARY KEY,
     groupId INT NOT NULL,
