@@ -50,6 +50,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
     setBrowserUpload(prevData[0]?.browserUpload  || false);
     setBluetooth(prevData[0]?.bluetooth || false);
     setClipboard(prevData[0]?.clipboard || false);
+    setBlockedApps(prevData[0]?.blockedApps.split(',') || []);
   }
 
   useEffect(() => {
@@ -61,9 +62,20 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   }, [prevData]);
 
   const handleBlockButton = () => {
-    blockedApps.push(appName);
-    setAppName('');
-  }
+    const name = appName.trim();
+    if (name && !blockedApps.includes(name)) {
+      setBlockedApps([...blockedApps, name]);
+      setAppName('');
+    } else if (blockedApps.includes(name)) {
+      toast.warning('App already blocked');
+    }
+  };
+
+  const handleCancelButton = (index) => {
+    const removed = blockedApps[index];
+    setBlockedApps(blockedApps.filter((_, i) => i !== index));
+    toast.info(`${removed} removed from blocked list`);
+  };
 
   const handlePolicy = async (e) => {
     e.preventDefault();
@@ -80,11 +92,11 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
         printing,
         browserUpload,
         bluetooth,
-        clipboard
+        clipboard,
+        blockedApps: blockedApps.join(',')
       }
-      
-      let response = await API.post("/policy/update-policy/", policy);
 
+      let response = await API.post("/policy/update-policy/", policy);
       setPolicy([policy]);
 
       toast.success('Policy Saved Successfully!');
@@ -136,14 +148,14 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
           <div className="blockedApps">
             <div className="addApps">
               <input type="text" placeholder='Application name' className='addApps-input' value={appName} onChange={(e)=>setAppName(e.target.value)}/>
-              <button className='create-group-button' type='button' onClick={handleBlockButton}>Block</button>
+              <button className='create-group-button' type='button' onClick={handleBlockButton} disabled={!appName.trim()}>Block</button>
             </div>
             <ul className='blockedApps-list'>
-              {blockedApps.length>0 ? (
+              {blockedApps.length > 0 ? (
                 blockedApps.map((data, index) => (
                   <li key={index}>
                     {data}
-                    <CancelIcon className='removeApp-button'/>
+                    <CancelIcon className='removeApp-button' onClick={()=>handleCancelButton(index)}/>
                   </li>
                 ))
               ) : (

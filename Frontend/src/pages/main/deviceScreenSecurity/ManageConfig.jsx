@@ -4,12 +4,16 @@ import EditConfig from '../../../modals/EditConfig'
 import API from '../../../util/Api'
 import {useParams} from 'react-router-dom'
 import HashLoader from "react-spinners/HashLoader"
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import {useNavigate} from 'react-router-dom'
 
 const ManageConfig = () => {
   let [openModal, setOpenModal] = useState(false);
   let {groupId} = useParams();
   let [configData, setConfigData] = useState([]);
   let [loading, setLoading] = useState(false);
+
+  let navigate = useNavigate();
 
   const fetchConfigData = async () => {
     let loaderTimeout;
@@ -50,6 +54,7 @@ const ManageConfig = () => {
         <HashLoader color="#6F5FE7"/>
       </div>}
       <div className='policy-header'>
+        <p className='back-button' onClick={()=>navigate('/device-screen-security')}><ArrowBackIcon/></p>
         <h4 className='groupId-heading'>MANAGE CONFIG- GroupID: {groupId}</h4>
         <button onClick={() => setOpenModal(true)} className='create-group-button'>Edit Config</button>
         {openModal && <EditConfig setOpenModal={setOpenModal} setConfigData={setConfigData}/>}

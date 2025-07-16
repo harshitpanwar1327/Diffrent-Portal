@@ -4,6 +4,8 @@ import EditPolicy from '../../../modals/EditPolicy'
 import {useParams} from 'react-router-dom'
 import API from '../../../util/Api'
 import HashLoader from "react-spinners/HashLoader"
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import {useNavigate} from 'react-router-dom'
 
 const policyFields = [
   { key: 'usb', label: 'USB Storage Access' },
@@ -19,6 +21,8 @@ const ManagePolicy = () => {
   let {groupId} = useParams();
   let [policy, setPolicy] = useState([]);
   let [loading, setLoading] = useState(false);
+
+  let navigate = useNavigate();
 
   const fetchPolicyDetails = async () => {
     let loaderTimeout;
@@ -59,6 +63,7 @@ const ManagePolicy = () => {
         <HashLoader color="#6F5FE7"/>
       </div>}
       <div className='policy-header'>
+        <p className='back-button' onClick={()=>navigate('/device-screen-security')}><ArrowBackIcon/></p>
         <h4 className='groupId-heading'>MANAGE CONFIG- GroupID: {groupId}</h4>
         <button onClick={() => setOpenModal(true)} className='create-group-button'>Edit Policy</button>
         {openModal && <EditPolicy setOpenModal={setOpenModal} setPolicy={setPolicy}/>}

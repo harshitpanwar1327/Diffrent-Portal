@@ -10,7 +10,7 @@ export const addGroupLogic = async (groupData) => {
         let [row] = await pool.query(query, value);
         let groupId = row.insertId;
         
-        await pool.query(`INSERT INTO policy(groupId, usb, mtp, printing, browserUpload, bluetooth) VALUES (?, true, true, true, true, true);`, [groupId]);
+        await pool.query(`INSERT INTO policy(groupId, usb, mtp, printing, browserUpload, bluetooth, clipboard) VALUES (?, true, true, true, true, true, true);`, [groupId]);
 
         await pool.query(`INSERT INTO config(groupId, organization, macAddress, ipAddress, date_enabled, tagline_enabled, layout, qr_top_left, qr_top_right, qr_bottom_left, qr_bottom_right, whitelist_processes) VALUES (?, "ProtectionMark", true, true, true, true, "medium", true, true, true, true, "");`, [groupId]); 
 
