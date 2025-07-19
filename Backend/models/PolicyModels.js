@@ -7,6 +7,8 @@ export class PolicyDetails {
         this.browserUpload = policyData.browserUpload;
         this.bluetooth = policyData.bluetooth;
         this.clipboard = policyData.clipboard;
+        this.snipping = policyData.snipping;
         this.blockedApps = policyData.blockedApps;
+        this.clipboardWhiteLists = policyData.clipboardWhiteLists;
     }
 }

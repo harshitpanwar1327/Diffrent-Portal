@@ -2,9 +2,9 @@ import { PolicyDetails } from "../models/PolicyModels.js";
 import { updatePolicyLogic, getPolicyLogic } from "../services/PolicyServices.js";
 
 export const updatePolicy = async (req,res) => {
-    const {groupId, usb, mtp, printing, browserUpload, bluetooth, clipboard, blockedApps} = req.body;
+    const {groupId, usb, mtp, printing, browserUpload, bluetooth, clipboard, snipping, blockedApps, clipboardWhiteLists} = req.body;
 
-    const policyData = new PolicyDetails({groupId, usb, mtp, printing, browserUpload, bluetooth, clipboard, blockedApps});
+    const policyData = new PolicyDetails({groupId, usb, mtp, printing, browserUpload, bluetooth, clipboard, snipping, blockedApps, clipboardWhiteLists});
 
     try {
         const response = await updatePolicyLogic(policyData);

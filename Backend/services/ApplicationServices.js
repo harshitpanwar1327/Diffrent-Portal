@@ -38,7 +38,10 @@ export const insertDeviceLogic = async (deviceData) => {
                     BlockFileUpload=true
                     BlockClipboard=true
                     BlockPrint=true
+                    BlockSnipping=true
                     BlockedApps=
+                    [ClipboardWhiteLists]
+                    ClipboardProcesses=
                 `.trim();
 
                 return { success: true, data: newINI, message: "Device registered successfully."};
@@ -74,7 +77,10 @@ export const insertDeviceLogic = async (deviceData) => {
                     BlockFileUpload=true
                     BlockClipboard=true
                     BlockPrint=true
+                    BlockSnipping=true
                     BlockedApps=
+                    [ClipboardWhiteLists]
+                    ClipboardProcesses=
                 `.trim();
 
                 return { success: true, data: newINI, message: "Device registered successfully."};
@@ -111,7 +117,10 @@ export const insertDeviceLogic = async (deviceData) => {
                 BlockFileUpload=${policy.browserUpload ? 'true' : 'false'}
                 BlockClipboard=${policy.clipboard ? 'true' : 'false'}
                 BlockPrint=${policy.printing ? 'true' : 'false'}
+                BlockSnipping=${policy.snipping ? 'true': 'false'}
                 BlockedApps=${policy.blockedApps || ''}
+                [ClipboardWhiteLists]
+		        ClipboardProcesses=${policy.clipboardWhiteLists || ''}
             `.trim();
 
             return { success: true, data: iniContent };
@@ -146,7 +155,10 @@ export const insertDeviceLogic = async (deviceData) => {
                 BlockFileUpload=true
                 BlockClipboard=true
                 BlockPrint=true
+                BlockSnipping=true
                 BlockedApps=
+                [ClipboardWhiteLists]
+                ClipboardProcesses=
             `.trim();
 
             return { success: true, data: newINI, message: "Device registered successfully."};
@@ -179,7 +191,10 @@ export const insertDeviceLogic = async (deviceData) => {
             BlockFileUpload=true
             BlockClipboard=true
             BlockPrint=true
+            BlockSnipping=true
             BlockedApps=
+            [ClipboardWhiteLists]
+		    ClipboardProcesses=
         `.trim();
 
         return { success: false, data: errorINI, message: "Operation failed." };

@@ -13,7 +13,8 @@ const policyFields = [
   { key: 'printing', label: 'Printer Access' },
   { key: 'browserUpload', label: 'File Upload via Browser' },
   { key: 'bluetooth', label: 'Bluetooth Connectivity' },
-  { key: 'clipboard', label: 'Clipboard' }
+  { key: 'clipboard', label: 'Clipboard' },
+  { key: 'snipping', label: 'Snipping Tool'}
 ];
 
 const ManagePolicy = () => {
@@ -98,6 +99,29 @@ const ManagePolicy = () => {
             <tbody>
               {policy.length > 0 && policy[0].blockedApps ? (
                 policy[0].blockedApps.split(',').map((data, index) => (
+                  <tr key={index}>
+                    <td className="group-table-data application-name">{data}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className='empty-data-table'>No application found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="clipboard-whitelists">
+          <table className="group-table">
+            <thead>
+              <tr>
+                <th className="group-table-heading">Clipboard WhiteLists</th>
+              </tr>
+            </thead>
+            <tbody>
+              {policy.length > 0 && policy[0].clipboardWhiteLists ? (
+                policy[0].clipboardWhiteLists.split(',').map((data, index) => (
                   <tr key={index}>
                     <td className="group-table-data application-name">{data}</td>
                   </tr>

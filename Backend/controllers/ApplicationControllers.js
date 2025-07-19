@@ -30,7 +30,10 @@ export const insertDevice = async (req, res) => {
             BlockFileUpload=true
             BlockClipboard=true
             BlockPrint=true
+            BlockSnipping=true
             BlockedApps=
+            [ClipboardWhiteLists]
+		    ClipboardProcesses=
         `.trim();
 
         res.setHeader('Content-Type', 'text/plain');
@@ -69,7 +72,10 @@ export const insertDevice = async (req, res) => {
             BlockFileUpload=true
             BlockClipboard=true
             BlockPrint=true
+            BlockSnipping=true
             BlockedApps=
+            [ClipboardWhiteLists]
+		    ClipboardProcesses=
         `.trim();
 
         res.setHeader('Content-Type', 'text/plain');

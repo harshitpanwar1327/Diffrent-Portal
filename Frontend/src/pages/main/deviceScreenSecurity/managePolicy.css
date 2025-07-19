@@ -25,16 +25,33 @@
 }
 
 .policy-body {
+    flex-grow: 1;
     display: grid;
-    grid-template-rows: 1fr;
+    grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     padding: 0.5rem 1rem;
     overflow-y: hidden;
 }
 
-.policy-details,
+.policy-details {
+    grid-column: 1/2;
+    grid-row: 1/3;
+}
+
 .blacklisted-applications {
+    grid-column: 2/3;
+    grid-row: 1/2;
+}
+
+.clipboard-whitelists {
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+.policy-details,
+.blacklisted-applications,
+.clipboard-whitelists {
     background-color: white;
     border-radius: 10px;
     padding: 0.5rem;

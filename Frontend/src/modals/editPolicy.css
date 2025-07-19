@@ -12,7 +12,7 @@
 
 .policy-form{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
 }
 
@@ -24,6 +24,7 @@
     padding: 10px;
     border: 1px solid #0000001a;
     border-radius: 4px;
+    height: 60vh;
 }
 
 .policy-checkbox{
@@ -32,7 +33,6 @@
 }
 
 .blockedApps {
-    height: 50vh;
     display: flex;
     flex-direction: column;
     grid-column: 2/3;
@@ -44,6 +44,34 @@
 .addApps {
     display: flex;
     gap: 10px;
+}
+
+.addApps-input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.addApps-button {
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.addApps-button:disabled {
+    cursor: not-allowed;
+}
+
+.clipboardWhiteLists {
+    display: flex;
+    flex-direction: column;
+    grid-column: 3/4;
+    padding: 10px;
+    border: 1px solid #0000001a;
+    border-radius: 4px;
 }
 
 .blockedApps-list {

@@ -176,7 +176,6 @@ const Dashboard = () => {
     fetchTickets();
   }, [currentPage]);
 
-  //Bar chart
   const bar = {
     series: [{
       name: 'Devices',

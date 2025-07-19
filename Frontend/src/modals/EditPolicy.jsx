@@ -13,8 +13,11 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   let [browserUpload, setBrowserUpload] = useState(false);
   let [bluetooth, setBluetooth] = useState(false);
   let [clipboard, setClipboard] = useState(false);
-  let [appName, setAppName] = useState('');
-  let [blockedApps, setBlockedApps] = useState([]);
+  let [snipping, setSnipping] = useState(false);
+  let [blockedApp, setBlockedApp] = useState('');
+  let [blockedAppsData, setBlockedAppsData] = useState([]);
+  let [clipboardApp, setClipboardApp] = useState('');
+  let [clipboardWhiteLists, setClipboardWhiteLists] = useState([]);
   let {groupId} = useParams();
 
   let [prevData, setPrevData] = useState([]);
@@ -50,7 +53,13 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
     setBrowserUpload(prevData[0]?.browserUpload  || false);
     setBluetooth(prevData[0]?.bluetooth || false);
     setClipboard(prevData[0]?.clipboard || false);
-    setBlockedApps(prevData[0]?.blockedApps.split(',') || []);
+    setSnipping(prevData[0]?.snipping || false);
+    if(prevData[0]?.blockedApps?.length > 0){
+      setBlockedAppsData(prevData[0]?.blockedApps?.split(',') || []);
+    }
+    if(prevData[0]?.clipboardWhiteLists?.length > 0){
+      setClipboardWhiteLists(prevData[0]?.clipboardWhiteLists?.split(',') || []);
+    }
   }
 
   useEffect(() => {
@@ -62,19 +71,37 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   }, [prevData]);
 
   const handleBlockButton = () => {
-    const name = appName.trim();
-    if (name && !blockedApps.includes(name)) {
-      setBlockedApps([...blockedApps, name]);
-      setAppName('');
-    } else if (blockedApps.includes(name)) {
+    const name = blockedApp.trim();
+    if (name && !blockedAppsData.includes(name)) {
+      setBlockedAppsData([...blockedAppsData, name]);
+      setBlockedApp('');
+    } else {
       toast.warning('App already blocked');
     }
   };
 
-  const handleCancelButton = (index) => {
-    const removed = blockedApps[index];
-    setBlockedApps(blockedApps.filter((_, i) => i !== index));
-    toast.info(`${removed} removed from blocked list`);
+  const handleWhitelistButton = () => {
+    const name = clipboardApp.trim();
+    if (name && !clipboardWhiteLists.includes(name)) {
+      setClipboardWhiteLists([...clipboardWhiteLists, name]);
+      setClipboardApp('');
+    } else {
+      toast.warning('App already whitelisted');
+    }
+  }
+
+  const handleCancelButton = (index, type) => {
+    if (type==='block') {
+      const removed = blockedAppsData[index];
+      setBlockedAppsData(blockedAppsData.filter((_, i) => i !== index));
+      toast.info(`${removed} removed from blocked list`);
+    } else if (type==='whitelist') {
+      const removed = clipboardWhiteLists[index];
+      setClipboardWhiteLists(clipboardWhiteLists.filter((_, i) => i !== index));
+      toast.info(`${removed} removed from blocked list`);
+    } else {
+      console.log("Invalid cancel button type.");
+    }
   };
 
   const handlePolicy = async (e) => {
@@ -93,7 +120,9 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
         browserUpload,
         bluetooth,
         clipboard,
-        blockedApps: blockedApps.join(',')
+        snipping,
+        blockedApps: blockedAppsData.join(','),
+        clipboardWhiteLists: clipboardWhiteLists.join(',')
       }
 
       let response = await API.post("/policy/update-policy/", policy);
@@ -143,26 +172,54 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
               <input type="checkbox" name="clipboard" id="clipboard" checked={clipboard} onChange={(e)=>setClipboard(!clipboard)}/>
               <label htmlFor="clipboard">Clipboard</label>
             </div>
+            <div className="policy-checkbox">
+              <input type="checkbox" name="snipping" id="snipping" checked={snipping} onChange={(e)=>setSnipping(!snipping)}/>
+              <label htmlFor="snipping">Snipping</label>
+            </div>
           </div>
 
           <div className="blockedApps">
             <div className="addApps">
-              <input type="text" placeholder='Application name' className='addApps-input' value={appName} onChange={(e)=>setAppName(e.target.value)}/>
-              <button className='create-group-button' type='button' onClick={handleBlockButton} disabled={!appName.trim()}>Block</button>
+              <input type="text" placeholder='Block application' className='addApps-input' value={blockedApp} onChange={(e)=>setBlockedApp(e.target.value)}/>
+              <button className='addApps-button' type='button' onClick={handleBlockButton} disabled={!blockedApp.trim()}>Block</button>
             </div>
             <ul className='blockedApps-list'>
-              {blockedApps.length > 0 ? (
-                blockedApps.map((data, index) => (
+              {blockedAppsData.length > 0 ? (
+                blockedAppsData.map((data, index) => (
                   <li key={index}>
                     {data}
-                    <CancelIcon className='removeApp-button' onClick={()=>handleCancelButton(index)}/>
+                    <CancelIcon className='removeApp-button' onClick={()=>handleCancelButton(index, 'block')}/>
                   </li>
                 ))
               ) : (
-                <p style={{textAlign: 'center', margin: '0'}}>No application blocked</p>
+                <div className='no-data-message'>
+                  <p>No blocked app</p>
+                </div>
               )}
             </ul>
           </div>
+
+          <div className="clipboardWhiteLists">
+            <div className="addApps">
+              <input type="text" placeholder='Clipboard whitelist application' className='addApps-input' value={clipboardApp} onChange={(e)=>setClipboardApp(e.target.value)}/>
+              <button className='addApps-button' type='button' onClick={handleWhitelistButton} disabled={!clipboardApp.trim()}>WhiteList</button>
+            </div>
+            <ul className='blockedApps-list'>
+              {clipboardWhiteLists.length > 0 ? (
+                clipboardWhiteLists.map((data, index) => (
+                  <li key={index}>
+                    {data}
+                    <CancelIcon className='removeApp-button' onClick={()=>handleCancelButton(index, 'whitelist')}/>
+                  </li>
+                ))
+              ) : (
+                <div className='no-data-message'>
+                  <p>No whitelisted app</p>
+                </div>
+              )}
+            </ul>
+          </div>
+
           <button className="create-group-button" type="submit">Save</button>
         </form>
       </div>

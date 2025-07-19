@@ -34,7 +34,9 @@ const policyDetails = `CREATE TABLE IF NOT EXISTS policy (
     browserUpload BOOLEAN NOT NULL,
     bluetooth BOOLEAN NOT NULL,
     clipboard BOOLEAN NOT NULL,
+    snipping BOOLEAN NOT NULL,
     blockedApps TEXT,
+    clipboardWhiteLists TEXT,
     FOREIGN KEY (groupId) REFERENCES groupDetails(groupId)
         ON DELETE CASCADE
 );`;
