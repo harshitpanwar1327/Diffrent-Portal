@@ -94,7 +94,7 @@
 @media (min-width: 320px) and (max-width: 767px) {
     .policy-form {
         grid-template-columns: 1fr;
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
     }
 
     .core-policy {
@@ -105,5 +105,10 @@
     .blockedApps {
         grid-column: 1/2;
         grid-row: 2/3;
+    }
+
+    .clipboardWhiteLists {
+        grid-column: 1/2;
+        grid-row: 3/4;
     }
 }
