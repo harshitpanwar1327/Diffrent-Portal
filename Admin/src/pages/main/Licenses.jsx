@@ -3,7 +3,7 @@ import NavigationBar from '../../components/NavigationBar'
 import API from '../../utils/API'
 import {FadeLoader} from 'react-spinners'
 import Swal from 'sweetalert2'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
@@ -57,17 +57,7 @@ const Licenses = () => {
           setLicenseData(licenseData.filter(prev => prev.licenseId !== id));
         } catch (error) {
           console.log(error);
-          toast.error(error.response.data.message || 'License not deleted!', {
-            position: "top-center",
-            autoClose: 1800,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          toast.error(error.response.data.message || 'License not deleted!');
         } finally {
           clearTimeout(loaderTimeout);
           setLoading(false);

@@ -3,7 +3,7 @@ import NavigationBar from '../../components/NavigationBar'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import API from '../../utils/API'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import Swal from 'sweetalert2'
 import EditUser from '../../modals/EditUser'
 import {FadeLoader} from 'react-spinners'
@@ -41,17 +41,7 @@ const Users = () => {
     e.preventDefault();
 
     if(password !== confirmPassword) {
-      toast.error('Password and confirm password not matched!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error('Password and confirm password not matched!');
       return;
     }
 
@@ -75,30 +65,10 @@ const Users = () => {
 
       fetchUsersData();
       
-      toast.success('User registered successfully', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.success('User registered successfully');
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'User not registered!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'User not registered!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);
@@ -128,17 +98,7 @@ const Users = () => {
           setUsersData(usersData.filter(data => data.id !== id));
         } catch (error) {
           console.log(error);
-          toast.error(error.response.data.message || 'Unable to delete user!', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-          });
+          toast.error(error.response.data.message || 'Unable to delete user!');
         } finally {
           clearTimeout(loaderTimeout);
           setLoading(false);

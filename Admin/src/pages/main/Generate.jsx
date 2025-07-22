@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import NavigationBar from '../../components/NavigationBar'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import API from '../../utils/API'
 import {FadeLoader} from 'react-spinners'
 
@@ -35,30 +35,10 @@ const Generate = () => {
       setPurchaseDate('');
       setExpiryDate('');
 
-      toast.success('License generated successfully', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.success('License generated successfully');
     } catch (error) {
       console.log(error);
-      toast.error('License not generated!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error('License not generated!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);
@@ -70,23 +50,11 @@ const Generate = () => {
 
     navigator.clipboard.writeText(licenseCode)
       .then(() => {
-        toast.success('License code copied to clipboard!', {
-          position: "top-center",
-          autoClose: 1500,
-          hideProgressBar: true,
-          theme: "colored",
-          transition: Bounce,
-        });
+        toast.success('License code copied to clipboard!');
       })
       .catch(err => {
         console.error('Copy failed', err);
-        toast.error('Failed to copy license code', {
-          position: "top-center",
-          autoClose: 1500,
-          hideProgressBar: true,
-          theme: "colored",
-          transition: Bounce,
-        });
+        toast.error('Failed to copy license code');
       });
   };
 

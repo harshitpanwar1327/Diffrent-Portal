@@ -6,7 +6,7 @@ import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
 import ViewScreenshot from '../../modals/ViewScreenshot'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 
 const Feedbacks = () => {
   const [feedbackData, setFeedbackData] = useState([]);
@@ -66,30 +66,10 @@ const Feedbacks = () => {
 
       fetchFeedbacks();
 
-      toast.success('Status updated successfully', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.success('Status updated successfully');
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'Status not updated!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'Status not updated!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);

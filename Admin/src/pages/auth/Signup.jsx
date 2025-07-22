@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import {FadeLoader} from 'react-spinners'
 import API from '../../utils/API'
 import {useNavigate, NavLink} from 'react-router-dom'
@@ -17,17 +17,7 @@ const Signup = () => {
     e.preventDefault();
 
     if(password !== confirmPassword) {
-      toast.error('Password and confirm password not match!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error('Password and confirm password not match!');
       return;
     }
 
@@ -42,30 +32,10 @@ const Signup = () => {
 
       navigate('/login');
 
-      toast.success('Registered successfully', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.success('Registered successfully');
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'User not registered!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'User not registered!');
     } finally {
       setLoading(false);
     }

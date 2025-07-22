@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import API from '../utils/API'
 import {FadeLoader} from 'react-spinners'
 
@@ -16,17 +16,7 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
     e.preventDefault();
 
     if(password !== confirmPassword) {
-      toast.error('Password and confirm password not matched!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error('Password and confirm password not matched!');
       return;
     }
 
@@ -46,30 +36,10 @@ const EditUser = ({setOpenModal, data, fetchUsersData}) => {
 
       setOpenModal(false);
 
-      toast.success('User updated successfully', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.success('User updated successfully');
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'User not updated!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'User not updated!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);

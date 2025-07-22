@@ -11,12 +11,11 @@ createRoot(document.getElementById('root')).render(
       <App />
       <ToastContainer
         position="top-center"
-        autoClose={2000}
+        autoClose={1500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
-        pauseOnFocusLoss
         draggable
         theme="light"
         transition={Bounce}

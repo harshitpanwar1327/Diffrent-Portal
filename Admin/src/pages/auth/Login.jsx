@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {toast, Bounce} from 'react-toastify'
+import {toast} from 'react-toastify'
 import {FadeLoader} from 'react-spinners'
 import API from '../../utils/API'
 import {useNavigate, NavLink} from 'react-router-dom'
@@ -29,30 +29,10 @@ const Login = () => {
 
       navigate('/users');
 
-      toast.success('Logged in successfully', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.success('Logged in successfully');
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message || 'User not logged in!', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toast.error(error.response.data.message || 'User not logged in!');
     } finally {
       setLoading(false);
     }
