@@ -17,12 +17,14 @@ const Licenses = () => {
   const itemsPerPage = 10;
   const [totalData, setTotalData] = useState(1);
 
+  const filteredData = licenseData.filter(data => data.organization?.toLowerCase().includes(search.toLowerCase()) || data.totalDevices?.includes(search) || data.purchaseDate?.includes(search) || data.expiryDate?.includes(search));
+
   const fetchLicenses = async () => {
     let loaderTimeout;
 
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
-      const response = await API.get(`/license/get-licenses?page=${currentPage}&limit=${itemsPerPage}&search=${search}`);
+      const response = await API.get(`/license/get-licenses?page=${currentPage}&limit=${itemsPerPage}`);
       const licenseKey = response.data.data;
       const decode = licenseKey.map(decodeLicenseCodeWithToken);
       setLicenseData(decode);
@@ -37,7 +39,7 @@ const Licenses = () => {
 
   useEffect(() => {
     fetchLicenses();
-  }, [search, currentPage]);
+  }, [currentPage]);
 
   const handleDelete = async (id) => {
     Swal.fire({
@@ -54,7 +56,7 @@ const Licenses = () => {
         try {
           loaderTimeout = setTimeout(() => setLoading(true), 1000);
           let response = await API.delete(`/license/delete-license/${id}`);
-          setLicenseData(licenseData.filter(prev => prev.licenseId !== id));
+          fetchLicenses();
         } catch (error) {
           console.log(error);
           toast.error(error.response.data.message || 'License not deleted!');
@@ -96,8 +98,8 @@ const Licenses = () => {
             </tr>
           </thead>
           <tbody>
-            {licenseData.length > 0 ?
-              licenseData.map((data) => (
+            {filteredData.length > 0 ?
+              filteredData.map((data) => (
                 <tr className='hover:bg-[#f8f7ff] border-b border-[#848484]' key={data.licenseId}>
                   <td className='p-2'>{data.organization}</td>
                   <td className='p-2'>{data.totalDevices}</td>

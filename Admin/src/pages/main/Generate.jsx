@@ -17,6 +17,11 @@ const Generate = () => {
 
     let loaderTimeout;
 
+    if (totalDevices <= 0) {
+      toast.error("Enter valid device count!");
+      return;
+    }
+
     try {
       loaderTimeout = setTimeout(() => setLoading(true), 1000);
 

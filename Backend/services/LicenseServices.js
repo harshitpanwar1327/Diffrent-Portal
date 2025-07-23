@@ -75,11 +75,9 @@ export const deleteLicenseLogic = async (id) => {
 }
 
 export const getLicenseLogic = async (limit, offset, search) => {
-  let searchQuery = `%${search}%`;
-
   try {
-    let [rows] = await pool.query(`SELECT * FROM license WHERE licenseKey LIKE ? LIMIT ? OFFSET ?;`, [searchQuery, limit, offset]);
-    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license WHERE licenseKey LIKE ?;`, [searchQuery]);
+    let [rows] = await pool.query(`SELECT * FROM license LIMIT ? OFFSET ?;`, [limit, offset]);
+    let [countRows] = await pool.query(`SELECT COUNT(*) AS total FROM license;`);
     const total = countRows[0].total;
 
     return { success: true, data: rows, total };

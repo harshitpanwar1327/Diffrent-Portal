@@ -66,7 +66,7 @@ const Feedbacks = () => {
 
       fetchFeedbacks();
 
-      toast.success('Status updated successfully');
+      toast.success('Ticket resolved');
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message || 'Status not updated!');
@@ -123,7 +123,7 @@ const Feedbacks = () => {
                   <td className='p-2'><img src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${data.screenshot}`} alt="Screenshot" className="max-w-[100px] max-h-[100px] object-cover rounded border cursor-pointer" onError={(e) => e.target.style.display = 'none'} onClick={()=>handleImageClick(data.screenshot)}/></td>
                   <td className={`p-2 ${data.urgency==='high'? 'text-red-500': data.urgency==='medium'? 'text-yellow-500': 'text-green-500'}`}>{data.urgency}</td>
                   <td className={'p-2'}>
-                    <button className={data.status==="resolved"? 'w-full bg-green-600 text-white': '!border-green-600 text-green-600'} onClick={()=>handleResolveButton(data.status, data.ticketId)}>{data.status==="resolved"? <CheckCircleRoundedIcon/>: 'Resolved'}</button>
+                    <button className={data.status==="resolved"? 'w-full bg-green-600 text-white !w-35 disabled:!cursor-not-allowed': '!border-green-600 text-green-600 !w-35'} onClick={()=>handleResolveButton(data.status, data.ticketId)} disabled={data.status==="resolved"}>{data.status==="resolved"? <CheckCircleRoundedIcon/>: 'Mark as done'}</button>
                   </td>
                 </tr>
               )) : 
