@@ -15,15 +15,19 @@ export const decodeLicenseCodeWithToken = (licenseKey) => {
     const bytes = CryptoJS.AES.decrypt(licenseKey, SECRET_KEY);
     const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
 
-    if (!decryptedData) throw new Error("Invalid License Code");
+    if (!decryptedData) {
+      return {success: false, message: "Invalid License Code"};
+    }
 
     const fields = decryptedData.split("|");
-    if (fields.length !== 4) throw new Error("Malformed License Code");
+    if (fields.length !== 4) {
+      return {success: false, message: "Malformed License Code"};
+    }
 
     const [organization, totalDevices, purchaseDate, expiryDate] = fields;
 
     if (isNaN(new Date(purchaseDate)) || isNaN(new Date(expiryDate))) {
-      throw new Error("Invalid date format");
+      return {success: false, message: "Invalid date format"};
     }
 
     return {
@@ -33,7 +37,8 @@ export const decodeLicenseCodeWithToken = (licenseKey) => {
       expiryDate
     };
   } catch (error) {
-    throw new Error("Invalid License Code");
+    console.log(error);
+    return {success: false, message: "Invalid License Code"};
   }
 };
 

@@ -61,12 +61,12 @@ const LicenseManagement = () => {
       
       let saveResponse = await API.post('/license/activate-license/', license);
 
-      setLicenseData([...licenseData, decodeLicenseCodeWithToken(license)]);
+      getLicenseData(currentPage, itemsPerPage);
       setLicenseKey('');
 
       toast.success('License Added Successfully');
     } catch (error) {
-      toast.error(error.response.data.message || 'License not activated!');
+      toast.error(error.response.data.message || 'Enter a valid license!');
     } finally {
       clearTimeout(loaderTimeout);
       setLoading(false);
@@ -116,7 +116,7 @@ const LicenseManagement = () => {
       </div>}
       <div className='licence-header'>
         <input type="text" placeholder='Enter your licence key' className='add-licence-input' value={licenseKey} onChange={(e) => setLicenseKey(e.target.value)}/>
-        <button className='create-group-button' onClick={handleActivate}>Activate License</button>
+        <button className='create-group-button' onClick={handleActivate} disabled={!licenseKey.trim()}>Activate License</button>
       </div>
 
       <div className="group-table-container">

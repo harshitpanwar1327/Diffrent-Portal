@@ -167,6 +167,7 @@ const HealthStatus = () => {
                 <thead>
                   <tr>
                     <th className='group-table-heading'>MAC Address</th>
+                    <th className='group-table-heading'>Last Active</th>
                     <th className='group-table-heading'>Status</th>
                   </tr>
                 </thead>
@@ -175,12 +176,13 @@ const HealthStatus = () => {
                     healthy.map((data, index) => (
                       <tr key={index}>
                         <td className='group-table-data'>{data.macAddress}</td>
+                        <td className='group-table-data'>{data.lastActive.split('T')[0]} {data.lastActive.split('T')[1].split('.')[0]}</td>
                         <td className='group-table-data'><i className="fa-solid fa-battery-full"></i></td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={2} className='empty-data-table'>No healthy device found.</td>
+                      <td colSpan={3} className='empty-data-table'>No healthy device found.</td>
                     </tr>
                   )}
                 </tbody>
@@ -193,6 +195,7 @@ const HealthStatus = () => {
                 <thead>
                   <tr>
                     <th className='group-table-heading'>MAC Address</th>
+                    <th className='group-table-heading'>Last Active</th>
                     <th className='group-table-heading'>Status</th>
                   </tr>
                 </thead>
@@ -201,12 +204,13 @@ const HealthStatus = () => {
                     unknown.map((data, index) => (
                       <tr key={index}>
                         <td className='group-table-data'>{data.macAddress}</td>
+                        <td className='group-table-data'>{data.lastActive.split('T')[0]} {data.lastActive.split('T')[1].split('.')[0]}</td>
                         <td className='group-table-data'><i className="fa-solid fa-battery-half"></i></td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={2} className='empty-data-table'>No unknown devices found.</td>
+                      <td colSpan={3} className='empty-data-table'>No unknown devices found.</td>
                     </tr>
                   )}
                 </tbody>
@@ -219,6 +223,7 @@ const HealthStatus = () => {
                 <thead>
                   <tr>
                     <th className='group-table-heading'>MAC Address</th>
+                    <th className='group-table-heading'>Last Active</th>
                     <th className='group-table-heading'>Status</th>
                     <th  className='group-table-heading'>De-allocate</th>
                   </tr>
@@ -228,13 +233,14 @@ const HealthStatus = () => {
                     retired.map((data, index) => (
                       <tr key={index}>
                         <td className='group-table-data'>{data.macAddress}</td>
+                        <td className='group-table-data'>{data.lastActive.split('T')[0]} {data.lastActive.split('T')[1].split('.')[0]}</td>
                         <td className='group-table-data'><i className="fa-solid fa-battery-empty"></i></td>
                         <td className='group-table-data'><i className="fa-solid fa-trash" onClick={()=> handleDelete(data.macAddress)}></i></td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={3} className='empty-data-table'>No retired devices found</td>
+                      <td colSpan={4} className='empty-data-table'>No retired devices found</td>
                     </tr>
                   )}
                 </tbody>

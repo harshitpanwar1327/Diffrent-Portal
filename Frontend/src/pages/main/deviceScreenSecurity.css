@@ -9,6 +9,10 @@
     align-self: center;
 }
 
+.create-group-button:disabled {
+    cursor: not-allowed;
+}
+
 .search-input {
     height: 2rem;
     width: 25%;

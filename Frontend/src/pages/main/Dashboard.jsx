@@ -13,6 +13,7 @@ import Two from '../../assets/dashboard/two.png'
 import Three from '../../assets/dashboard/Three.png'
 import Four from '../../assets/dashboard/Four.png'
 import HashLoader from "react-spinners/HashLoader"
+import { useNavigate } from 'react-router-dom'
 
 const MyPie = ({ data }) => (
   <ResponsivePie
@@ -103,6 +104,8 @@ const MyPie = ({ data }) => (
 )
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   let [totalDevices, setTotalDevices] = useState(0);
   let [activeLicense, setActiveLicense] = useState(0);
   let [healthyDevices, setHealthyDevices] = useState(0);
@@ -259,22 +262,22 @@ const Dashboard = () => {
         <div className="system-summary">
           <p className='dashboard-subheading'>SYSTEM SUMMARY</p>
           <div className="summary-boxes">
-            <div className="total-devices">
+            <div className="total-devices" onClick={()=>navigate('/devices')}>
               <img src={One} alt="icon" height={32}/>
               <h2><CountUp end={totalDevices} duration={2.5}/></h2>
               <p>Total Devices</p>
             </div>
-            <div className="license-count">
+            <div className="license-count" onClick={()=>navigate('/license-management')}>
               <img src={Two} alt="icon" height={32}/>
               <h2><CountUp end={activeLicense} duration={2.5}/></h2>
               <p>Active License</p>
             </div>
-            <div className="healthy-devices">
+            <div className="healthy-devices" onClick={()=>navigate('/health-status')}>
               <img src={Three} alt="icon" height={32}/>
               <h2><CountUp end={healthyDevices} duration={2.5}/></h2>
               <p>Healthy Devices</p>
             </div>
-            <div className="retired-devices">
+            <div className="retired-devices" onClick={()=>navigate('/health-status')}>
               <img src={Four} alt="icon" height={32}/>
               <h2><CountUp end={retiredDevices} duration={2.5}/></h2>
               <p>Retired Devices</p>

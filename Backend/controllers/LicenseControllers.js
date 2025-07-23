@@ -32,7 +32,11 @@ export const validateLicense = (req, res) => {
     }
 
     const licenseData = decodeLicenseCodeWithToken(licenseKey);
-    res.status(200).json(licenseData);
+    if (licenseData.success){
+      res.status(200).json(licenseData);
+    } else {
+      res.status(400).json(licenseData);
+    }
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ success: false, message: "Internal Server Error!" });

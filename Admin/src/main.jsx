@@ -16,7 +16,6 @@ createRoot(document.getElementById('root')).render(
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
-        draggable
         theme="light"
         transition={Bounce}
       />
