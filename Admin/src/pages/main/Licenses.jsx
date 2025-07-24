@@ -86,7 +86,7 @@ const Licenses = () => {
       )}
       <NavigationBar heading='Licenses' />
       <div className='grow p-2 overflow-auto'>
-        <input type="text" name='search' id='search' placeholder='&#128269; Search by userId...' value={search} onChange={(e) => {setSearch(e.target.value); setCurrentPage(1)}} className='p-2 border border-gray-300 rounded-full mb-2'/>
+        <input type="text" name='search' id='search' placeholder='&#128269; Search here...' value={search} onChange={(e) => {setSearch(e.target.value); setCurrentPage(1)}} className='p-2 border border-gray-300 rounded-full mb-2'/>
         <table className='w-full'>
           <thead>
             <tr className='bg-[#f5f3ff] border-b border-[#434343]'>

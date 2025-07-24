@@ -2,9 +2,9 @@ import { pool } from '../config/Database.js';
 
 export const updatePolicyLogic = async (policyData) => {
     try {
-        const query = `UPDATE policy SET usb = ?, mtp = ?, printing = ?, browserUpload = ?, bluetooth = ?, clipboard = ?, snipping = ?, blockedApps = ?, clipboardWhiteLists = ? WHERE groupId = ?`;
+        const query = `UPDATE policy SET usbmtp = ?, printing = ?, browserUpload = ?, bluetooth = ?, clipboard = ?, snipping = ?, blockedApps = ?, clipboardWhiteLists = ? WHERE groupId = ?`;
 
-        const values = [policyData.usb, policyData.mtp, policyData.printing, policyData.browserUpload, policyData.bluetooth, policyData.clipboard, policyData.snipping, policyData.blockedApps, policyData.clipboardWhiteLists, policyData.groupId];
+        const values = [policyData.usbmtp, policyData.printing, policyData.browserUpload, policyData.bluetooth, policyData.clipboard, policyData.snipping, policyData.blockedApps, policyData.clipboardWhiteLists, policyData.groupId];
 
         await pool.query(query, values);
 

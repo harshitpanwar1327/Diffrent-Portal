@@ -28,8 +28,7 @@ const devices = `CREATE TABLE IF NOT EXISTS devices (
 const policyDetails = `CREATE TABLE IF NOT EXISTS policy (
     policyId INT AUTO_INCREMENT PRIMARY KEY,
     groupId INT NOT NULL,
-    usb BOOLEAN NOT NULL,
-    mtp BOOLEAN NOT NULL,
+    usbmtp BOOLEAN NOT NULL,
     printing BOOLEAN NOT NULL,
     browserUpload BOOLEAN NOT NULL,
     bluetooth BOOLEAN NOT NULL,

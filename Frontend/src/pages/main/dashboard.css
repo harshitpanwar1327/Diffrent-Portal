@@ -78,6 +78,7 @@
     height: 100%;
     width: 25%;
     padding: 10px 15px;
+    cursor: pointer;
 }
 
 .total-devices {

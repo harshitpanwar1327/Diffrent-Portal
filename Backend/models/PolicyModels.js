@@ -1,8 +1,7 @@
 export class PolicyDetails {
     constructor(policyData){
         this.groupId = policyData.groupId;
-        this.usb = policyData.usb;
-        this.mtp = policyData.mtp;
+        this.usbmtp = policyData.usbmtp;
         this.printing = policyData.printing;
         this.browserUpload = policyData.browserUpload;
         this.bluetooth = policyData.bluetooth;

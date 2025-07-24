@@ -32,8 +32,7 @@ export const insertDeviceLogic = async (deviceData) => {
                     [WhiteLists]
                     processes=
                     [DataBlockSolution]
-                    BlockUSB=true
-                    BlockMTP=true
+                    BlockUSBMTP=true
                     BlockBluetooth=true
                     BlockFileUpload=true
                     BlockClipboard=true
@@ -71,8 +70,7 @@ export const insertDeviceLogic = async (deviceData) => {
                     [WhiteLists]
                     processes=
                     [DataBlockSolution]
-                    BlockUSB=true
-                    BlockMTP=true
+                    BlockUSBMTP=true
                     BlockBluetooth=true
                     BlockFileUpload=true
                     BlockClipboard=true
@@ -111,8 +109,7 @@ export const insertDeviceLogic = async (deviceData) => {
                 [WhiteLists]
                 processes=${config.whitelist_processes || ''}
                 [DataBlockSolution]
-                BlockUSB=${policy.usb ? 'true' : 'false'}
-                BlockMTP=${policy.mtp ? 'true' : 'false'}
+                BlockUSBMTP=${policy.usbmtp ? 'true' : 'false'}
                 BlockBluetooth=${policy.bluetooth ? 'true' : 'false'}
                 BlockFileUpload=${policy.browserUpload ? 'true' : 'false'}
                 BlockClipboard=${policy.clipboard ? 'true' : 'false'}
@@ -149,8 +146,7 @@ export const insertDeviceLogic = async (deviceData) => {
                 [WhiteLists]
                 processes=
                 [DataBlockSolution]
-                BlockUSB=true
-                BlockMTP=true
+                BlockUSBMTP=true
                 BlockBluetooth=true
                 BlockFileUpload=true
                 BlockClipboard=true
@@ -185,8 +181,7 @@ export const insertDeviceLogic = async (deviceData) => {
             [WhiteLists]
             processes=
             [DataBlockSolution]
-            BlockUSB=true
-            BlockMTP=true
+            BlockUSBMTP=true
             BlockBluetooth=true
             BlockFileUpload=true
             BlockClipboard=true

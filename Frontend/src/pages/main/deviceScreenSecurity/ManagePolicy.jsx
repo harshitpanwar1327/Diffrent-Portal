@@ -8,8 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import {useNavigate} from 'react-router-dom'
 
 const policyFields = [
-  { key: 'usb', label: 'USB Storage Access' },
-  { key: 'mtp', label: 'Media Transfer Protocol (MTP)' },
+  { key: 'usbmtp', label: 'USB Storage and MTP Access' },
   { key: 'printing', label: 'Printer Access' },
   { key: 'browserUpload', label: 'File Upload via Browser' },
   { key: 'bluetooth', label: 'Bluetooth Connectivity' },

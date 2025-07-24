@@ -7,8 +7,7 @@ import HashLoader from "react-spinners/HashLoader"
 import CancelIcon from '@mui/icons-material/Cancel'
 
 const EditPolicy = ({setOpenModal, setPolicy}) => {
-  let [usb, setUsb] = useState(false);
-  let [mtp, setMtp] = useState(false);
+  let [usbmtp, setUsbMtp] = useState(false);
   let [printing, setPrinting] = useState(false);
   let [browserUpload, setBrowserUpload] = useState(false);
   let [bluetooth, setBluetooth] = useState(false);
@@ -47,8 +46,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
   }, [groupId]);
 
   const fetchPrevData = () => {
-    setUsb(prevData[0]?.usb || false);
-    setMtp(prevData[0]?.mtp  || false);
+    setUsbMtp(prevData[0]?.usbmtp  || false);
     setPrinting(prevData[0]?.printing  || false);
     setBrowserUpload(prevData[0]?.browserUpload  || false);
     setBluetooth(prevData[0]?.bluetooth || false);
@@ -114,8 +112,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
 
       const policy = {
         groupId,
-        usb,
-        mtp,
+        usbmtp,
         printing,
         browserUpload,
         bluetooth,
@@ -149,16 +146,12 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
         <form className="policy-form" onSubmit={handlePolicy}>
           <div className="core-policy">
             <div className="policy-checkbox">
-              <input type="checkbox" name="usb" id="usb" checked={usb} onChange={(e)=>setUsb(!usb)} />
-              <label htmlFor="usb">USB Data Transfer</label>
-            </div>
-            <div className="policy-checkbox">
-              <input type="checkbox" name="mtp" id="mtp" checked={mtp} onChange={(e)=>setMtp(!mtp)} />
-              <label htmlFor="mtp">MTP Service</label>
+              <input type="checkbox" name="usbmtp" id="usbmtp" checked={usbmtp} onChange={(e)=>setUsbMtp(!usbmtp)} />
+              <label htmlFor="usbmtp">USB & MTP Service</label>
             </div>
             <div className="policy-checkbox">
               <input type="checkbox" name="printing" id="printing" checked={printing} onChange={(e)=>setPrinting(!printing)} />
-              <label htmlFor="printing">Printing</label>
+              <label htmlFor="printing">Printer</label>
             </div>
             <div className="policy-checkbox">
               <input type="checkbox" name="browserUpload" id="browserUpload" checked={browserUpload} onChange={()=>setBrowserUpload(!browserUpload)}/>
@@ -174,7 +167,7 @@ const EditPolicy = ({setOpenModal, setPolicy}) => {
             </div>
             <div className="policy-checkbox">
               <input type="checkbox" name="snipping" id="snipping" checked={snipping} onChange={(e)=>setSnipping(!snipping)}/>
-              <label htmlFor="snipping">Snipping</label>
+              <label htmlFor="snipping">Snipping Tool</label>
             </div>
           </div>
 

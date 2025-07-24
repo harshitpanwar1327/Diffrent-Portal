@@ -31,6 +31,7 @@ export const decodeLicenseCodeWithToken = (licenseKey) => {
     }
 
     return {
+      success: true,
       organization,
       totalDevices,
       purchaseDate,

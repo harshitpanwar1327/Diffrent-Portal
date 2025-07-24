@@ -15,6 +15,9 @@ createRoot(document.getElementById('root')).render(
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
         rtl={false}
         theme="light"
         transition={Bounce}

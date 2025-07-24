@@ -24,8 +24,7 @@ export const insertDevice = async (req, res) => {
             [WhiteLists]
             processes=
             [DataBlockSolution]
-            BlockUSB=true
-            BlockMTP=true
+            BlockUSBMTP=true
             BlockBluetooth=true
             BlockFileUpload=true
             BlockClipboard=true
@@ -66,8 +65,7 @@ export const insertDevice = async (req, res) => {
             [WhiteLists]
             processes=
             [DataBlockSolution]
-            BlockUSB=true
-            BlockMTP=true
+            BlockUSBMTP=true
             BlockBluetooth=true
             BlockFileUpload=true
             BlockClipboard=true
