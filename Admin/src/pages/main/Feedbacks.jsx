@@ -94,6 +94,7 @@ const Feedbacks = () => {
           <thead>
             <tr className='bg-[#f5f3ff] border-b border-[#434343]'>
               <th className='table-heading'>Ticket ID</th>
+              <th className='table-heading'>Date</th>
               <th className='table-heading'>Device ID</th>
               <th className='table-heading'>Issue Type</th>
               <th className='table-heading'>Description</th>
@@ -107,6 +108,7 @@ const Feedbacks = () => {
               feedbackData.map((data) => (
                 <tr key={data.ticketId} className='hover:bg-[#f8f7ff] border-b border-[#848484]'>
                   <td className='p-2'>{data.ticketId}</td>
+                  <td className='p-2'>{new Date(data.created_At).toISOString().split('T')[0]}</td>
                   <td className='p-2'>{data.deviceId}</td>
                   <td className='p-2'>{data.issueType}</td>
                   <td className='p-2'>{data.description.length > 75 ? (
