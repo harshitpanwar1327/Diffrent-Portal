@@ -108,7 +108,7 @@ const Feedbacks = () => {
               feedbackData.map((data) => (
                 <tr key={data.ticketId} className='hover:bg-[#f8f7ff] border-b border-[#848484]'>
                   <td className='p-2'>{data.ticketId}</td>
-                  <td className='p-2'>{data.created_At.split('T')[0]} {data.created_At.split('T')[1].split('.')[0]} </td>
+                  <td className='p-2'>{data.created_at.split('T')[0]} {data.created_at.split('T')[1].split('.')[0]} </td>
                   <td className='p-2'>{data.deviceId}</td>
                   <td className='p-2'>{data.issueType}</td>
                   <td className='p-2'>{data.description.length > 75 ? (
@@ -130,7 +130,7 @@ const Feedbacks = () => {
                 </tr>
               )) : 
               <tr className='hover:bg-[#f8f7ff] border-b border-[#848484]'>
-                <td className='p-2 text-center' colSpan={7}>No feedback available</td>
+                <td className='p-2 text-center' colSpan={8}>No feedback available</td>
               </tr>
             }
           </tbody>

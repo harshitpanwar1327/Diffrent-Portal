@@ -4,7 +4,7 @@ import { insertDeviceLogic } from "../services/ApplicationServices.js";
 export const insertDevice = async (req, res) => {
     let {deviceName, os, macAddress, ipAddress} = req.body;
 
-    if (!macAddress || macAddress.toLowerCase() === "unavailable") {
+    if (!macAddress || macAddress.toLowerCase().trim()==="unavailable") {
         const iniError = `
             [License]
             Active=true

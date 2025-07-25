@@ -72,7 +72,7 @@ const supportDetails = `CREATE TABLE IF NOT EXISTS support (
     screenshot LONGTEXT,
     urgency VARCHAR(10),
     status VARCHAR(10) DEFAULT 'pending',
-    created_At DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );`;
 
 const createTable = async (tableName, query) => {
